@@ -20,6 +20,10 @@ links:
   - { label: "connectedhomeip 仓库", url: "https://github.com/project-chip/connectedhomeip" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "core-bluetooth", as: "常配合（BLE 配网）" }
+  - { to: "network-framework", as: "底层传输（IP）" }
+  - { to: "app-intents", as: "常配合（自动化）" }
 ---
 
 Matter 把碎片化的智能家居生态统一到一套基于 IP 的开源标准上：贴有 Works with Apple Home 标识的 Matter 设备可直接被 Apple Home 接入与控制。开发者在 App 内通过 HomeKit 框架读取与控制家庭设备、配置自动化场景，而设备厂商实现 Matter SDK 即可一次开发、多生态通用。需注意旧 HomeKit 架构将于 2026 年 2 月停止支持，应使用新架构。

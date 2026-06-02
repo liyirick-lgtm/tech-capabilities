@@ -18,6 +18,9 @@ links:
   - { label: "建立 App 完整性", url: "https://developer.apple.com/documentation/devicecheck/establishing-your-app-s-integrity" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "secure-enclave", as: "运行硬件（私钥驻留）" }
+  - { to: "cryptokit", as: "常配合（签名）" }
 ---
 
 流程：服务端下发随机挑战 → App 用 DeviceCheck API 在 Secure Enclave 生成密钥对并对挑战 attest → 服务端经 Apple 校验后信任该公钥，后续请求用 assert 签名。App Attest 自 iOS 14 随 DeviceCheck 推出，私钥始终驻留 Secure Enclave。注意它只覆盖未修改的 iOS 设备，面对高级威胁能力有限，常与其他风控手段叠加使用。

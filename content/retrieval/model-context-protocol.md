@@ -21,6 +21,10 @@ links:
   - { label: "MCP GitHub", url: "https://github.com/modelcontextprotocol" }
 updated: "2026-06"
 order: 70
+related:
+  - { to: "rag-frameworks", as: "常配合" }
+  - { to: "cloud-frontier-llm", as: "运行模型" }
+  - { to: "vector-database", as: "可接入" }
 ---
 
 让模型「会用工具」是 Agent 的核心，而 MCP 解决了「每家工具调用格式各异」的碎片化问题。OpenAI 的 function calling、Anthropic 的 tool use、Google 的 function calling 格式互不相同；MCP 在其上定义统一协议，使同一个 MCP server（如检索、文件、数据库、企业 API）能被任意 MCP client 复用。2025 年起 Anthropic（Claude Desktop/Code）、OpenAI（Agents SDK、ChatGPT 桌面端）、Microsoft、Google、Cursor 等纷纷支持；2025 年底 Anthropic 将协议捐给 Linux 基金会下的 Agentic AI Foundation，官方 SDK 覆盖 TypeScript/Python/C#/Java/Swift，社区 server 已超 500 个。实践中 MCP 与 function calling 并用：function calling 是模型侧能力，MCP 是其上的集成与编排层，常与 LangGraph 等 Agent 框架配合构建多步工作流。

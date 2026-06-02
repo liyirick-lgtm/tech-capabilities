@@ -17,6 +17,11 @@ links:
   - { label: "Object Capture 文档", url: "https://developer.apple.com/documentation/realitykit/realitykit-object-capture/" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "arkit-realitykit", as: "底层引擎" }
+  - { to: "avdepthdata-lidar", as: "数据上游" }
+  - { to: "gaussian-splatting", as: "同类" }
+  - { to: "text-image-to-3d", as: "替代" }
 ---
 
 Object Capture 面向「把真实物体变成 3D 资产」的场景：电商商品、文物、道具、游戏素材等。绕物拍摄一圈，框架基于摄影测量算法重建出带材质的网格。早期重建需在 Mac 上跑，2023 年起 iOS 端可直接完成采集到重建的全流程。适合做产品 3D 展示、AR 试看与素材生产管线。

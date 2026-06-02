@@ -19,6 +19,11 @@ links:
   - { label: "Wan GitHub", url: "https://github.com/Wan-Video/Wan2.1" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "diffusion-model", as: "底层算法" }
+  - { to: "mixture-of-experts", as: "用到 MoE" }
+  - { to: "draw-things", as: "端侧运行入口" }
+  - { to: "kling", as: "闭源竞品" }
 ---
 
 Wan（通义万相）是 2026 年开源视频生成的代表，Apache-2.0 许可、可商用、可本地部署，常与 ComfyUI、Draw Things 等本地工具搭配做图生视频与短片。相对 Veo/可灵这类闭源云服务，它牺牲部分极致画质换来可控与自托管自由。新一代 Wan 2.7 套件已于 2026-04 发布。

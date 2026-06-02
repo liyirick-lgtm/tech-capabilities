@@ -18,6 +18,10 @@ links:
   - { label: "PCC 安全研究", url: "https://security.apple.com/blog/pcc-security-research/" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "secure-enclave", as: "复用同款架构" }
+  - { to: "apple-foundation-models", as: "服务的上层" }
+  - { to: "app-shortcuts", as: "可经此调用" }
 ---
 
 设计上满足五项要求：无状态计算、可强制执行的保证、无特权访问、不可定向、可验证透明。节点必须在生成响应后删除请求数据。2026 年 2 月起 PCC 服务器硬件升级到 M5 芯片；专用 AI 服务器芯片量产预计 2026 下半年启动。是「端云协同」最具代表性的隐私架构范例。

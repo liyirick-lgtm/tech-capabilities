@@ -18,6 +18,10 @@ links:
   - { label: "WebAuthn 标准", url: "https://www.w3.org/TR/webauthn-3/" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "secure-enclave", as: "私钥驻留硬件" }
+  - { to: "local-authentication", as: "常配合（生物识别授权）" }
+  - { to: "cryptokit", as: "底层密码学" }
 ---
 
 iOS 26 起新增 ASAuthorizationAccountCreationProvider，用一次原生系统 UI 调用同时完成建号与通行密钥发放，实现「默认无密码」注册；并通过 WebAuthn Signal API（ASCredentialUpdater）让服务端主动同步通行密钥的元数据变化，保持记录一致。私钥始终不离开 Secure Enclave。

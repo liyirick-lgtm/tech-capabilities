@@ -19,6 +19,11 @@ links:
   - { label: "Nearby Interaction (UWB)", url: "https://developer.apple.com/documentation/nearbyinteraction" }
 updated: "2026-06"
 order: 80
+related:
+  - { to: "core-motion", as: "调用它的框架" }
+  - { to: "nearby-interaction", as: "调用它的框架" }
+  - { to: "avdepthdata-lidar", as: "调用它的框架" }
+  - { to: "arkit-realitykit", as: "上层应用" }
 ---
 
 算力之外,App 与现实世界的接口靠这组传感器。IMU 由 MEMS 加速度计与陀螺仪(常再加磁力计)组成,给出线加速度、角速度与姿态,是计步、运动识别、AR 头部追踪与电子防抖的底座——但单独使用会漂移,需要传感器融合与校准(iOS 经 Core Motion 已给出融合后的姿态)。UWB 超宽带基于 IEEE 802.15.4z,发射 >500MHz 极宽带脉冲,用飞行时间(ToF)做厘米级、抗中继攻击的安全测距与到达角定向,Apple 自 iPhone 11 起内置 U 系列芯片(现为 U2),用于精准查找、数字车钥匙与空间感知;2024 年 UWB 芯片出货已近 4.5 亿颗。dToF(直接飞行时间,即 LiDAR/dToF 一类)按单个光脉冲往返时间直接测距,用于深度图与近距 3D 重建(与本图谱 sensing 分类的 AVDepthData/LiDAR 条目相承)。三者都属端侧器件,接入分别走 Core Motion / Sensor、Nearby Interaction / UWB API,以及 ARKit / ARCore 的深度融合。

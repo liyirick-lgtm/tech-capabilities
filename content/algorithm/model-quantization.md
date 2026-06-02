@@ -21,6 +21,11 @@ links:
   - { label: "AWQ 论文", url: "https://arxiv.org/abs/2306.00978" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "llama-cpp-ggml", as: "落地运行时" }
+  - { to: "nvidia-tensorrt", as: "落地运行时" }
+  - { to: "lora-peft", as: "常配合" }
+  - { to: "qualcomm-hexagon-npu", as: "运行硬件" }
 ---
 
 大模型推理的瓶颈往往是显存与内存带宽，而非纯算力——量化正是冲着这点：把权重从 16-bit 降到 8/4-bit，模型体积和带宽需求成倍下降，单卡甚至手机就能跑起原本装不下的模型。截至 2026 年最常用的几种后训练量化（PTQ）各有定位：GGUF 是 llama.cpp/Ollama 生态的格式，提供 Q2_K 到 Q8_0 多档、支持 CPU+GPU 混合推理，端侧最普及；AWQ 用激活感知保护重要权重，在 4-bit 下的 MMLU/推理稳定性通常优于 GPTQ；GPTQ 是经典逐层误差补偿量化；FP8 则是 GPU 原生格式，质量接近 FP16、吞吐最高，在 27B+ 大模型上尤其划算（需较新 Hopper/Blackwell 类硬件）。代价是精度损失：INT4 在数学、代码、强推理任务上掉点最明显，这类负载更建议用 INT8/FP8。量化常与 KV cache 量化、蒸馏、LoRA 等叠加，是端侧落地与云端降本的第一道工序。

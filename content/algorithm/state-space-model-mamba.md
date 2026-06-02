@@ -21,6 +21,10 @@ links:
   - { label: "Jamba: Hybrid Transformer-Mamba", url: "https://arxiv.org/abs/2403.19887" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "transformer", as: "替代" }
+  - { to: "mixture-of-experts", as: "常配合" }
+  - { to: "pytorch-jax", as: "实现框架" }
 ---
 
 Transformer 强大但注意力对长度是平方级开销，序列一长，显存和算力都爆。SSM 走的是另一条路：把历史信息压进一个随时间演化的隐状态，像 RNN 一样递推，但通过结构化参数化做到可并行训练。Mamba 的关键创新是「选择性」——让状态转移随输入内容动态调整，从而在保持 O(n) 线性复杂度的同时具备类似注意力的内容感知能力；推理时还能逐 token 做到 O(1)。这让它在百万 token 级的基因组、音频、长记忆 Agent 等场景上对 Transformer 有数量级的成本优势。不过纯 SSM 在 128K 以内的常规对话与 RAG 上质量仍略逊于注意力，所以截至 2026 年落地的主流是混合架构：AI21 Jamba 把约 8 层 Mamba 夹 1 层 Transformer 并叠加 MoE，2026 年 3 月发布的 Mamba-3 也面向 GPU 云上的长上下文推理。SSM 已从研究好奇心走向「长上下文降本」的实用选项，但生态成熟度仍不及 Transformer。

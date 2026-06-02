@@ -19,6 +19,10 @@ links:
   - { label: "第三方配件空间交互", url: "https://developer.apple.com/documentation/nearbyinteraction/implementing-spatial-interactions-with-third-party-accessories" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "core-bluetooth", as: "常配合（BLE 配对）" }
+  - { to: "motion-ranging-sensors", as: "运行硬件（UWB）" }
+  - { to: "arkit-realitykit", as: "常配合（空间锚定）" }
 ---
 
 UWB 让手机不只是「连上了」，而是能知道对方「在多远、哪个方向」。典型应用包括精准查找配件、靠近自动解锁/交互、把虚拟内容锚定到真实空间，以及零售、活动场景中的近场定位。每个会话使用独立 token，结合蓝牙 LE 配对后还能支持后台测距。

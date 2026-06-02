@@ -21,6 +21,11 @@ links:
   - { label: "GitHub", url: "https://github.com/microsoft/onnxruntime" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "pytorch-jax", as: "上游框架" }
+  - { to: "qualcomm-hexagon-npu", as: "运行硬件" }
+  - { to: "litert-executorch", as: "竞品" }
+  - { to: "model-quantization", as: "常配合" }
 ---
 
 `ONNX Runtime` 的卖点是「一处导出、处处运行」：把模型转成 ONNX 标准格式后，靠可插拔的执行提供器映射到具体硬件——服务器上走 CUDA/TensorRT，Windows 走 DirectML，Intel 走 OpenVINO，苹果走 CoreML，高通走 QNN，浏览器走 WebGPU/WebNN。它跨深度学习框架（PyTorch、TensorFlow/Keras）也跨经典 ML（scikit-learn、XGBoost、LightGBM），并内置图优化与量化通道。因此既能在云端做高性能服务，也能塞进移动端或网页，是典型的「端云皆可」运行时。代价是模型须先转 ONNX，且对最前沿算子的支持偶有滞后。

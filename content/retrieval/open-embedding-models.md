@@ -22,6 +22,11 @@ links:
   - { label: "MTEB Leaderboard", url: "https://huggingface.co/spaces/mteb/leaderboard" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "cloud-embedding-api", as: "替代" }
+  - { to: "vector-database", as: "常配合" }
+  - { to: "reranker", as: "常配合" }
+  - { to: "on-device-vector-search", as: "常配合" }
 ---
 
 当数据不能出设备、调用量大到 API 计费吃不消，或需要领域微调时，开源 Embedding 是首选。`BGE-M3` 一个模型同时产出稠密、稀疏与多向量（ColBERT）表示，覆盖 100+ 语言，是开源生产标准；`Qwen3-Embedding` 系列长期占据 MTEB 多语言榜前列，8B 版本支持 32K 上下文；`E5`、`Nomic Embed` 则在轻量与开源训练数据透明度上有优势。多数模型用 Sentence-Transformers 几行代码即可加载，小尺寸版本（如 bge-small、nomic-embed-text）甚至能在端侧 CPU 上跑。

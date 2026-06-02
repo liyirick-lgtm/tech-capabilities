@@ -19,6 +19,11 @@ links:
   - { label: "InternVL GitHub", url: "https://github.com/OpenGVLab/InternVL" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "cloud-frontier-vlm", as: "竞品" }
+  - { to: "serving-engines-vllm-sglang", as: "底层引擎" }
+  - { to: "on-device-vlm-fastvlm", as: "端侧移植" }
+  - { to: "video-understanding", as: "上层应用" }
 ---
 
 开源 VLM 的第一梯队已把和闭源模型的差距压得很小。Qwen3-VL 有四个稠密档(2B/4B/8B/32B)加两个 MoE(30B-A3B / 235B-A22B),原生 256K(可扩到 1M)上下文,既能处理上百页文档也能看两小时视频;它的亮点是把「理解」延伸到「行动」——视觉编程、操作电脑/手机界面(OS World 上表现领先)。InternVL3.5 采用原生多模态预训练,在通用多模态、推理、文本、agent 任务上拿下开源最强综合成绩。两者都开放权重与许可宽松,是自托管多模态应用的首选基座;小尺寸(2B/4B/8B)还能配合 MLX-VLM 等框架在 Mac 上端侧跑。

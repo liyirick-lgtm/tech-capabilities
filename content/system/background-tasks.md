@@ -19,6 +19,10 @@ links:
   - { label: "Refreshing and maintaining your app using background tasks", url: "https://developer.apple.com/documentation/BackgroundTasks/refreshing-and-maintaining-your-app-using-background-tasks" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "widgetkit-live-activities", as: "常配合（进度展示）" }
+  - { to: "core-spotlight", as: "常配合（后台索引）" }
+  - { to: "healthkit", as: "常配合（后台同步）" }
 ---
 
 Background Tasks 框架让 App 把「何时在后台运行」交给系统托管。BGTaskScheduler 用于申请两类经典任务：短时的 App 刷新（拉取新数据）和较长的处理/维护（如数据库整理），系统会在设备充电、空闲、联网等合适时机唤醒执行。iOS 26 的重点是新增 BGContinuedProcessingTask——它必须由用户的显式动作（按钮点击、手势）发起，代表清晰的即时目标，如导出文件、上传、发布内容或更新连接的配件；任务在 App 切到后台后仍可继续完成，并通过系统 UI 展示进度、允许用户随时取消（Apple「日记」App 的后台导出即采用此 API）。所有任务标识符都必须在 Info.plist 的 BGTaskSchedulerPermittedIdentifiers 中声明，否则 submit(_:) 会抛出 notPermitted 错误。

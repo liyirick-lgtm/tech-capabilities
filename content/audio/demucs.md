@@ -19,6 +19,11 @@ links:
   - { label: "demucs-mlx(Apple Silicon)", url: "https://github.com/ssmall256/demucs-mlx/" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "musicgen", as: "常配合" }
+  - { to: "apple-coreml-mlx", as: "可运行于" }
+  - { to: "pytorch-jax", as: "底层框架" }
+  - { to: "krisp", as: "同领域" }
 ---
 
 Demucs(Deep Extractor for Music Sources)是开源音乐源分离的事实标准,把一段混音拆成人声、鼓、贝斯、其他等独立 stem,常用于制作伴奏/去人声、提取人声做翻唱、重混与采样。默认模型 htdemucs 采用 Hybrid Transformer,还有加入吉他、钢琴的 6 源版本(htdemucs_6s)和更精细但更慢的 fine-tuned 版本(htdemucs_ft)。MIT 许可可自由商用,纯本地离线运行,数据不出设备;社区已有 Rust 与 Apple Silicon(MLX)等加速实现,M 系 Mac 上可在十几秒内分离一首歌。

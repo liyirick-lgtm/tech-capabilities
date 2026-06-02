@@ -19,6 +19,11 @@ links:
   - { label: "FLUX.2-dev 权重", url: "https://huggingface.co/black-forest-labs/FLUX.2-dev" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "diffusion-model", as: "底层算法" }
+  - { to: "transformer", as: "架构基础" }
+  - { to: "draw-things", as: "端侧运行入口" }
+  - { to: "midjourney", as: "竞品" }
 ---
 
 FLUX.2 是当前最主流的开源/开放权重文生图基座之一，常作为本地 ComfyUI 工作流与商业图像管线的核心。开源 [dev] 适合追求可控、可自托管的团队，[klein] 系列体量更小可端侧运行，云端 Pro/Flex 则提供托管 API。

@@ -18,6 +18,9 @@ links:
   - { label: "定价", url: "https://www.topazlabs.com/pricing" }
 updated: "2026-06"
 order: 80
+related:
+  - { to: "real-esrgan", as: "开源替代" }
+  - { to: "diffusion-model", as: "细节生成可用" }
 ---
 
 Topaz Gigapixel 是商用超分的代表，胜在多专用模型与细节保真，且本地 GPU 运行不强制上云（故 deployment 记为 hybrid：本地为主、另有网页版）。面向专业摄影/印刷放大；若要免费可自托管则用 Real-ESRGAN，要极致细节生成可用扩散式超分。

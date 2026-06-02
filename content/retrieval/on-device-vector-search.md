@@ -21,6 +21,11 @@ links:
   - { label: "ObjectBox 向量库", url: "https://objectbox.io/vector-database-for-ondevice-ai/" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "vector-database", as: "端侧版" }
+  - { to: "open-embedding-models", as: "常配合" }
+  - { to: "opensource-local-llm", as: "常配合" }
+  - { to: "pgvector", as: "同类" }
 ---
 
 当应用要离线工作、或数据敏感到不能上云时，检索就得搬进设备。`sqlite-vec`（及商业版 SQLite-Vector）以 SQLite 扩展形式提供向量检索，跨 iOS/Android/Windows/Linux/macOS、默认仅约 30MB 内存，能把向量和业务数据放在同一个本地 db 文件里；`ObjectBox` 是为移动与 IoT 设计的端侧数据库，内置 HNSW 并支持选择性数据同步，提供 Swift/Kotlin/Flutter/C++ SDK；阿里 2026 年开源的 `Zvec` 以「向量库界的 SQLite」定位，作为库嵌入进程、无外部守护进程。配合端侧小 Embedding 模型，即可在断网手机上做完整的本地 RAG。

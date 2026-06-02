@@ -19,6 +19,9 @@ links:
   - { label: "WWDC25 · WidgetKit in iOS 26", url: "https://dev.to/arshtechpro/wwdc-2025-widgetkit-in-ios-26-a-complete-guide-to-modern-widget-development-1cjp" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "app-intents", as: "交互按钮底层" }
+  - { to: "background-tasks", as: "常配合（后台更新）" }
 ---
 
 WidgetKit 让 App 把信息以小组件形式投放到主屏、锁屏与待机模式；ActivityKit 则负责 Live Activities——可持续更新、推送的实时活动。系统会根据上下文自动渲染灵动岛（Dynamic Island）的三种形态：紧凑（compact，左右两端元素）、最小（minimal，多活动并存时）和展开（expanded，长按时），开发者只需用 SwiftUI 描述各状态 UI。iOS 17 起小组件与 Live Activities 支持交互（按钮/Toggle，背后通常由 App Intent 驱动）。iOS 26 带来统一的液态玻璃呈现系统，并通过 supplementalActivityFamilies 让 Live Activities 同步出现在 macOS 菜单栏与 CarPlay，使「实时触达」覆盖更多场景。启用需在 Info.plist 设置 Supports Live Activities 为 Yes。

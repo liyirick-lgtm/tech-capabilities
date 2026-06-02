@@ -19,6 +19,11 @@ links:
   - { label: "Tencent Hunyuan3D-2.1", url: "https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "gaussian-splatting", as: "可输出" }
+  - { to: "object-capture", as: "替代" }
+  - { to: "diffusion-model", as: "底层引擎" }
+  - { to: "flux-2", as: "常配合" }
 ---
 
 文生/图生 3D 在 2025–2026 进入实用化。Microsoft TRELLIS 以统一的结构化潜变量（SLAT）表示为核心，可同时解码为辐射场、3D 高斯与网格，模型与多数代码采用 MIT 许可，单图即可生成精细 3D 资产（TRELLIS.2 达 4B 参数）。Tencent Hunyuan3D 采用几何与纹理分离的两段式扩散 Transformer，2.5 版几何分辨率升到 1024、纹理保真度提升，开源权重可本地运行（最低约 6GB 显存），但在欧盟/英国/韩国等地区受许可限制。云端则有 Meshy、Tripo、Rodin 等成熟 API，覆盖 PBR 贴图、拓扑控制与多格式导出，适合接入游戏与电商素材管线。

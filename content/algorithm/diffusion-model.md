@@ -21,6 +21,11 @@ links:
   - { label: "Stable Diffusion 3 (rectified flow)", url: "https://arxiv.org/abs/2403.03206" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "transformer", as: "底层架构" }
+  - { to: "flux-2", as: "上层应用" }
+  - { to: "google-veo", as: "上层应用" }
+  - { to: "draw-things", as: "端侧运行" }
 ---
 
 扩散模型把生成拆成一条「加噪—去噪」的轨迹：前向过程把真实图像一步步加高斯噪声直到变成纯噪声，模型学习的是反向的去噪函数；采样时从随机噪声出发，迭代去噪逐渐显影出清晰内容。相比 GAN，它训练更稳、覆盖度更好、可控性更强，因此成为 Stable Diffusion、FLUX、Sora、Veo 等文生图与文生视频的底层方法，也广泛用于超分、修复与编辑。架构上 2024 年起出现关键转向——主干从卷积 U-Net 换成 Transformer（DiT），Stable Diffusion 3 等改用 rectified flow / flow matching，把训练目标简化为学习「噪声到数据」的直线流，既稳定又能把原本几十上百步的采样压到极少步。它最大的痛点是采样的迭代成本，故常配合一致性模型、少步蒸馏等手段加速。截至 2026 年，扩散（含 flow matching 变体）仍是高保真视觉与音频生成的主导范式。

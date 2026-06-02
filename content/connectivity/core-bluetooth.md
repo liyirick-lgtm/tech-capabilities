@@ -19,6 +19,10 @@ links:
   - { label: "Apple Bluetooth 总览", url: "https://developer.apple.com/bluetooth/" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "nearby-interaction", as: "常配合（UWB 配对）" }
+  - { to: "matter-homekit", as: "上层应用（配网）" }
+  - { to: "healthkit", as: "常配合（健康配件）" }
 ---
 
 几乎所有「手机连配件」的场景背后都是 Core Bluetooth：心率带、智能手表、传感器、智能灯、电子价签等。开发者用 GATT 的服务（Service）与特征（Characteristic）描述设备数据，再做读取、写入与订阅。新机型可结合 AccessorySetupKit 提供更顺滑的系统级配对体验。

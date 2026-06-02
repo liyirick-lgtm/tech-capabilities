@@ -18,6 +18,11 @@ links:
   - { label: "定价", url: "https://suno.com/pricing" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "udio", as: "竞品" }
+  - { to: "musicgen", as: "开源替代" }
+  - { to: "stable-audio-open", as: "同领域" }
+  - { to: "vibevoice-dia2", as: "常配合" }
 ---
 
 Suno 是当前消费级 AI 音乐生成的代表,把「想到一段旋律」到「听到一首完整歌」的距离压到一句提示词。2026 年的 v5/v5.5 在音质与人声自然度上接近录音室水准,并通过 Voices(用自己的嗓音演唱)、Custom Models(用自有曲库训练专属风格)和 Suno Studio(分轨、EQ、时间标记)把工具从「生成器」扩展为「制作套件」。适合内容创作、demo 试听、短视频配乐;对需要精确可控、清晰版权链路的专业制作仍有取舍。

@@ -19,6 +19,10 @@ links:
   - { label: "TPU7x 文档", url: "https://docs.cloud.google.com/tpu/docs/tpu7x" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "pytorch-jax", as: "调用它的框架" }
+  - { to: "nvidia-blackwell-datacenter-gpu", as: "竞品" }
+  - { to: "mixture-of-experts", as: "支撑模型" }
 ---
 
 TPU 是 Google 用专用 ASIC 自建算力、绕开 GPU 供给约束的路线。第七代 Ironwood(TPU7x)首次"从头为推理设计":单芯片 192GB HBM3e(约为上代 Trillium 的 6 倍)、约 7.4TB/s 带宽、约 4.6 PFLOPS 稠密 FP8——单芯片即可在 BF16 下放下 70B 模型,数颗即可服务 405B 级模型。规模上可堆到 9216 芯片的 superpod,经 ICI 高速互联共享约 1.77PB HBM。与 GPU 最大的不同是它不散售:只能在 Google Cloud 上以 TPU VM 形式租用,软件栈以 JAX / TensorFlow 为主,PyTorch 需经 PyTorch/XLA,迁移存在一定锁定成本。

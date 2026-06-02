@@ -19,6 +19,11 @@ links:
   - { label: "Cerebras CS-3", url: "https://www.cerebras.ai/blog/cerebras-cs-3-vs-groq-lpu" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "nvidia-blackwell-datacenter-gpu", as: "替代" }
+  - { to: "google-tpu", as: "竞品" }
+  - { to: "inference-optimization", as: "支撑场景" }
+  - { to: "cloud-frontier-llm", as: "服务对象" }
 ---
 
 当瓶颈从"能不能跑"变成"够不够快",推理专用芯片就有了空间。Groq 的 LPU 用确定性数据流架构换取稳定的低延迟,单模型可达上千 token/s、首字延迟 <100ms,在交互式与 agent 工作流里体验明显优于通用 GPU。Cerebras 走另一条极端——晶圆级整片 WSE-3(4 万亿晶体管、90 万核、44GB 片上 SRAM、约 21PB/s 内存带宽),把权重直接放在贴近计算的 SRAM 里做流水并行,Llama 3.1-405B 突破 1000 token/s。两者都偏推理而非训练,硬件不对外散售,App 侧基本以云 API(多兼容 OpenAI 风格)接入,把"速度"当成一种可采购的能力。

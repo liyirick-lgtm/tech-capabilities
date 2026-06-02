@@ -16,6 +16,11 @@ links:
   - { label: "MMMU 多学科多模态评测", url: "https://mmmu-benchmark.github.io/" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "cloud-frontier-llm", as: "同源" }
+  - { to: "qwen-vl-internvl", as: "开源替代" }
+  - { to: "video-understanding", as: "上层应用" }
+  - { to: "document-understanding", as: "上层应用" }
 ---
 
 云端旗舰多模态模型是「看懂复杂输入」的天花板:当任务需要把一张图、几十页 PDF 或一段视频和世界知识结合起来推理时,端侧小模型力不从心,调用 GPT-5.1、Claude、Gemini 3 这类服务器规模模型最稳。三家路线略有差异:Gemini 从底层做原生图文联合训练,空间推理(图表、地图、几何)见长;Claude 在可靠性与长上下文 agent 场景突出;GPT 系列通用看图能力强、与推理引擎整合紧密。常与端侧 VLM 分工:端侧做隐私敏感的轻任务,云端做重任务。

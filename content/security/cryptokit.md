@@ -18,6 +18,10 @@ links:
   - { label: "后量子加密说明", url: "https://support.apple.com/guide/security/secc7c82e533/web" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "secure-enclave", as: "运行硬件" }
+  - { to: "passkeys", as: "上层应用" }
+  - { to: "app-attest", as: "常配合" }
 ---
 
 后量子能力自 iOS/iPadOS/macOS/tvOS/watchOS 26 全平台落地，系统侧已用于 iMessage、VPN 与 TLS；CryptoKit 把同样的抗量子原语开放给第三方 App，覆盖端到端加密通信、文档签名、更新校验等需要直接访问 KEM/签名原语的场景。2026 年 5 月 Apple 还在 GitHub 公开了相关后量子加密实现代码。

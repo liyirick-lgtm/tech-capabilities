@@ -18,6 +18,11 @@ links:
   - { label: "开发者文档", url: "https://developer.apple.com/apple-intelligence/" }
 updated: "2026-06"
 order: 90
+related:
+  - { to: "apple-foundation-models", as: "同属 Apple Intelligence" }
+  - { to: "apple-coreml-mlx", as: "底层引擎" }
+  - { to: "apple-neural-engine", as: "运行硬件" }
+  - { to: "draw-things", as: "端侧出图替代" }
 ---
 
 Image Playground 与 Genmoji 是「系统原生 + 端侧」生成的代表：本地模型、隐私优先、无需联网与付费，并以系统框架开放给第三方 App。画质不及云端旗舰，但胜在零成本、即时与隐私；iOS 27 计划提升画质并支持接入第三方模型。

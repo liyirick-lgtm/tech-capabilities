@@ -19,6 +19,11 @@ links:
   - { label: "WWDC25 · Explore new advances in App Intents", url: "https://developer.apple.com/videos/play/wwdc2025/275/" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "sirikit", as: "演进自" }
+  - { to: "app-shortcuts", as: "上层暴露" }
+  - { to: "core-spotlight", as: "常配合" }
+  - { to: "apple-foundation-models", as: "被智能调用" }
 ---
 
 App Intents 是 iOS 16 引入、用以取代旧 SiriKit Intents 的现代框架：你只需用纯 Swift 把 App 的动作（intent）、数据对象（entity）和参数声明清楚，系统就能在 Siri、Spotlight 搜索、主屏小组件、快捷指令、操作按钮等多处自动复用，无需为每个入口单独适配。iOS 26 起的重点是「agentic」方向——App Intent Domains 把功能归类（消息、文档、媒体、财务、生产力等），配合屏上实体（on-screen entities，视图遵循 Transferable 协议），让 Apple Intelligence 与 ChatGPT 能直接理解并组合调用 App 的能力。对开发者而言，先把动作建模为 App Intents，是接入系统级智能的前提。

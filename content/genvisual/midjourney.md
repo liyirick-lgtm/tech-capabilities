@@ -17,6 +17,10 @@ links:
   - { label: "Midjourney 官网", url: "https://www.midjourney.com/" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "diffusion-model", as: "底层算法" }
+  - { to: "flux-2", as: "竞品（可自托管）" }
+  - { to: "nano-banana-pro", as: "竞品" }
 ---
 
 Midjourney 卖的是「开箱即好看」的审美与稳定性，适合概念图、营销视觉与风格探索。相比 FLUX 这类可自托管、可工作流深度控制的方案，它更偏成品导向；2026 年的 v8.x 在分辨率、速度、文字与内置视频上持续补齐短板。

@@ -18,6 +18,11 @@ links:
   - { label: "开发者 SDK", url: "https://krisp.ai/developers/" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "demucs", as: "同领域" }
+  - { to: "cloud-asr-api", as: "常配合" }
+  - { to: "webrtc", as: "常配合" }
+  - { to: "qualcomm-hexagon-npu", as: "可运行于" }
 ---
 
 Krisp 是实时语音降噪与人声隔离的商用标杆。它在本地设备上做 AI 处理(默认不把音频上云),既能去除键盘、风噪、交通等背景噪声,也能做「人声隔离」——滤掉旁边人说话的串音,只把主讲人送进 VAD/STT 管线,减少语音 Agent 的误打断。除了面向终端用户的会议降噪 App,Krisp 更核心的是 AI Voice SDK,覆盖 Windows/Mac/Linux/Web(JS/WASM)/iOS/Android;2026 年推出的 VIVA(Voice Isolation for Voice Agents)把处理延迟压到 20ms 以下,适配实时对话式 AI。

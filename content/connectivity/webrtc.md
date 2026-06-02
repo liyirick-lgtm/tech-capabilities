@@ -19,6 +19,10 @@ links:
   - { label: "W3C WebRTC 规范", url: "https://www.w3.org/TR/webrtc/" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "network-framework", as: "底层传输" }
+  - { to: "krisp", as: "常配合（降噪）" }
+  - { to: "cloud-asr-api", as: "常配合（实时转写）" }
 ---
 
 WebRTC 由 Apple、Google、Microsoft、Mozilla 等共同支持，已成为 W3C 推荐标准，2026 年在各主流浏览器（覆盖率 85%+）与原生端广泛部署。它解决了实时音视频与数据传输中最棘手的网络穿透、加密与抗丢包问题。实际产品中通常配合信令服务与 SFU 媒体服务器以支持多人会话、录制与大规模分发，并出现了 WHIP 等更标准化的推流接入方式。

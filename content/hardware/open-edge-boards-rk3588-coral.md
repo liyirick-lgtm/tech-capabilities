@@ -19,6 +19,11 @@ links:
   - { label: "RK3588 (Rockchip)", url: "https://www.rock-chips.com/" }
 updated: "2026-06"
 order: 70
+related:
+  - { to: "litert-executorch", as: "调用它的运行时" }
+  - { to: "nvidia-jetson", as: "竞品" }
+  - { to: "model-quantization", as: "依赖" }
+  - { to: "onnx-runtime", as: "常配合" }
 ---
 
 当不需要 Jetson 那么强、但要把推理放到端侧或边缘时,低成本开放板是务实选择。Rockchip RK3588 是 8nm 八核 SoC(4×Cortex-A76 + 4×A55)配 Mali-G610 GPU 与 6 TOPS NPU,支持 INT4/INT8/INT16/FP16/BF16 与 8K 编解码;它本身是商用芯片,但围绕它有大量开放开发板(YY3588、ArmSoM、Orange Pi 等)与开源 Linux/Android 驱动,部署既可端侧也可做边缘盒子,故标 hybrid。Google Coral Edge TPU 走外挂路线:USB / M.2 / SoM 形态,4 TOPS、约 2W,跑量化后的 TensorFlow Lite 模型,MobileNet v2 近 400fps,可给树莓派等任意主机加一块推理协处理器。两者算力都远低于 Jetson,模型需量化转换(RK3588 用 RKNN-Toolkit,Coral 用 Edge TPU Compiler 编译 int8 TFLite)。

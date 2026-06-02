@@ -18,6 +18,11 @@ links:
   - { label: "RealityKit 文档", url: "https://developer.apple.com/documentation/realitykit/" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "avdepthdata-lidar", as: "数据上游" }
+  - { to: "object-capture", as: "常配合" }
+  - { to: "roomplan", as: "常配合" }
+  - { to: "object-pose-trajectory", as: "常配合" }
 ---
 
 ARKit / RealityKit 是 Apple 空间计算的核心底座。截至 visionOS 26（WWDC 2025）新增共享世界锚点（多用户同房间内对齐内容）、90Hz 手部追踪、RealityKit 环境遮挡（虚拟物体被真实静态物遮挡）、`MeshInstancesComponent` 高效批量绘制，以及 SwiftUI 直接内嵌与操作 3D 实体、手势直挂实体等能力。适合做 AR 试穿/试摆、测量、空间游戏与协作类 App。

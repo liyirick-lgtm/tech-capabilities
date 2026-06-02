@@ -19,6 +19,10 @@ links:
   - { label: "ncnn-vulkan 实现", url: "https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan" }
 updated: "2026-06"
 order: 70
+related:
+  - { to: "topaz-gigapixel", as: "商用替代" }
+  - { to: "onnx-runtime", as: "可运行 runtime" }
+  - { to: "draw-things", as: "常配合工作流" }
 ---
 
 Real-ESRGAN 是开源超分放大的事实标准，轻量、能离线、可商用，广泛内嵌在各类放大工具与本地工作流里。追求极致细节可转向扩散式超分（SD/FLUX upscaler）或商用的 Topaz Gigapixel，但 Real-ESRGAN 在「快、稳、免费」这一档仍是首选。

@@ -18,4 +18,24 @@ order: 20
 related:
   - { to: "openai-whisper", as: "端侧移植自" }
   - { to: "apple-neural-engine", as: "可跑在" }
+  - { to: "apple-coreml-mlx", as: "底层运行时" }
+  - { to: "llama-cpp-ggml", as: "同源项目" }
 ---
+
+## 一句话
+
+把 OpenAI Whisper 移植到 C/C++(`whisper.cpp`)与 Apple 原生(WhisperKit),实现端侧离线转录,数据不出设备。
+
+## 适用场景
+
+需要离线、隐私优先、零云成本的转录:本地笔记 App、车机、嵌入式设备。`whisper.cpp` 跨平台(CPU / CUDA / Metal / WebAssembly),WhisperKit 则封装为 Apple 平台的 Swift/Core ML 方案,Apple Silicon 上性能尤佳。
+
+## 对比要点
+
+- 与 `apple-speech` 的差异:Whisper 系语种覆盖更广(99+)、可换模型尺寸,但系统集成度不如 Apple 原生框架。
+- `whisper.cpp` 与 `llama.cpp` 出自同一作者,共享 ggml 张量库;模型走 GGUF 量化可显著降低内存。
+- 实时性取决于模型尺寸:tiny/base 可近实时,large 对内存与算力要求高。
+
+```bash
+./main -m models/ggml-base.bin -f audio.wav
+```

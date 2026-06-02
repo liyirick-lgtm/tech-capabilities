@@ -23,6 +23,11 @@ links:
   - { label: "Pinecone", url: "https://www.pinecone.io/" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "pgvector", as: "竞品" }
+  - { to: "open-embedding-models", as: "常配合" }
+  - { to: "rag-frameworks", as: "上层应用" }
+  - { to: "on-device-vector-search", as: "端侧版" }
 ---
 
 向量库决定检索的速度、召回与成本上限。`Qdrant` 用 Rust 编写，HNSW 索引「过滤感知」，在「相似且满足分类/价格条件」这类带过滤查询上仍保持单位毫秒，内置 1.5/2-bit 二值量化最高 24× 压缩，本地 Docker 与托管 Cloud 同一份二进制；`Milvus` 面向十亿级分布式；`Weaviate` 主打向量+关键词混合检索；`Chroma` 适合原型与小规模。常见路径是用 Chroma 起步、生产迁到 Qdrant 或 Pinecone。若已有 Postgres，可优先评估 pgvector 以省一套基础设施。

@@ -21,6 +21,11 @@ links:
   - { label: "Voyage AI", url: "https://docs.voyageai.com/" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "open-embedding-models", as: "替代" }
+  - { to: "vector-database", as: "常配合" }
+  - { to: "rag-frameworks", as: "上层应用" }
+  - { to: "reranker", as: "常配合" }
 ---
 
 云端 Embedding 是检索栈最省心的起点。`gemini-embedding-001` 于 2025 年 GA，默认 3072 维、支持 100+ 语言并用 Matryoshka Representation Learning 允许无损截断到 1536/768 维；OpenAI `text-embedding-3` 系列是英语任务的稳妥默认；Voyage、Cohere Embed v4 则主打检索优化与多模态。选型注意：一旦上线某模型，库内全部向量都绑定它，换模型意味着重算与回填，建议先用小样本对比 MTEB 上的检索分数再定。

@@ -19,6 +19,11 @@ links:
   - { label: "Llama 3.2 Vision (HF)", url: "https://huggingface.co/meta-llama/Llama-3.2-11B-Vision" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "qwen-vl-internvl", as: "同类" }
+  - { to: "on-device-vlm-fastvlm", as: "端侧移植" }
+  - { to: "transformer", as: "底层架构" }
+  - { to: "pytorch-jax", as: "底层引擎" }
 ---
 
 如果说 Qwen3-VL / InternVL 是「拿来即用的最强开源」,LLaVA 与 Llama Vision 更偏「可改可究的开放基座」。LLaVA 最早确立了「视觉编码器 + 投影层 + LLM」的轻量范式并把它做成完全开源的训练框架;LLaVA-OneVision-2 进一步在单一 8B 架构里统一图像、长视频与空间理解,并把数据、编码器、训练配方、checkpoint、日志端到端放出来,是学术与可复现研究的首选。Llama 3.2 Vision 提供 11B/90B 两档图像推理模型,生态(NIM、Ollama)成熟、便于落地,但使用 Llama 社区许可、需留意商用条款。两类都适合需要自己微调、对训练透明度有要求的团队。

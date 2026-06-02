@@ -21,6 +21,11 @@ links:
   - { label: "Mixture of Experts 综述", url: "https://arxiv.org/abs/2507.11181" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "transformer", as: "演进自" }
+  - { to: "serving-engines-vllm-sglang", as: "服务引擎" }
+  - { to: "opensource-local-llm", as: "上层模型" }
+  - { to: "google-tpu", as: "运行硬件" }
 ---
 
 MoE 的核心洞察是：模型容量与单次推理算力可以解耦。做法是把稠密 Transformer 的某个前馈块复制成 N 个「专家」，由一个轻量路由器为每个 token 选 top-k（如 8 选 2、256 选 8）个专家参与计算，其余专家这一步不动。于是总参数能堆到几千亿甚至上万亿，但每个 token 的实际 FLOPs 只对应被激活的那几个专家——同等推理成本能换到明显更高的质量，这正是 2025–2026 年 DeepSeek-V3/R1、Llama 4、Qwen3、Kimi K2、gpt-oss 等纷纷采用 MoE 的原因。代价也很现实：所有专家都要常驻显存（参数大但激活少），路由容易不均衡、需要负载均衡损失与专家并行（Expert Parallel）等工程手段，vLLM、SGLang 等已针对 DeepSeek 式宽 EP 做了专门优化。它常与稀疏激活、量化、长上下文等技术叠加，是大模型「又大又省」的关键架构。

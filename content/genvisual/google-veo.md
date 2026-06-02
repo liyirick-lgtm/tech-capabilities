@@ -18,6 +18,11 @@ links:
   - { label: "Veo 3.1 公告", url: "https://developers.googleblog.com/introducing-veo-3-1-and-new-creative-capabilities-in-the-gemini-api/" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "diffusion-model", as: "底层算法" }
+  - { to: "kling", as: "竞品" }
+  - { to: "wan", as: "开源替代" }
+  - { to: "google-tpu", as: "训练/推理硬件" }
 ---
 
 Veo 是 2026 年云端文生视频第一梯队，最大差异化是原生生成与画面同步的音频（对白+音效+口型），加上 API 化与首尾帧/续接能力，适合广告片、分镜预演与短片创作。OpenAI Sora 2 同属顶级阵营，但其消费 App 已于 2026-04 下线、API 计划于 2026-09 退役，故此处以仍在迭代的 Veo 为代表。

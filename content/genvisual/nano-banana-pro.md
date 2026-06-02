@@ -18,6 +18,11 @@ links:
   - { label: "Gemini API 图像文档", url: "https://ai.google.dev/gemini-api/docs/image-generation" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "cloud-frontier-vlm", as: "基于 Gemini 多模态" }
+  - { to: "diffusion-model", as: "底层算法" }
+  - { to: "midjourney", as: "竞品" }
+  - { to: "flux-2", as: "开源替代" }
 ---
 
 Nano Banana Pro（Gemini 3 Pro Image）是 2026 年云端文生图/图像编辑的代表。相较纯生成模型，它把「会思考」的 LLM 接到图像上，文字、图表与多语言场景表现突出，是设计稿、信息图与对话式图像编辑的首选之一。更快的 Nano Banana 2 正在 Gemini App 内逐步替换。

@@ -18,6 +18,11 @@ links:
   - { label: "工程博客", url: "https://engineering.drawthings.ai/" }
 updated: "2026-06"
 order: 100
+related:
+  - { to: "apple-coreml-mlx", as: "底层引擎" }
+  - { to: "flux-2", as: "可运行模型" }
+  - { to: "wan", as: "可运行图生视频" }
+  - { to: "lora-peft", as: "端侧微调用到" }
 ---
 
 Draw Things 是「开源模型 + 端侧运行」的代表入口：把 Stable Diffusion / SDXL / FLUX 乃至本地图生视频搬到 iPhone、iPad、Mac 上离线跑，还能端侧微调 LoRA。相比 Apple 系统原生的 Image Playground，它牺牲了系统集成度，换来模型自由与可控性，适合想在端侧深度折腾的创作者。

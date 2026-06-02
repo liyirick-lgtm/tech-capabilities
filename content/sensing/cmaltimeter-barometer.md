@@ -18,6 +18,10 @@ links:
   - { label: "CMAltimeter 文档", url: "https://developer.apple.com/documentation/coremotion/cmaltimeter" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "core-motion", as: "底层引擎" }
+  - { to: "core-location", as: "常配合" }
+  - { to: "healthkit", as: "数据上游" }
 ---
 
 CMAltimeter 把设备内置气压计的数据暴露给 App：startRelativeAltitudeUpdates 返回实时大气压(kPa)与相对海拔变化(自开始采集起的累积高度差),较新机型可读绝对海拔。它是 Apple Watch 计算「爬楼层数」、登山/越野记录高度曲线、以及为定位与 AR 提供 Z 轴高度线索的基础。注意相对海拔会随天气气压漂移，长时间使用需结合 GPS 或已知基准校准;磁力计(磁场方向)同样可经 Core Motion 读取，常配合做朝向估计。

@@ -19,6 +19,11 @@ links:
   - { label: "ARKit sceneDepth", url: "https://developer.apple.com/documentation/arkit/arframe/scenedepth" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "arkit-realitykit", as: "常配合" }
+  - { to: "roomplan", as: "上层应用" }
+  - { to: "object-capture", as: "互补" }
+  - { to: "motion-ranging-sensors", as: "运行硬件" }
 ---
 
 深度数据有两条获取路径：相机管线侧用 AVCaptureDepthDataOutput 实时流式取深度，或从 AVCapturePhotoOutput 拿到随照片附带的 AVDepthData(数据可能来自双摄视差或 LiDAR);AR 侧用 ARKit 的 sceneDepth，逐帧给出 LiDAR 扫描的场景深度图(每像素编码到现实点的距离)与置信度。深度图默认开启滤波(平滑、补洞)以改善观感，但计算机视觉任务应把 AVCaptureDepthDataOutput 的 isFilteringEnabled 关掉，保留原始未滤波值。LiDAR 让逐像素深度与点云重建在中近距室内尤其稳健。

@@ -16,6 +16,10 @@ platforms: [iOS, macOS, iPadOS, watchOS]
 repo: "https://developer.apple.com/documentation/localauthentication"
 updated: "2026-06"
 order: 20
+related:
+  - { to: "secure-enclave", as: "底层硬件（比对在此）" }
+  - { to: "passkeys", as: "常配合（授权签名）" }
+  - { to: "face-landmark-detection", as: "同类（人脸）" }
 ---
 
 biometryType 枚举给出设备支持哪种生物识别（none / touchID / faceID / opticID）。生物特征模板与比对都封装在 Secure Enclave，框架只暴露「在场验证」的结果。截至 2026 年实现思路与早期版本保持一致，是几乎所有需要本地授权场景的标准入口。

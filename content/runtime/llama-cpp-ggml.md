@@ -21,6 +21,11 @@ links:
   - { label: "GGUF 格式说明", url: "https://huggingface.co/docs/hub/en/gguf-llamacpp" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "model-quantization", as: "底层方法" }
+  - { to: "opensource-local-llm", as: "运行模型" }
+  - { to: "ollama", as: "上层封装" }
+  - { to: "apple-coreml-mlx", as: "竞品" }
 ---
 
 `llama.cpp` 把大模型推理压进一份可移植的 C/C++ 实现，靠 `ggml` 张量库与 GGUF 量化格式，让原本要数据中心 GPU 才跑得动的模型在笔记本甚至手机上离线运行。它的硬件后端在 2026 年已统一收敛到 Apple Metal、NVIDIA CUDA 与 Vulkan，跨平台编译比过去简单得多。绝大多数面向终端用户的本地推理工具——Ollama、LM Studio——底层都是它；GGUF 也取代了 GGML/GPTQ/AWQ 等碎片格式，成为端侧权重分发的通用容器。需注意其模型文件解析器历史上出过整数溢出类安全问题，加载不可信 GGUF 文件需谨慎。

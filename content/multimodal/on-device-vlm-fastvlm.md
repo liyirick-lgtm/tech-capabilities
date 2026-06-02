@@ -19,6 +19,11 @@ links:
   - { label: "FastVLM GitHub", url: "https://github.com/apple/ml-fastvlm" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "apple-coreml-mlx", as: "底层引擎" }
+  - { to: "qwen-vl-internvl", as: "端侧移植自" }
+  - { to: "apple-neural-engine", as: "运行硬件" }
+  - { to: "cloud-frontier-vlm", as: "端云分工" }
 ---
 
 端侧 VLM 把「看懂图」搬到设备本地,核心价值是延迟、离线与隐私:图像不上传、首 token 几乎即时,适合相机实时取景理解、辅助功能、AR 等场景。FastVLM 的关键是 FastViTHD 视觉编码器——为高分辨率图像设计、输出更少视觉 token,从而大幅压缩编码耗时,最小档在 TTFT 上比 LLaVA-OneVision-0.5B 快约 85 倍且视觉编码器小 3.4 倍,并附带基于 MLX 的 iOS/macOS demo。MLX-VLM 则是 Apple Silicon 上的通用入口,能直接拉起 Qwen3-VL、Gemma、LLaVA 等小尺寸 VLM 做本地推理与微调,与开源 VLM 条目里的小档模型形成互补。

@@ -21,6 +21,11 @@ links:
   - { label: "Cohere Rerank", url: "https://cohere.com/rerank" }
 updated: "2026-06"
 order: 80
+related:
+  - { to: "open-embedding-models", as: "常配合" }
+  - { to: "vector-database", as: "下游精排" }
+  - { to: "rag-frameworks", as: "上层应用" }
+  - { to: "cloud-embedding-api", as: "常配合" }
 ---
 
 向量召回快但不够准——双塔 Embedding 把查询与文档分开编码，难以捕捉细粒度匹配。Reranker 用 cross-encoder 把「查询-文档」拼在一起联合打分，相关性判断显著更准，代价是逐对推理较慢，所以只对召回的 top-k（如 50 条）重排出最终 top-10。开源侧 `bge-reranker-v2-m3` 以 Apache-2.0 支持 100+ 语言，准确率与 Cohere Rerank v3.5 接近且二者都明显优于纯向量检索；托管侧 Cohere Rerank、Voyage rerank 提供 SLA 与免运维。把它加进现有 RAG 通常是性价比最高的一次准确率升级。

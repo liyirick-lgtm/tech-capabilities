@@ -18,6 +18,11 @@ links:
   - { label: "Apple Platform Security", url: "https://support.apple.com/guide/security/welcome/web" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "cryptokit", as: "上层框架" }
+  - { to: "passkeys", as: "信任根支撑" }
+  - { to: "local-authentication", as: "信任根支撑" }
+  - { to: "private-cloud-compute", as: "架构被复用" }
 ---
 
 Apple 全部设备安全能力的硬件信任根。自 2020 年起 A13/M 系列等芯片陆续通过 FIPS 140-3（含物理安全 Level 3）验证。开机时 Boot ROM 为内存保护引擎生成随机临时密钥，写入专用内存区时用 AES（Mac XEX 模式）加密并计算 CMAC 校验。Private Cloud Compute 的服务器也复用了同一套 Secure Enclave 架构。

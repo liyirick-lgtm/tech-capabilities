@@ -19,6 +19,11 @@ links:
   - { label: "Radiance Fields 介绍", url: "https://radiancefields.com/platforms/nerfstudio" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "gaussian-splatting", as: "集成" }
+  - { to: "object-capture", as: "同类" }
+  - { to: "pytorch-jax", as: "底层引擎" }
+  - { to: "nvidia-blackwell-datacenter-gpu", as: "运行硬件" }
 ---
 
 Nerfstudio 把碎片化的辐射场研究方法收敛到一套可复用框架里，既支持经典 NeRF，也支持 3D 高斯泼溅（通过内置 gsplat 库实现 60+ FPS 实时渲染、分钟级训练）。截至 2026 年，社区普遍更偏向高斯泼溅路线（训练更快、可实时渲染、更易编辑），但 NeRF 在隐式表达、机器人感知/建图、特效等场景仍有价值。Nerfstudio 的统一接口便于横向比较与快速试不同方法，是做自定义 3D 重建管线的常用起点。

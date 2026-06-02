@@ -21,6 +21,11 @@ links:
   - { label: "模型库", url: "https://ollama.com/library" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "llama-cpp-ggml", as: "底层引擎" }
+  - { to: "apple-coreml-mlx", as: "底层引擎" }
+  - { to: "opensource-local-llm", as: "运行模型" }
+  - { to: "model-context-protocol", as: "常配合" }
 ---
 
 `Ollama` 把「在本地跑开源模型」从一堆编译参数与量化抉择，简化成 `ollama run llama4` 这一行命令。它在 llama.cpp 之上（Apple Silicon 上已切到 MLX 后端，处理与生成速度显著提升）补齐了模型库、版本管理、REST 服务与 OpenAI/Anthropic 双兼容 API——后者意味着可以用 Claude Code、Codex 这类工具直连本地开源模型。2026 年它进一步加入多模态、Web 搜索与 Windows ARM64 原生构建，并通过 `ollama launch` 一键对接各类编码代理。对追求极致控制的用户它略显「黑箱」，但作为本地优先应用的运行时底座，开箱即用是它最大的价值。

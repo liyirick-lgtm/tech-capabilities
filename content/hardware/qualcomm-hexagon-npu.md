@@ -19,6 +19,11 @@ links:
   - { label: "Qualcomm AI Engine", url: "https://www.qualcomm.com/processors/ai-engine" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "onnx-runtime", as: "调用它的运行时" }
+  - { to: "litert-executorch", as: "调用它的运行时" }
+  - { to: "apple-neural-engine", as: "竞品" }
+  - { to: "model-quantization", as: "依赖" }
 ---
 
 Hexagon 是骁龙阵营对标 Apple ANE 的端侧 NPU。架构上把标量、向量、张量三类加速器与大共享内存绑在一起，靠"微瓦片推理"同时跑多层、消除几乎所有中间内存读写，换取能效。移动侧最新为 Snapdragon 8 Elite Gen 5，AI PC 侧 Snapdragon X2 Elite 的 Hexagon NPU 6 达约 80 TOPS(较上代 X 的 45 TOPS 大幅提升)。接入路径分两套：Android 用 NNAPI 或高通自家 QNN/SNPE，Windows on Arm 用 ONNX Runtime / LiteRT / Windows ML 把模型委派到 NPU。

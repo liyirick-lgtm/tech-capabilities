@@ -21,6 +21,11 @@ links:
   - { label: "Transformer Explainer", url: "https://poloclub.github.io/transformer-explainer/" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "state-space-model-mamba", as: "替代/混合" }
+  - { to: "mixture-of-experts", as: "演进形态" }
+  - { to: "inference-optimization", as: "被优化" }
+  - { to: "pytorch-jax", as: "实现框架" }
 ---
 
 Transformer 把语言/序列建模从「逐步循环」改为「一次看全序列」：自注意力让每个位置直接计算与其它所有位置的相关性，因而能并行训练、吃下海量数据，并学到 RNN/LSTM 难以捕捉的长程依赖。一个 token 生成三组向量 Query/Key/Value，注意力分数是 Q 与 K 的点积，匹配越高就越多地汇入对方的 V。这套机制配合残差、LayerNorm 与前馈层堆叠，几乎撑起了 2018 年以来的全部生成式 AI——从 GPT 系列、Llama、Qwen 到 Claude、Gemini，再到把扩散主干换成 Transformer 的 DiT、Stable Diffusion 3。它最大的代价是注意力对序列长度的 O(n²) 复杂度，长上下文时显存与算力陡增，催生了 FlashAttention、KV cache、稀疏/线性注意力以及 Mamba/SSM 等优化与替代；但截至 2026，主流仍是「Transformer 为主、混合少量 SSM 层」的格局。

@@ -19,6 +19,10 @@ links:
   - { label: "App Intents", url: "https://developer.apple.com/documentation/appintents" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "app-intents", as: "被取代为" }
+  - { to: "app-shortcuts", as: "常配合" }
+  - { to: "apple-foundation-models", as: "Siri 重构底座" }
 ---
 
 SiriKit 是 Apple 早期（iOS 10 起）的 Siri 接入方案，采用「领域（domain）」模型：App 只能在 Apple 预定义的类别（如消息、出行、支付、媒体播放、锻炼等）内声明意图来响应语音。自 iOS 15 起部分领域已被废弃，调用对应旧 API 时 Siri 会直接回复无法处理。如今的官方取向很明确：若你的功能不落在仍受支持的 SiriKit 专属领域内，应改用 iOS 16 引入、用以取代 SiriKit Intents 的 App Intents 框架。在 Apple Intelligence 时代，Siri 本身正被重构为基于大语言模型、可能以独立 App 形态出现，并通过 App Intents（及 App Intent Domains）直接组合调用各 App 能力——SiriKit 的角色因此持续收窄，主要保留给少数有专属领域的历史场景。

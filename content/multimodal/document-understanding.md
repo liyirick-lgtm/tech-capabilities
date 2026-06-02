@@ -19,6 +19,11 @@ links:
   - { label: "OCR in the Era of LLMs (清单)", url: "https://github.com/Yuliang-Liu/AWESOME-OCR-LLM" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "recognize-documents", as: "替代" }
+  - { to: "qwen-vl-internvl", as: "底层引擎" }
+  - { to: "rag-frameworks", as: "上层应用" }
+  - { to: "recognize-text", as: "替代" }
 ---
 
 文档理解是多模态里最落地的子领域:目标是把「图片形态的文档」变成机器可用的结构化数据。趋势是从 Donut/Nougat 这类 OCR-free 文本识别,走向端到端 VLM 版面解析——一次前向同时输出文字、版面框与阅读顺序/关系,取代「检测+识别+后处理」的模块化管线。dots.ocr 用仅 1.7B 的小模型在 OLMoOCR benchmark 拿到 79.1,超过 MonkeyOCR-Pro-3B,在多栏页和老扫描件上甚至胜过 GPT-4o、Gemini Flash 2;olmOCR 2 则把大规模 SFT 与 RL 结合提升保真度。需要更强语义推理时,也可直接把 PDF 喂给云端旗舰 VLM,但自托管小模型在成本、隐私和批量吞吐上更划算。

@@ -19,6 +19,10 @@ links:
   - { label: "Apple M5 发布", url: "https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "apple-coreml-mlx", as: "调用它的运行时" }
+  - { to: "qualcomm-hexagon-npu", as: "竞品" }
+  - { to: "model-quantization", as: "常配合" }
 ---
 
 ANE 是 Apple 端侧 AI 的物理底座：手机、平板、Mac 上的本地推理(图像分割、语音、生成式小模型)主要落在这块单元上。开发者不直接写 ANE 指令，而是把模型用 coremltools 转成 Core ML 格式，由系统在 ANE / GPU / CPU 间自动调度——能否真正跑上 ANE 取决于算子是否被支持。M5 一代(2025-10)重做了 Neural Engine 并在每个 GPU 核心加入 Neural Accelerator，把 AI 算力织进图形管线，端侧大模型与扩散模型的可行性进一步提高。

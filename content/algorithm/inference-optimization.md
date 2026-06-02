@@ -21,6 +21,11 @@ links:
   - { label: "vLLM (PagedAttention)", url: "https://blog.vllm.ai/2023/06/20/vllm.html" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "serving-engines-vllm-sglang", as: "落地引擎" }
+  - { to: "nvidia-tensorrt", as: "落地引擎" }
+  - { to: "transformer", as: "优化对象" }
+  - { to: "model-quantization", as: "常配合" }
 ---
 
 这些技术的共同点是「加速但不改输出」——只优化计算与访存方式，模型权重与生成结果不变。FlashAttention 用 IO 感知的分块与核融合，把注意力计算保持在高速 SRAM 内、避免反复读写显存，省显存又提速，截至 2026 年 vLLM V1 已集成 FlashAttention-3。KV cache 缓存已生成 token 的 Key/Value，使自回归生成每步只需算新 token，是长文本生成提速的基础；其上又衍生出 PagedAttention（像操作系统分页一样管理 KV、减少碎片、支持高并发）以及 FP8 KV cache（进一步省显存）。投机解码则换个思路：让一个小而快的草稿模型一次生成多个候选 token，再用大模型一次性并行验证、接受匹配的部分，命中率高时能带来 2–3 倍加速且输出严格等价于大模型。这三者通常组合出现在 vLLM、SGLang、TensorRT-LLM 等引擎里，是把同一块 GPU 的服务吞吐拉满的关键工程算法。

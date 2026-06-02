@@ -21,6 +21,11 @@ links:
   - { label: "SGLang", url: "https://github.com/sgl-project/sglang" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "inference-optimization", as: "底层方法" }
+  - { to: "nvidia-blackwell-datacenter-gpu", as: "运行硬件" }
+  - { to: "mixture-of-experts", as: "服务对象" }
+  - { to: "nvidia-tensorrt", as: "竞品" }
 ---
 
 当模型要扛住成百上千的并发请求，逐请求朴素推理会把 GPU 显存浪费在碎片化的 KV-Cache 上——`vLLM` 的 PagedAttention 把 KV-Cache 切成可复用的「页」，把显存浪费从 60–80% 压到 4% 以内，同样硬件能多跑 2–4 倍并发；`SGLang` 的 RadixAttention 则用基数树自动发现并复用请求间的共享前缀，在 RAG 与多轮对话这类前缀重叠的负载上吞吐更高。两者定位高度重叠：vLLM 胜在生态与硬件广度（TPU、Trainium、Gaudi 皆可），SGLang 偏结构化生成与 Agent 工作流。生产中常按负载特征择一，或同时压测对比。这类引擎是「云端跑大模型」的事实标准底座，下游常被各类网关与 Agent 框架封装。

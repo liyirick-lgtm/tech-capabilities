@@ -16,4 +16,19 @@ order: 50
 related:
   - { to: "apple-neural-engine", as: "运行硬件" }
   - { to: "apple-coreml-mlx", as: "运行时" }
+  - { to: "recognize-text", as: "上层框架" }
+  - { to: "object-pose-trajectory", as: "上层框架" }
+  - { to: "onnx-runtime", as: "同类" }
 ---
+
+## 一句话
+
+Apple 的端侧模型推理框架，把训练好的模型部署到 CPU / GPU / 神经引擎(ANE)上自动调度执行。
+
+## 适用场景
+
+Vision、Sound Analysis、Natural Language 等高层框架底层都跑在 Core ML 上；也可直接加载自定义模型做图像分类、目标检测、风格迁移等纯端侧推理，数据不出设备、低延迟、离线可用。
+
+## 注意
+
+需先把模型转成 `.mlmodel` / `.mlpackage`（用 `coremltools` 从 PyTorch / TensorFlow 转换）。Core ML 会按层自动在 ANE/GPU/CPU 间分配，但能否真正落到 ANE 取决于算子与精度支持，复杂或不受支持的算子会回落到 GPU/CPU，影响功耗与速度，调优时常用 Instruments 的 Core ML 模板核对实际后端。

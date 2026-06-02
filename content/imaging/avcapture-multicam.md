@@ -13,4 +13,21 @@ tags: [多摄, 双摄, 同时录制, multicam, 前后摄像头, avfoundation, pi
 platforms: [iOS, iPadOS]
 updated: "2026-06"
 order: 10
+related:
+  - { to: "dual-photo-delivery", as: "常配合" }
+  - { to: "proraw-applelog-prores", as: "常配合" }
+  - { to: "avdepthdata-lidar", as: "常配合" }
+  - { to: "face-landmark-detection", as: "下游处理" }
 ---
+
+## 一句话
+
+在单个 `AVCaptureMultiCamSession` 里并行驱动多颗摄像头，做前后同录、画中画、分屏等多路实时采集。
+
+## 适用场景
+
+Vlog 双视角录制（前置拍人 + 后置拍景）、视频通话叠加、双路同时跑 `AVCaptureMetadataOutput` 做条码或人脸检测。每颗相机经各自的 `AVCaptureConnection` 接到独立的 `AVCaptureVideoDataOutput` / `AVCapturePhotoOutput`。
+
+## 注意
+
+并非所有镜头组合都能同开，必须先查 `AVCaptureDevice.DiscoverySession` 给出的 `supportedMultiCamDeviceSets`。多摄会显著抬高功耗与发热，系统在过热时可能主动降帧或中断会话，需要 A12 及以上芯片。

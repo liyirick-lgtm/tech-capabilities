@@ -19,6 +19,9 @@ links:
   - { label: "WWDC25：结构化并发与 Network", url: "https://developer.apple.com/videos/play/wwdc2025/250/" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "webrtc", as: "上层实时通信" }
+  - { to: "matter-homekit", as: "上层应用（IP 承载）" }
 ---
 
 需要自定义协议、低延迟传输、局域网设备直连（Bonjour 发现 + P2P）或用上 QUIC/HTTP3 时，Network framework 是 URLSession 之下的首选。它把多种传输统一在一套连接接口里，自动处理网络环境变化。iOS/macOS 26 的新 NetworkConnection / NetworkListener / NetworkBrowser API 让网络代码与 Swift 并发更自然地衔接，也是 Apple 推荐从 MultipeerConnectivity 迁移的方向。

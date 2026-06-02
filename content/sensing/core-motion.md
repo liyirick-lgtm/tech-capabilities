@@ -19,6 +19,11 @@ links:
   - { label: "What's new in Core Motion (WWDC23)", url: "https://developer.apple.com/videos/play/wwdc2023/10179/" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "motion-ranging-sensors", as: "运行硬件" }
+  - { to: "cmaltimeter-barometer", as: "子能力" }
+  - { to: "fall-crash-detection", as: "上层应用" }
+  - { to: "healthkit", as: "数据上游" }
 ---
 
 Core Motion 把多颗惯性传感器(IMU)与气压计的原始读数交给系统协处理器做传感器融合，对外既给原始数据(加速度、角速度、磁场)，也给融合后的高层语义：设备朝向 attitude、用户运动活动(walking / running / cycling / automotive / stationary)与计步距离楼层。低延迟实时场景用 CMMotionManager(约 100Hz)；需要更高采样率的健身/手势分析可用 CMBatchedSensorManager 的批采模式(较新 Apple Watch 上设备运动 200Hz、加速度 800Hz)。

@@ -19,6 +19,11 @@ links:
   - { label: "Replicate 在线推理", url: "https://replicate.com/meta/musicgen" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "suno", as: "竞品" }
+  - { to: "stable-audio-open", as: "同类" }
+  - { to: "pytorch-jax", as: "底层框架" }
+  - { to: "demucs", as: "常配合" }
 ---
 
 MusicGen 是 Meta AudioCraft 库的核心模型(库内还含 AudioGen 音效生成与 EnCodec 编解码器),自 2023 年开源以来一直是研究与自托管音乐生成的常用基线。它接受文本描述,并可选地用一段旋律作为条件来控制走向。代码以 MIT 发布,但模型权重为 CC-BY-NC 4.0,仅限非商用研究——做商用产品需注意这条限制。适合本地实验、可控管线和二次微调,对追求成品歌曲(含人声、长时长)的场景则力有不逮。

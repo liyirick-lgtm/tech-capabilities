@@ -21,6 +21,11 @@ links:
   - { label: "Core ML 概览", url: "https://developer.apple.com/machine-learning/core-ml/" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "apple-neural-engine", as: "运行硬件" }
+  - { to: "opensource-local-llm", as: "上层模型" }
+  - { to: "llama-cpp-ggml", as: "竞品" }
+  - { to: "litert-executorch", as: "同类" }
 ---
 
 苹果端侧推理有两条路。`Core ML` 是产品落地路径：把模型转成 `.mlpackage` 后由系统自动在 CPU、GPU 与神经网络引擎（ANE）间调度，主打低功耗与内存占用，近年补上了权重压缩、有状态模型与 MLTensor，方便端侧跑 LLM 与扩散模型；据报道 WWDC 2026 将把它演进为对接 Foundation Models 的 Core AI。`MLX` 则是苹果开源的数组框架，为 Apple Silicon 的统一内存量身设计，既能训练也能推理，在 M5 的神经加速器上对长 prompt 处理可比 llama.cpp 的 Metal 后端快数倍，HuggingFace 上已有数千个社区量化模型。两者都只在苹果设备上跑——这是平台原生的边界，也是它们能贴硬件做到极致能效的原因。

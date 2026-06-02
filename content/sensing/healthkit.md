@@ -19,6 +19,11 @@ links:
   - { label: "Data types", url: "https://developer.apple.com/documentation/healthkit/data-types" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "core-motion", as: "数据上游" }
+  - { to: "fall-crash-detection", as: "常配合" }
+  - { to: "cmaltimeter-barometer", as: "数据上游" }
+  - { to: "background-tasks", as: "常配合" }
 ---
 
 HealthKit 用一个中心化的健康库(HKHealthStore)统一管理设备上的健康数据，App 不直接落盘，而是按数据类型逐项申请读/写权限。数据类型分三大类：量化型 quantity(数值，如心率、步数)、分类型 category(非数值，如睡眠分期)、以及训练 workout。它本身不是医疗器械，而是 Apple Watch 的 ECG、血氧等 FDA 认证传感器把临床级数据投递给第三方 App 的桥梁；隐私与合规是接入时最需要谨慎处理的部分。

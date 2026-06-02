@@ -19,6 +19,11 @@ links:
   - { label: "CLMonitor", url: "https://developer.apple.com/documentation/corelocation/clmonitor" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "core-motion", as: "常配合" }
+  - { to: "nearby-interaction", as: "互补" }
+  - { to: "cmaltimeter-barometer", as: "常配合" }
+  - { to: "background-tasks", as: "常配合" }
 ---
 
 定位标记为 hybrid：坐标解算在端侧完成，但 Wi-Fi/蜂窝辅助定位会向 Apple 的位置服务发请求。新项目建议优先用 iOS 17 引入的 CLMonitor —— 它以 async 事件流的方式管理地理围栏与 Beacon 约束，比传统的 CLLocationManager delegate + CLCircularRegion 更清晰；但后台可靠投递「进入」事件需要配合 CLServiceSession / CLBackgroundActivitySession。地理围栏数量受硬件资源与省电限制，单 App 最多 20 个区域。

@@ -21,6 +21,11 @@ links:
   - { label: "TensorRT 开发者页", url: "https://developer.nvidia.com/tensorrt-llm" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "nvidia-blackwell-datacenter-gpu", as: "运行硬件" }
+  - { to: "serving-engines-vllm-sglang", as: "竞品" }
+  - { to: "inference-optimization", as: "底层方法" }
+  - { to: "nvidia-jetson", as: "运行硬件" }
 ---
 
 如果部署目标确定是 NVIDIA GPU，`TensorRT` 系列通常能压出比通用引擎更低的延迟。它把模型「编译」成针对具体 GPU 架构（Ampere/Hopper/Blackwell）的引擎：融合算子、校准精度、自动挑选最快内核。`TensorRT-LLM` 则在此之上为大模型补齐 Python API、FP8/NVFP4 量化、分离式预填充/解码服务、专家并行与 EAGLE-3 多 token 推测解码等。它既能在数据中心服务，也能落到 Jetson/DGX Spark 等边缘设备，故归为端云皆可。代价是深度绑定 NVIDIA 硬件、不可移植，且编译调优本身有学习曲线——许多团队会拿它与 vLLM/SGLang 在目标卡上对比后再定。

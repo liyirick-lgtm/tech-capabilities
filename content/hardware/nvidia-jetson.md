@@ -19,6 +19,11 @@ links:
   - { label: "Jetson Thor", url: "https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-thor/" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "nvidia-tensorrt", as: "调用它的运行时" }
+  - { to: "open-edge-boards-rk3588-coral", as: "竞品" }
+  - { to: "nvidia-blackwell-datacenter-gpu", as: "同架构" }
+  - { to: "model-quantization", as: "常配合" }
 ---
 
 Jetson 把数据中心的 CUDA 栈缩进巴掌大的模组里,是边缘 AI 与机器人最主流的算力底座之一。它不是手机里的轻量 NPU,而是带完整 GPU、可在本地跑视觉模型、生成式 AI 与多路传感融合的嵌入式平台。2025-08 发布的旗舰 AGX Thor 融合 Blackwell GPU 与 14 核 Arm Neoverse V3AE、128GB LPDDR5X,达约 2070 FP4 TFLOPS、功耗 40–130W 可配,较上代 AGX Orin(约 275 TOPS)AI 算力提升超 7.5×、能效约 3.5×。软件侧用 JetPack(CUDA / TensorRT / cuDNN)与 Isaac ROS,模型一般经 TensorRT 优化后部署。代价是功耗、散热与成本都高于纯 NPU 小板,且深度绑定 CUDA 生态。

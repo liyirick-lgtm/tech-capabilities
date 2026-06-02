@@ -19,6 +19,9 @@ links:
   - { label: "后台标签读取", url: "https://developer.apple.com/documentation/corenfc/adding-support-for-background-tag-reading" }
 updated: "2026-06"
 order: 10
+related:
+  - { to: "core-bluetooth", as: "同类（近场连接）" }
+  - { to: "secure-enclave", as: "卡模拟信任根" }
 ---
 
 iPhone 内置的 NFC 读写能力，常用于实体世界与 App 的「轻触连接」：海报触发活动、配件首次配网、设备身份核验、票务核销等。后台标签读取让用户无需先打开 App，亮屏靠近标签即可被引导到指定页面。涉及卡模拟（HCE）与部分写入能力时需向 Apple 申请相应权限。

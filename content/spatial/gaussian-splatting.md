@@ -19,6 +19,11 @@ links:
   - { label: "论文 arXiv:2308.04079", url: "https://arxiv.org/abs/2308.04079" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "nerfstudio", as: "常配合" }
+  - { to: "text-image-to-3d", as: "可解码为" }
+  - { to: "object-capture", as: "同类" }
+  - { to: "nvidia-blackwell-datacenter-gpu", as: "运行硬件" }
 ---
 
 3D Gaussian Splatting（3DGS）由 INRIA 提出，是当前体积重建与新视图合成的「金标准」。相比传统 NeRF 的神经网络逐点查询，它用显式的 3D 高斯点表示场景，在保留连续体积辐射场优良性质的同时跳过空白区域计算，从而做到训练分钟级、渲染实时。截至 2026 年，社区围绕可扩展性、梯度控制、深度一致性、动态场景与压缩等方向持续演进，并广泛用于数字孪生、影视特效、文旅与电商展示。注意原始实现为研究/非商用许可，商用需评估替代实现（如 gsplat）与授权。

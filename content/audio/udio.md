@@ -18,6 +18,10 @@ links:
   - { label: "定价", url: "https://www.udio.com/pricing" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "suno", as: "竞品" }
+  - { to: "musicgen", as: "开源替代" }
+  - { to: "stable-audio-open", as: "同领域" }
 ---
 
 Udio 与 Suno 是云端 AI 作曲的两强,定位接近但路线略有差异:Udio 更强调创作者的可控性(风格混合、按 32 秒片段逐段精修、stem 下载),人声与混音质感受到不少专业用户认可。版权上,Udio 在 2025 年与环球音乐和解,并规划 2026 年推出 UMG x Udio 联合授权平台,对在意商用合规的创作者更友好。计费按积分,一首成品通常消耗 8–20 积分。

@@ -19,6 +19,11 @@ links:
   - { label: "在 Apple Watch 上使用跌倒检测", url: "https://support.apple.com/zh-cn/108896" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "core-motion", as: "底层引擎" }
+  - { to: "motion-ranging-sensors", as: "运行硬件" }
+  - { to: "core-location", as: "常配合" }
+  - { to: "healthkit", as: "常配合" }
 ---
 
 这是传感器融合在安全场景的代表：跌倒检测靠加速度计(可测到约 32g)与陀螺仪识别从站立/行走高度的硬摔倒，并结合摔后静止判定;车祸检测则融合高量程加速度计(可测到约 256g)、气压计、麦克风与 GPS 来匹配车辆碰撞的独特信号特征，可在 Series 8 及以后、SE(二代起)与全部 Ultra 机型上工作。判定均在端侧完成。第三方若要接收跌倒事件，需用 CMFallDetectionManager 并向 Apple 申请专用 entitlement。

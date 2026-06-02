@@ -19,6 +19,11 @@ links:
   - { label: "Open Small × Arm", url: "https://stability.ai/news/stability-ai-and-arm-release-stable-audio-open-small-enabling-real-world-deployment-for-on-device-audio-control" }
 updated: "2026-06"
 order: 40
+related:
+  - { to: "musicgen", as: "同类" }
+  - { to: "diffusion-model", as: "底层引擎" }
+  - { to: "suno", as: "竞品" }
+  - { to: "qualcomm-hexagon-npu", as: "端侧可运行于" }
 ---
 
 Stable Audio Open 把开源生成的重心放在「音效与制作素材」而非整首歌:鼓点、乐器片段、环境声、foley、过渡音等,适合音效设计师、制作人和游戏/视频管线。训练集全部取自 CC0、CC-BY、CC Sampling+ 授权音频,数据来源相对干净。2025 年与 Arm 合作的 Open Small(341M 参数、打包仅约 20MB)借助 KleidiAI 可完全跑在手机 Arm CPU 上,是当前最快的端侧立体声文本到音频模型。许可为 Stability AI Community License,年营收低于 100 万美元可免费商用。注:Stability 另有面向更长音乐(可达 6 分钟)的 Stable Audio 3 系列。

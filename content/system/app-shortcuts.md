@@ -19,6 +19,11 @@ links:
   - { label: "Use Apple Intelligence in Shortcuts", url: "https://support.apple.com/guide/iphone/use-apple-intelligence-in-shortcuts-iph78c41eaf8/ios" }
 updated: "2026-06"
 order: 20
+related:
+  - { to: "app-intents", as: "底层引擎" }
+  - { to: "sirikit", as: "常配合（触发短语）" }
+  - { to: "apple-foundation-models", as: "Use Model 调用" }
+  - { to: "private-cloud-compute", as: "Use Model 云端模式" }
 ---
 
 Shortcuts 既是用户侧的可视化自动化工具，也是开发者把 App 能力触达系统的重要通道。通过 App Shortcuts，一个 App Intent 可以零用户配置地出现在快捷指令库中，并绑定 Siri 触发短语、操作按钮与 Spotlight。iOS 26 的最大变化是把 Apple Intelligence 直接嵌进 Shortcuts：新增的「Use Model」动作可在三种模式间选择——端侧（最快、全本地、隐私最佳）、Apple Private Cloud Compute（处理更大任务、数据仍受保护）、或调用 ChatGPT（能力最强）；配合 25+ 新动作，过去需要付费 App 才能完成的摘要、生成图像、整理转录、生成图片 alt 文本等流程，现在可在一条快捷指令里串起来。

@@ -18,6 +18,10 @@ links:
   - { label: "RoomPlan 概览", url: "https://developer.apple.com/augmented-reality/roomplan/" }
 updated: "2026-06"
 order: 30
+related:
+  - { to: "arkit-realitykit", as: "底层引擎" }
+  - { to: "avdepthdata-lidar", as: "数据上游" }
+  - { to: "object-capture", as: "同类" }
 ---
 
 RoomPlan 专注室内空间的快速参数化重建：扫描后得到结构化的房间模型，包含每个组件（墙体、橱柜等）的尺寸与家具类别。RoomPlan Data API 还开放底层数据结构，可自定义扫描可视化。常用于家装效果预览、室内设计、家具摆放与不动产展示，也有团队探索 Scan-to-BIM 方向。

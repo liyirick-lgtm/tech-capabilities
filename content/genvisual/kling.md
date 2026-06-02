@@ -18,6 +18,10 @@ links:
   - { label: "Kling 2.6 发布", url: "https://www.prnewswire.com/news-releases/kling-ai-launches-video-2-6-model-with-simultaneous-audio-visual-generation-capability-redefining-ai-video-creation-workflow-302634067.html" }
 updated: "2026-06"
 order: 50
+related:
+  - { to: "diffusion-model", as: "底层算法" }
+  - { to: "google-veo", as: "竞品" }
+  - { to: "wan", as: "国产开源替代" }
 ---
 
 可灵是国产视频生成的代表，在运动幅度、物理一致性与性价比上长期处于第一梯队，并较早落地音画同步。3.0 的「Omni One」统一架构把文生视频、图生视频与编辑收进一个引擎，适合短视频与商业内容批量生产。

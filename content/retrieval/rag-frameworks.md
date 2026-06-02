@@ -22,6 +22,11 @@ links:
   - { label: "LangGraph", url: "https://github.com/langchain-ai/langgraph" }
 updated: "2026-06"
 order: 60
+related:
+  - { to: "vector-database", as: "常配合" }
+  - { to: "reranker", as: "常配合" }
+  - { to: "cloud-frontier-llm", as: "运行模型" }
+  - { to: "model-context-protocol", as: "常配合" }
 ---
 
 RAG 框架把分散的检索零件粘成可上线的管线。`LlamaIndex` 围绕「数据进 LLM」设计：丰富的数据装载器、分层切块、自动合并检索与子问题分解，文档密集型场景往往更少调参就拿到更高召回；`LangChain` 则围绕「编排」设计，链、工具、记忆与多步推理齐全，其 `LangGraph` 子项目用有状态图专门表达 Agent 工作流。两者并非二选一——2026 年成熟团队的常见做法是 LlamaIndex 负责摄取与索引、LangChain/LangGraph 负责编排、再用 RAGAS 或 LangSmith 做评测。轻量需求也可看 Haystack、DSPy 等替代。
