@@ -4,6 +4,7 @@ import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
+import { marked } from 'marked';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const CONTENT = join(root, 'content');
@@ -19,38 +20,79 @@ const SOURCE_LABEL = { native: '原生', open: '开源', cloud: '云端' };
 const DEPLOY_LABEL = { 'on-device': '端侧', cloud: '云端', hybrid: '端云' };
 const DEPLOY_CLASS = { 'on-device': 'd-on-device', cloud: 'd-cloud', hybrid: 'd-hybrid' };
 
-function renderCard(it, catSlug) {
+const badges = (it) => {
   const srcClass = SOURCE_CLASS[it.source] || 't-cloud';
   const srcLabel = it.badge || SOURCE_LABEL[it.source] || it.source || '';
   const dep = it.deployment;
   const depPill = dep
     ? `<span class="tag deploy ${DEPLOY_CLASS[dep] || ''}">${esc(DEPLOY_LABEL[dep] || dep)}</span>`
     : '';
-  const kw = [].concat(it.tags || []).join(' ');
+  return `<span class="tag-group">${depPill}<span class="tag ${srcClass}">${esc(srcLabel)}</span></span>`;
+};
 
-  let specs =
+const specsHtml = (it) => {
+  let s =
     `        <li><b>能力</b><span>${esc(it.capability)}</span></li>\n` +
     `        <li><b>限制</b><span>${esc(it.limitation)}</span></li>\n` +
     `        <li><b>调用</b><span>${esc(it.invocation)}</span></li>`;
-  if (it.license) specs += `\n        <li><b>许可</b><span>${esc(it.license)}</span></li>`;
-  if (it.cost) specs += `\n        <li><b>成本</b><span>${esc(it.cost)}</span></li>`;
-  if (it.platforms) specs += `\n        <li><b>平台</b><span>${esc([].concat(it.platforms).join(' / '))}</span></li>`;
+  if (it.license) s += `\n        <li><b>许可</b><span>${esc(it.license)}</span></li>`;
+  if (it.cost) s += `\n        <li><b>成本</b><span>${esc(it.cost)}</span></li>`;
+  if (it.platforms) s += `\n        <li><b>平台</b><span>${esc([].concat(it.platforms).join(' / '))}</span></li>`;
+  return s;
+};
 
+const footHtml = (it) => {
   const links = [];
   if (it.repo) links.push(`<a href="${attr(it.repo)}" target="_blank" rel="noopener">源仓库 ↗</a>`);
   for (const l of (it.links || [])) {
     if (l && l.url) links.push(`<a href="${attr(l.url)}" target="_blank" rel="noopener">${esc(l.label || l.url)} ↗</a>`);
   }
   if (it.updated) links.push(`<span style="color:var(--muted)">updated ${esc(it.updated)}</span>`);
-  const foot = links.length ? `\n      <div class="card-foot">${links.join('')}</div>` : '';
+  return links.length ? `<div class="card-foot">${links.join('')}</div>` : '';
+};
 
-  return `    <article class="card" data-cat="${attr(catSlug)}" data-deploy="${attr(dep || '')}" data-keywords="${attr(kw)}">
-      <div class="card-top"><h3>${esc(it.title)}</h3><span class="tag-group">${depPill}<span class="tag ${srcClass}">${esc(srcLabel)}</span></span></div>
+// related: list of "slug" or {to, as} → clickable rel-links (resolved via idIndex)
+function relLinks(it, idIndex) {
+  const rels = [].concat(it.related || [])
+    .map((r) => (typeof r === 'string' ? { to: r, as: '相关' } : r))
+    .filter((r) => r && r.to);
+  return rels.map((r) => {
+    const t = idIndex[r.to];
+    if (!t) {
+      console.warn(`! ${it._cat}/${it._slug}: related "${r.to}" not found — skipped`);
+      return null;
+    }
+    return `<a class="rel-link" data-jump="${attr(r.to)}">${esc(r.as || '相关')} · ${esc(t.title)}</a>`;
+  }).filter(Boolean);
+}
+
+function renderCard(it, catSlug, idIndex) {
+  const kw = [].concat(it.tags || []).join(' ');
+  const specs = specsHtml(it);
+  const foot = footHtml(it);
+  const rels = relLinks(it, idIndex);
+  const cardRel = rels.length ? `\n      <div class="card-rel"><b>关联</b>${rels.join('')}</div>` : '';
+
+  const bodyMd = (it._body || '').trim();
+  const bodyHtml = bodyMd ? `\n  <div class="d-body">${marked.parse(bodyMd)}</div>` : '';
+  const detailRel = rels.length ? `\n  <div class="d-rel"><h4>关联技术</h4>${rels.join('')}</div>` : '';
+  const detail = `      <template class="card-detail"><div class="d-head"><h3>${esc(it.title)}</h3>${badges(it)}</div>
+  <div class="role">${esc(it.role || '')}</div>
+  <p class="desc">${esc(it.desc || '')}</p>
+  <ul class="specs">
+${specs}
+  </ul>${bodyHtml}${detailRel}
+  ${foot}</template>`;
+
+  return `    <article class="card" id="card-${attr(it._slug)}" data-id="${attr(it._slug)}" data-cat="${attr(catSlug)}" data-deploy="${attr(it.deployment || '')}" data-keywords="${attr(kw)}">
+      <div class="card-top"><h3>${esc(it.title)}</h3>${badges(it)}</div>
       <div class="role">${esc(it.role || '')}</div>
       <p class="desc">${esc(it.desc || '')}</p>
       <ul class="specs">
 ${specs}
-      </ul>${foot}
+      </ul>
+      ${foot}${cardRel}
+${detail}
     </article>
 `;
 }
@@ -76,7 +118,7 @@ async function loadCategories() {
     for (const f of files) {
       if (!f.endsWith('.md') || f === '_category.md') continue;
       const g = matter(await readFile(join(dir, f), 'utf8'));
-      items.push({ ...g.data, _file: `${d.name}/${f}` });
+      items.push({ ...g.data, _slug: f.replace(/\.md$/, ''), _cat: d.name, _body: g.content });
     }
     items.sort((a, b) =>
       (a.order ?? 999) - (b.order ?? 999) ||
@@ -90,6 +132,15 @@ async function loadCategories() {
 async function build() {
   const cats = await loadCategories();
 
+  // global slug index for relation resolution
+  const idIndex = {};
+  for (const c of cats) {
+    for (const it of c.items) {
+      if (idIndex[it._slug]) console.warn(`! duplicate slug "${it._slug}" (${c.slug})`);
+      idIndex[it._slug] = { title: it.title, cat: c.slug };
+    }
+  }
+
   let filtersHtml = '';
   let sectionsHtml = '';
   let num = 0;
@@ -101,7 +152,7 @@ async function build() {
     total += c.items.length;
     const n = String(num).padStart(2, '0');
     filtersHtml += `        <span class="chip" data-f="${attr(c.slug)}">${esc(c.filter_label || c.title)}</span>\n`;
-    const cards = c.items.map((it) => renderCard(it, c.slug)).join('');
+    const cards = c.items.map((it) => renderCard(it, c.slug, idIndex)).join('');
     sectionsHtml += `
 <section class="section" data-cat="${attr(c.slug)}" id="${attr(c.slug)}">
   <div class="section-head">

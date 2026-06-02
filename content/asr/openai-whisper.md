@@ -15,4 +15,25 @@ cost: "免费 / 自托管"
 platforms: [跨平台, Server]
 updated: "2026-06"
 order: 10
+related:
+  - { to: "whispercpp-whisperkit", as: "端侧部署" }
+  - { to: "voxtral-transcribe", as: "竞品" }
 ---
+
+## 一句话
+
+OpenAI 2022 年开源的语音识别模型族，用 68 万小时弱监督音频训练，把多语言 ASR 做成「下载即用」的通用基座，也是后续无数转录产品（faster-whisper、whisper.cpp、WhisperKit 等）共同的底座。
+
+## 适用场景
+
+字幕生成、会议与播客转写、语音笔记、视频本地化。需要实时低延迟时，考虑 `faster-whisper`、流式的 Voxtral，或 NVIDIA Parakeet。
+
+## 最小用法
+
+```python
+import whisper
+model = whisper.load_model("large-v3")
+print(model.transcribe("audio.mp3")["text"])
+```
+
+> 端侧 / 隐私优先场景用 whisper.cpp 或 WhisperKit；追求更低 WER 看 Voxtral Transcribe。

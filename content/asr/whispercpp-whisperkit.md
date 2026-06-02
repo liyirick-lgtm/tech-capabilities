@@ -15,4 +15,7 @@ cost: "免费 / 自托管"
 platforms: [iOS, macOS, 跨平台]
 updated: "2026-06"
 order: 20
+related:
+  - { to: "openai-whisper", as: "端侧移植自" }
+  - { to: "apple-neural-engine", as: "可跑在" }
 ---

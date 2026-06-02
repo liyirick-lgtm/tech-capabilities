@@ -13,4 +13,7 @@ tags: [core ml, 自定义模型, 端侧推理, 神经引擎, ane, 模型部署]
 platforms: [iOS, macOS, iPadOS, visionOS]
 updated: "2026-06"
 order: 50
+related:
+  - { to: "apple-neural-engine", as: "运行硬件" }
+  - { to: "apple-coreml-mlx", as: "运行时" }
 ---

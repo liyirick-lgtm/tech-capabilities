@@ -164,6 +164,35 @@ main{padding:50px 0 80px}
 .card-foot{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
 .card-foot a{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);text-decoration:none}
 .card-foot a:hover{text-decoration:underline}
+.card{cursor:pointer}
+.card-rel{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.card-rel>b{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
+.rel-link{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent-2);cursor:pointer;text-decoration:none;border-bottom:1px dotted var(--accent-2)}
+.rel-link:hover{color:var(--accent);border-color:var(--accent)}
+
+/* detail modal */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-start;justify-content:center;background:rgba(19,17,14,.55);backdrop-filter:blur(3px);padding:40px 16px;overflow-y:auto}
+.modal.show{display:flex}
+.modal-card{background:var(--card);border:1.5px solid var(--ink);border-radius:4px;box-shadow:8px 8px 0 var(--shadow);max-width:720px;width:100%;padding:34px 34px 30px;position:relative;margin:auto}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;font-family:'Space Mono',monospace}
+.modal-close:hover{color:var(--accent)}
+.modal-body .d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px;padding-right:22px}
+.modal-body h3{font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.12;letter-spacing:-.01em;overflow-wrap:anywhere}
+.modal-body .role{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);margin-bottom:14px}
+.modal-body .desc{font-size:15px;margin-bottom:16px;font-weight:300}
+.modal-body .specs{list-style:none;border-top:1px dashed var(--line);padding-top:14px}
+.modal-body .specs li{display:flex;gap:8px;font-size:13px;margin-bottom:7px;color:var(--muted)}
+.modal-body .specs li b{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);flex-shrink:0;width:48px}
+.modal-body .d-body{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px;font-size:14px;font-weight:300;line-height:1.75}
+.modal-body .d-body h1,.modal-body .d-body h2,.modal-body .d-body h3{font-family:'Fraunces',serif;font-size:17px;margin:14px 0 6px}
+.modal-body .d-body code{font-family:'Space Mono',monospace;font-size:12.5px;background:var(--paper-2);padding:1px 5px;border-radius:3px}
+.modal-body .d-body pre{background:var(--paper-2);padding:12px;border-radius:4px;overflow-x:auto;margin:10px 0}
+.modal-body .d-body pre code{background:none;padding:0}
+.modal-body .d-rel{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px}
+.modal-body .d-rel h4{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.modal-body .d-rel .rel-link{display:inline-block;margin:0 12px 7px 0;font-size:12.5px}
+.modal-body .card-foot{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.modal-body .card-foot a{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);text-decoration:none}
 
 footer{border-top:2px solid var(--ink);padding:30px 0 60px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
 footer a{color:var(--accent)}
@@ -225,6 +254,13 @@ footer a{color:var(--accent)}
 
 </main>
 
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-card">
+    <button class="modal-close" aria-label="关闭">×</button>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     个人技术知识库 · 数据持续整理，技术与模型排名变化很快，使用前建议核对各官方文档 / 最新基准（条目内 <em>updated</em> 字段标注核对时间）。<br>
@@ -282,6 +318,36 @@ deployChips.forEach(ch=>ch.addEventListener('click',()=>{
 }));
 search.addEventListener('input', apply);
 apply();
+
+// ---------- detail modal ----------
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modal-body');
+function openCard(id){
+  const card = document.getElementById('card-'+id);
+  if(!card) return;
+  const tpl = card.querySelector('.card-detail');
+  modalBody.innerHTML = '';
+  if(tpl && 'content' in tpl) modalBody.appendChild(tpl.content.cloneNode(true));
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
+}
+function closeModal(){
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+cards.forEach(c=>c.addEventListener('click', e=>{
+  if(e.target.closest('a, .rel-link')) return;   // let links/relations handle themselves
+  openCard(c.dataset.id);
+}));
+document.addEventListener('click', e=>{
+  const j = e.target.closest('.rel-link');
+  if(j){ e.preventDefault(); e.stopPropagation(); openCard(j.dataset.jump); modal.scrollTop = 0; }
+});
+modal.addEventListener('click', e=>{ if(e.target===modal || e.target.closest('.modal-close')) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.classList.contains('show')) closeModal(); });
 </script>
 
 </body>
