@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-**Tech Atlas (技术知识图谱)** — a static, searchable catalog of mainstream tech capabilities, scoped to "nearly everything you'd use to build an app": on-device and cloud capabilities across capture, vision, speech/audio, generative media, language/reasoning, spatial, and platform layers. Built so the maintainer and others can quickly survey "what's technically possible right now," spot combinations, and spark product ideas — explicitly an anti-information-silo (信息茧房) tool. Being open-sourced on GitHub, hosted statically (GitHub Pages): no backend, no framework.
+**Tech Atlas (技术知识图谱)** — a static, searchable catalog of mainstream tech capabilities, scoped to "nearly everything you'd use to build an app": on-device and cloud capabilities across capture, vision, speech/audio, generative media, language/reasoning, spatial, platform, and foundation (runtimes / algorithms / hardware) layers. Built so the maintainer and others can quickly survey "what's technically possible right now," spot combinations, and spark product ideas — explicitly an anti-information-silo (信息茧房) tool. Being open-sourced on GitHub, hosted statically (GitHub Pages): no backend, no framework.
 
 See [README.md](README.md) for the overview and [CONTRIBUTING.md](CONTRIBUTING.md) for the full entry/category conventions.
 
@@ -13,7 +13,7 @@ See [README.md](README.md) for the overview and [CONTRIBUTING.md](CONTRIBUTING.m
 Implemented and working:
 
 - **Built:** `build.mjs` (Node + `gray-matter`) scans `content/` and generates `index.html`; `template/base.html` is the page shell. Run `npm run build`. Preview locally via `.claude/launch.json` (`python -m http.server` on :8123) + the Claude preview tools.
-- **Content:** all 14 categories populated — **87 entries**. Original 5 (`imaging` 5, `vision` 6, `asr` 6, `tts` 7, `llm` 3 = 27) hand-migrated from the prototype; the other 9 (`sensing` 6, `multimodal` 6, `audio` 6, `genvisual` 10, `retrieval` 8, `spatial` 6, `system` 6, `security` 6, `connectivity` 6 = 60) researched & written via parallel subagents (web-verified to 2026-06). `index.html` generated and verified in-browser.
+- **Content:** all 17 categories populated — **111 entries**. Application layer = 14 categories / 87 entries (original 5 hand-migrated, 9 via subagents). Foundation layer = 3 categories / 24 entries: `runtime` 8, `algorithm` 8, `hardware` 8 (added via parallel subagents; for these three, `source`/`deployment` use adjusted semantics per CONTRIBUTING — e.g. hardware source = vendor-proprietary/open-standard/cloud-compute). All web-verified to 2026-06; `index.html` regenerated & DOM-verified.
 - **Prototype:** moved to `archive/tech-knowledge-base.html` (superseded by the generated `index.html`).
 - **Next:** review/curate entries for accuracy; decide a LICENSE; optionally `git init` + push + enable GitHub Pages. Always edit `content/**/*.md`, NOT `index.html` (it's generated).
 
@@ -39,9 +39,9 @@ content/          # single source of truth
 
 The generated `index.html` is committed so non-Node users can browse it and GitHub Pages can serve it directly. The build derives categories, section numbers, and filter chips from `content/`, eliminating the prototype's hand-synced category slugs.
 
-## Categories (14, in 7 groups)
+## Categories (17, in 8 groups)
 
-`imaging`, `sensing` (group: capture) · `vision`, `multimodal` (visual) · `asr`, `tts`, `audio` (audio) · `genvisual` (generative) · `llm`, `retrieval` (reasoning) · `spatial` (spatial) · `system`, `security`, `connectivity` (platform). The prototype's 5 categories map to `imaging` / `vision` / `asr` / `tts` / `llm`; everything else is new. `_category.md` carries `group`, `title`, `zh`, `filter_label`, `order`.
+`imaging`, `sensing` (group: capture) · `vision`, `multimodal` (visual) · `asr`, `tts`, `audio` (audio) · `genvisual` (generative) · `llm`, `retrieval` (reasoning) · `spatial` (spatial) · `system`, `security`, `connectivity` (platform) · `runtime`, `algorithm`, `hardware` (foundation). The application layer (groups capture→platform) is the product-facing entry; the foundation layer (runtime/algorithm/hardware) goes one level deeper — for it, `source`/`deployment` use adjusted semantics (see CONTRIBUTING). `_category.md` carries `group`, `title`, `zh`, `filter_label`, `order`.
 
 ## Entry schema (frontmatter)
 

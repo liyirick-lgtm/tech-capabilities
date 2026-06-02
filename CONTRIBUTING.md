@@ -4,7 +4,7 @@
 
 ## 分类总览 · Categories
 
-图谱定位为「做一个 App 几乎用得到的所有技术」，共 **14 类 / 7 组**。每类是 `content/` 下的一个文件夹：
+图谱定位为「做一个 App 几乎用得到的所有技术」，共 **17 类 / 8 组**。每类是 `content/` 下的一个文件夹：
 
 | 组 group | 分类（slug） |
 |---|---|
@@ -15,6 +15,9 @@
 | E 语言与智能 reasoning | `llm` 大模型（端侧+云端） · `retrieval` 检索与编排（Embedding/向量/RAG/MCP/Agent） |
 | F 空间计算 spatial | `spatial` 3D 与空间计算 |
 | G 平台底座 platform | `system` 系统集成与意图 · `security` 隐私安全与端云协同 · `connectivity` 连接与通信 |
+| H 底层 foundation | `runtime` 运行时框架 · `algorithm` 算法方法 · `hardware` 硬件算力 |
+
+> 注：`runtime` / `algorithm` / `hardware` 属底层（foundation），`source` / `deployment` 语义略有调整 —— 硬件 `source` = 厂商专有(native) / 开放标准(open) / 云算力(cloud)，`deployment` = 端侧芯片(on-device) / 云算力(cloud) / 边缘(hybrid)；算法统一 `source: open`、`badge: "算法 / 方法"`，`deployment` 取其典型应用位置；徽章配色由 `source` 决定，拿不准时用 `badge` 写准确中文标签。
 
 ## 加一项技术（最常见）
 

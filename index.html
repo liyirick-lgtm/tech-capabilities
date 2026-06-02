@@ -186,7 +186,7 @@ footer a{color:var(--accent)}
     <div class="meta-row">
       <span>整理日期 <b>2026.06</b></span>
       <span>条目 <b id="total-count">—</b></span>
-      <span>领域 <b>14 大类</b></span>
+      <span>领域 <b>17 大类</b></span>
       <span>更新方式 <b>持续补充</b></span>
     </div>
   </div>
@@ -216,6 +216,9 @@ footer a{color:var(--accent)}
         <span class="chip" data-f="system">系统集成</span>
         <span class="chip" data-f="security">隐私安全</span>
         <span class="chip" data-f="connectivity">连接通信</span>
+        <span class="chip" data-f="runtime">运行时框架</span>
+        <span class="chip" data-f="algorithm">算法方法</span>
+        <span class="chip" data-f="hardware">硬件算力</span>
       </div>
     </div>
     <div class="controls-row">
@@ -1553,6 +1556,372 @@ footer a{color:var(--accent)}
         <li><b>平台</b><span>Web / iOS / Android / macOS / 跨平台</span></li>
       </ul>
       <div class="card-foot"><a href="https://webrtc.googlesource.com/src/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://webrtc.org/" target="_blank" rel="noopener">WebRTC 官网 ↗</a><a href="https://www.w3.org/TR/webrtc/" target="_blank" rel="noopener">W3C WebRTC 规范 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="runtime" id="runtime">
+  <div class="section-head">
+    <span class="section-num">15</span>
+    <h2>Inference &amp; Training Runtimes</h2>
+    <span class="zh">推理 / 训练 / 部署 框架</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="runtime" data-deploy="cloud" data-keywords="vllm sglang 推理引擎 服务端 pagedattention radixattention kv-cache 连续批处理 张量并行 高吞吐 inference serving">
+      <div class="card-top"><h3>服务端推理引擎（vLLM / SGLang）</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">高吞吐 LLM 推理服务 · GPU 集群</div>
+      <p class="desc">面向云端/数据中心的大模型推理服务引擎，把单卡到多机多卡的 GPU 算力榨干，提供 OpenAI 兼容 API。vLLM 以 PagedAttention 分页式 KV-Cache 著称，生态最广、硬件覆盖最全（NVIDIA/AMD/TPU/Trainium/Gaudi）；SGLang 以 RadixAttention 前缀缓存见长，在 RAG、多轮对话、Agent 等前缀复用场景吞吐更高。两者都支持连续批处理、张量/流水线并行、FP8/FP4 量化与推测解码。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>高并发、高吞吐、连续批处理、张量并行、OpenAI 兼容 API</span></li>
+        <li><b>限制</b><span>需 GPU 与运维；端侧/单机轻量场景过重</span></li>
+        <li><b>调用</b><span>Python 部署 / Docker，暴露 OpenAI 兼容 HTTP 接口</span></li>
+        <li><b>许可</b><span>Apache-2.0（vLLM / SGLang）</span></li>
+        <li><b>成本</b><span>免费 / 自托管（需 GPU 算力）</span></li>
+        <li><b>平台</b><span>Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">vLLM ↗</a><a href="https://github.com/sgl-project/sglang" target="_blank" rel="noopener">SGLang ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="runtime" data-deploy="on-device" data-keywords="llama.cpp ggml gguf 量化 端侧推理 本地 cpu metal cuda vulkan 离线 on-device 量化推理">
+      <div class="card-top"><h3>llama.cpp / ggml（GGUF）</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">端侧 C/C++ 推理引擎 · 量化跑大模型</div>
+      <p class="desc">用纯 C/C++ 写的轻量推理引擎，配合张量库 ggml 与 GGUF 量化格式，让 Llama、Qwen 等大模型能在普通 CPU、消费级 GPU、乃至手机上离线运行。统一支持 Apple Metal、NVIDIA CUDA、Vulkan（覆盖 AMD/Intel GPU），是几乎所有本地推理工具（Ollama、LM Studio 等）的内核。GGUF 已成端侧模型分发的事实标准格式。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>CPU/GPU 量化推理、跨平台、低内存、离线可控</span></li>
+        <li><b>限制</b><span>极大模型端侧吃力；纯服务端高并发不如专用引擎</span></li>
+        <li><b>调用</b><span>命令行 / C/C++ / Python 绑定，加载 GGUF 量化权重</span></li>
+        <li><b>许可</b><span>MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>macOS / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">llama.cpp ↗</a><a href="https://huggingface.co/docs/hub/en/gguf-llamacpp" target="_blank" rel="noopener">GGUF 格式说明 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="runtime" data-deploy="on-device" data-keywords="ollama 本地llm 运行时 端侧 openai兼容 anthropic mlx llama.cpp 本地优先 on-device">
+      <div class="card-top"><h3>Ollama</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">本地大模型运行时 · 开箱即用</div>
+      <p class="desc">把本地跑大模型的下载、量化、加载、服务一条龙封装好的运行时。一行 `ollama run` 即可拉起模型，内置模型库、OpenAI 兼容 API，并兼容 Anthropic Messages API（可直连 Claude Code 等工具）。在 Apple Silicon 上底层切换到 MLX 后提速明显，并支持多模态、Web 搜索与 Windows ARM64 原生构建。是面向开发者与本地优先应用的「易用层」。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>一键拉起、模型库管理、OpenAI/Anthropic 兼容 API、多模态</span></li>
+        <li><b>限制</b><span>封装取向，深度调优不如直接用底层引擎；非高并发服务</span></li>
+        <li><b>调用</b><span>CLI / REST API；`ollama run &lt;model&gt;` 或兼容 API 调用</span></li>
+        <li><b>许可</b><span>MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>macOS / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/ollama/ollama" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/ollama/ollama" target="_blank" rel="noopener">Ollama ↗</a><a href="https://ollama.com/library" target="_blank" rel="noopener">模型库 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="runtime" data-deploy="hybrid" data-keywords="onnx onnxruntime 推理 跨平台 execution-provider directml openvino webgpu webnn 量化 hybrid 微软">
+      <div class="card-top"><h3>ONNX Runtime</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">跨平台推理/训练加速器 · 一处导出处处跑</div>
+      <p class="desc">微软主导的跨平台推理（兼训练）引擎，吃 ONNX 标准模型格式，通过「执行提供器（Execution Provider）」对接各类硬件后端：CUDA、TensorRT、DirectML、OpenVINO、CoreML、QNN、WebGPU、WebNN 等。从 PyTorch/TensorFlow/scikit-learn 等导出后即可在服务器、桌面、移动、浏览器统一部署，配合图优化与量化获取性能。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>跨框架/跨硬件、图优化、量化、Web/移动/服务端统一部署</span></li>
+        <li><b>限制</b><span>需先转 ONNX；最新算子/前沿模型支持可能滞后</span></li>
+        <li><b>调用</b><span>Python/C++/C#/JS 等多语言 API；加载 .onnx + 选择 EP</span></li>
+        <li><b>许可</b><span>MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / Web / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/microsoft/onnxruntime" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://onnxruntime.ai/" target="_blank" rel="noopener">ONNX Runtime ↗</a><a href="https://github.com/microsoft/onnxruntime" target="_blank" rel="noopener">GitHub ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="runtime" data-deploy="hybrid" data-keywords="tensorrt tensorrt-llm nvidia gpu 推理优化 fp8 nvfp4 量化 推测解码 blackwell h100 专有 厂商原生">
+      <div class="card-top"><h3>NVIDIA TensorRT / TensorRT-LLM</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">NVIDIA 专有</span></span></div>
+      <div class="role">NVIDIA GPU 极致推理优化 · 厂商专有</div>
+      <p class="desc">NVIDIA 官方的高性能推理优化栈。TensorRT 面向通用深度学习模型，通过算子融合、精度校准、内核自动选择把模型编译成针对特定 GPU 架构的高效引擎；TensorRT-LLM 专为大模型设计，提供 Python API 与 FP8/NVFP4 量化、分离式服务（disaggregated serving）、专家并行、EAGLE-3 等推测解码。绑定 NVIDIA 硬件，是榨干 H100/Blackwell 等卡延迟与吞吐的首选。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>算子融合、低精度量化、推测解码、面向架构的内核优化</span></li>
+        <li><b>限制</b><span>仅限 NVIDIA GPU；编译/调优有学习成本，可移植性差</span></li>
+        <li><b>调用</b><span>Python/C++ API；模型→编译为 TensorRT 引擎后部署</span></li>
+        <li><b>许可</b><span>商用闭源（NVIDIA 专有，部分组件开源）</span></li>
+        <li><b>成本</b><span>免费使用（需 NVIDIA GPU 硬件）</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/NVIDIA/TensorRT-LLM" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/NVIDIA/TensorRT-LLM" target="_blank" rel="noopener">TensorRT-LLM ↗</a><a href="https://developer.nvidia.com/tensorrt-llm" target="_blank" rel="noopener">TensorRT 开发者页 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="runtime" data-deploy="on-device" data-keywords="coreml core ml mlx apple apple-silicon ane 神经网络引擎 端侧 m5 统一内存 平台原生 on-device core-ai">
+      <div class="card-top"><h3>Apple Core ML / MLX</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">Apple 设备端侧推理 · 平台原生</div>
+      <p class="desc">苹果平台的两套端侧运行时。Core ML 是面向 App 集成的推理框架，自动调度 CPU/GPU/神经网络引擎（ANE），支持权重压缩、有状态模型与 MLTensor，是 iOS/macOS App 落地模型的标准路径（WWDC 2026 预计演进为 Core AI）。MLX 是苹果开源的数组/机器学习框架，专为 Apple Silicon 统一内存设计，可训练与推理，在 M5 神经加速器上表现强劲，社区量化模型丰富。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>ANE 加速、统一内存、低功耗、可训练（MLX）、App 深度集成（Core ML）</span></li>
+        <li><b>限制</b><span>仅限 Apple 平台；非苹果硬件不可用</span></li>
+        <li><b>调用</b><span>Core ML：Swift/Obj-C + .mlpackage；MLX：Python/Swift/C++ API</span></li>
+        <li><b>许可</b><span>Core ML 商用闭源 / MLX MIT</span></li>
+        <li><b>成本</b><span>免费（随 Apple 平台）</span></li>
+        <li><b>平台</b><span>iOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/ml-explore/mlx" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/ml-explore/mlx" target="_blank" rel="noopener">MLX ↗</a><a href="https://developer.apple.com/machine-learning/core-ml/" target="_blank" rel="noopener">Core ML 概览 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="runtime" data-deploy="on-device" data-keywords="litert tflite tensorflow-lite executorch pytorch 端侧 移动 边缘 npu mcu 嵌入式 量化 on-device edge">
+      <div class="card-top"><h3>LiteRT / ExecuTorch</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">移动/边缘端侧运行时 · 手机到 MCU</div>
+      <p class="desc">两套主流移动/边缘端侧推理运行时。LiteRT（原 TensorFlow Lite，2026 年 TF 2.21 起转正）是 Google 的通用端侧框架，支持 PyTorch/JAX/Keras 多框架来源，自动在 CPU/GPU/NPU 间选最优后端，量化与设备覆盖成熟。ExecuTorch（PyTorch 官方，1.x 已 Production/Stable）以约 50KB 极小运行时跑遍微控制器到高端手机，12+ 硬件后端（Apple/Qualcomm/ARM/MediaTek/Vulkan），是 Meta 全家桶端侧 AI 的底座。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>手机/嵌入式/MCU 推理、NPU 加速、量化、多框架来源</span></li>
+        <li><b>限制</b><span>需模型转换/导出；前沿超大模型端侧仍受限</span></li>
+        <li><b>调用</b><span>LiteRT：.tflite + Java/Kotlin/Swift/C++；ExecuTorch：.pte + PyTorch 导出</span></li>
+        <li><b>许可</b><span>Apache-2.0（LiteRT）/ BSD（ExecuTorch）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Android / iOS / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/google-ai-edge/LiteRT" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/google-ai-edge/LiteRT" target="_blank" rel="noopener">LiteRT ↗</a><a href="https://github.com/pytorch/executorch" target="_blank" rel="noopener">ExecuTorch ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="runtime" data-deploy="hybrid" data-keywords="pytorch jax 训练 深度学习 torch.compile xla 自动微分 vmap tpu 微调 研究 hybrid flax">
+      <div class="card-top"><h3>PyTorch / JAX</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">深度学习训练与计算框架 · 研究到生产</div>
+      <p class="desc">训练与通用深度学习计算的两大开源框架。PyTorch 以动态图（eager）+ torch.compile 编译优化主导研究界（占研究论文半数以上），生态、模型库、调试与部署工具最全，是绝大多数训练与微调的默认选择，并向下衔接 ExecuTorch、AOTInductor 与 vLLM 等服务栈。JAX 走函数式 + XLA 编译 + vmap/pmap 自动向量化/并行路线，在 TPU 与大规模科学计算、自定义内核上表现突出，是 DeepMind 等的研究主力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>模型训练/微调、自动微分、GPU/TPU 加速、编译优化、生态广（PyTorch）</span></li>
+        <li><b>限制</b><span>训练态偏重，直接做端侧/高并发服务需配套导出与服务引擎</span></li>
+        <li><b>调用</b><span>Python API；PyTorch eager+torch.compile / JAX jit+vmap</span></li>
+        <li><b>许可</b><span>BSD-3（PyTorch）/ Apache-2.0（JAX）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener">PyTorch ↗</a><a href="https://github.com/jax-ml/jax" target="_blank" rel="noopener">JAX ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="algorithm" id="algorithm">
+  <div class="section-head">
+    <span class="section-num">16</span>
+    <h2>Algorithms &amp; Methods</h2>
+    <span class="zh">模型架构 / 训练 / 推理优化 / 检索 / 编解码</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="algorithm" data-deploy="hybrid" data-keywords="transformer 注意力 attention self-attention 自注意力 q-k-v gpt llm dit 模型架构 attention-is-all-you-need">
+      <div class="card-top"><h3>Transformer 架构</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">模型架构</span></span></div>
+      <div class="role">现代大模型的基础架构 · 自注意力</div>
+      <p class="desc">2017 年 Google「Attention Is All You Need」提出的序列建模架构，用自注意力（self-attention）替代 RNN 的循环结构：每个 token 通过 Query/Key/Value 计算与全序列所有 token 的关联，可大规模并行训练并捕捉长程依赖。它是 GPT、Llama、Qwen、Claude、Gemini 等几乎所有主流 LLM 以及多模态、扩散等模型的底座；2024 年起 Stable Diffusion 3、DiT 等也把扩散主干从 U-Net 换成 Transformer。截至 2026 年仍是事实标准，Mamba/SSM 等线性替代多以「混合」形式与其并存而非取代。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>强并行训练、长程依赖建模、可扩展到千亿参数、跨模态通用</span></li>
+        <li><b>限制</b><span>注意力对序列长度 O(n²)，长上下文显存与算力开销大</span></li>
+        <li><b>调用</b><span>PyTorch/JAX 实现，HuggingFace Transformers 封装；几乎所有 LLM/多模态/DiT 的主干</span></li>
+        <li><b>许可</b><span>论文公开 / 实现多为 Apache-2.0、MIT</span></li>
+        <li><b>成本</b><span>免费 / 自实现</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/huggingface/transformers" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need ↗</a><a href="https://poloclub.github.io/transformer-explainer/" target="_blank" rel="noopener">Transformer Explainer ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="algorithm" data-deploy="cloud" data-keywords="moe mixture of experts 混合专家 稀疏 sparse router 路由 deepseek qwen3 llama-4 gpt-oss expert-parallel">
+      <div class="card-top"><h3>Mixture-of-Experts (MoE)</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-open">模型架构</span></span></div>
+      <div class="role">稀疏激活扩参 · 大模型降本提质</div>
+      <p class="desc">把 Transformer 里单个前馈层换成多个「专家」前馈层，再用路由器（router）按 token 只激活其中少数几个。这样总参数量可冲到数千亿乃至万亿，而每个 token 实际计算量只对应被激活的专家，实现「大容量、低单 token 算力」。代表：DeepSeek-V3/R1、Llama 4、Qwen3、Kimi K2、OpenAI gpt-oss（128 路专家激活 4 个）等，常见 256/384 个专家、每 token 激活少数几个。是 2025–2026 旗舰开源模型的主流形态。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>总参数大幅扩张而单 token 算力近恒定、同等成本下质量更高</span></li>
+        <li><b>限制</b><span>全部专家需常驻显存、路由不均衡与负载均衡难、训练/部署工程复杂</span></li>
+        <li><b>调用</b><span>DeepSeek-V3、Qwen3、Llama 4、gpt-oss 等；vLLM/SGLang 以专家并行(EP)服务</span></li>
+        <li><b>许可</b><span>方法公开 / 各模型权重多为开源或开放权重</span></li>
+        <li><b>成本</b><span>训练昂贵 / 推理显存高，自托管或云</span></li>
+        <li><b>平台</b><span>Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/deepseek-ai/DeepSeek-V3" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2412.19437" target="_blank" rel="noopener">DeepSeek-V3 技术报告 ↗</a><a href="https://arxiv.org/abs/2507.11181" target="_blank" rel="noopener">Mixture of Experts 综述 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="algorithm" data-deploy="hybrid" data-keywords="mamba ssm state space model 状态空间 线性注意力 jamba mamba-3 长上下文 序列建模 选择性状态空间">
+      <div class="card-top"><h3>状态空间模型 / Mamba (SSM)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">模型架构</span></span></div>
+      <div class="role">线性复杂度序列建模 · Transformer 替代/混合</div>
+      <p class="desc">状态空间模型（SSM）以 Mamba 为代表，用「选择性状态空间」替代注意力：序列信息压进一个随时间演化的隐状态，复杂度对长度是 O(n) 而非 Transformer 的 O(n²)，推理可做到逐 token O(1)。在百万级超长序列（基因组、音频、长记忆 Agent）上算力与显存优势显著。截至 2026 年实践中多为「混合」形态——如 AI21 Jamba（约每 8 层 Mamba 配 1 层 Transformer，并叠 MoE）、Mamba-3 等，兼顾长上下文成本与质量。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>对序列长度线性扩展、超长上下文显存友好、流式逐 token 推理高效</span></li>
+        <li><b>限制</b><span>纯 SSM 在常规对话/RAG 质量略逊注意力，故主流以混合架构落地；生态不如 Transformer 成熟</span></li>
+        <li><b>调用</b><span>Jamba（混合 SSM-Transformer-MoE）、Mamba-3 等；HuggingFace 可加载，长序列场景为主</span></li>
+        <li><b>许可</b><span>论文公开 / 实现 Apache-2.0 等</span></li>
+        <li><b>成本</b><span>免费自托管 / 云</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/state-spaces/mamba" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2312.00752" target="_blank" rel="noopener">Mamba 论文 ↗</a><a href="https://arxiv.org/abs/2403.19887" target="_blank" rel="noopener">Jamba: Hybrid Transformer-Mamba ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="algorithm" data-deploy="hybrid" data-keywords="diffusion 扩散模型 去噪 ddpm flow-matching rectified-flow dit stable-diffusion flux sora 文生图 文生视频">
+      <div class="card-top"><h3>Diffusion 扩散模型</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">生成方法</span></span></div>
+      <div class="role">图像/视频/音频生成的主流原理 · 去噪生成</div>
+      <p class="desc">扩散模型通过「逐步加噪→学习逐步去噪」来生成数据：训练时把真实样本加噪到纯噪声，模型学习反向去噪；采样时从随机噪声出发迭代还原出图像/视频/音频。是 Stable Diffusion、FLUX、Sora/Veo 等文生图、文生视频的底层方法。2024 年起主干普遍从 U-Net 转向 Transformer（DiT），并用 flow matching / rectified flow 简化训练目标、把多步采样压到极少步，显著提速。是生成式视觉与音频的事实标准方法。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>高保真多样生成、可文本/图像条件控制、覆盖图像视频音频与超分编辑</span></li>
+        <li><b>限制</b><span>原始多步采样推理慢算力高；需蒸馏/少步采样加速；可控性依赖额外条件机制</span></li>
+        <li><b>调用</b><span>Diffusers 库；Stable Diffusion 3、FLUX、Sora/Veo 等，DiT 主干 + rectified flow</span></li>
+        <li><b>许可</b><span>方法公开 / 实现与权重多为开源或开放权重</span></li>
+        <li><b>成本</b><span>免费自托管 / 云 GPU</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/huggingface/diffusers" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">DDPM 论文 ↗</a><a href="https://arxiv.org/abs/2403.03206" target="_blank" rel="noopener">Stable Diffusion 3 (rectified flow) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="algorithm" data-deploy="on-device" data-keywords="量化 quantization gguf awq gptq int4 int8 fp8 4-bit llama.cpp ollama 端侧 ptq">
+      <div class="card-top"><h3>模型量化 (Quantization)</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">推理优化</span></span></div>
+      <div class="role">压缩权重精度 · 端侧/低成本跑大模型</div>
+      <p class="desc">把模型权重（有时含激活/KV cache）从 FP16/BF16 降到 INT8、INT4 甚至更低，显著减小显存与带宽、提速推理，是在手机、笔记本、单卡上跑大模型的关键。主流后训练量化（PTQ）方案：GGUF（llama.cpp/Ollama 生态，Q2_K–Q8_0 多档、支持 CPU+GPU 混合）、AWQ（激活感知，4-bit 下质量与稳定性常优于 GPTQ）、GPTQ（经典逐层量化），以及 GPU 原生的 FP8（接近 FP16 质量、推理最快）。是端侧与降本部署的标配。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>大幅降显存与带宽、提速、让大模型跑进消费级设备</span></li>
+        <li><b>限制</b><span>低比特（如 INT4）在数学/代码/推理任务易掉点；需校准，FP8 依赖较新硬件</span></li>
+        <li><b>调用</b><span>llama.cpp/Ollama(GGUF)、AutoAWQ、AutoGPTQ；vLLM/TensorRT-LLM 支持 FP8/INT4 服务</span></li>
+        <li><b>许可</b><span>方法公开 / 工具多为 MIT、Apache-2.0</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>跨平台 / Server / iOS / Android</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener">GPTQ 论文 ↗</a><a href="https://arxiv.org/abs/2306.00978" target="_blank" rel="noopener">AWQ 论文 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="algorithm" data-deploy="hybrid" data-keywords="推理优化 flashattention flash-attention kv-cache kv缓存 投机解码 speculative decoding pagedattention vllm sglang 吞吐 延迟">
+      <div class="card-top"><h3>推理优化 (FlashAttention / KV cache / 投机解码)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">推理优化</span></span></div>
+      <div class="role">提升 LLM 吞吐与延迟 · 不改模型质量</div>
+      <p class="desc">一组在「不改变模型权重/输出质量」前提下加速 LLM 推理的核心算法：FlashAttention（IO 感知的融合注意力核，省显存、提速，已到 v3）、KV cache（缓存已生成 token 的 K/V 避免重复计算，是自回归生成提速的基础，可再叠加 FP8/分页缓存 PagedAttention）、投机解码（speculative decoding，用小草稿模型快速产候选、大模型一次性验证，常 2–3 倍提速且输出与原模型一致）。是 vLLM、SGLang、TensorRT-LLM 等推理引擎的标配组合。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>成倍提升吞吐、降低延迟与显存占用，且不损失生成质量</span></li>
+        <li><b>限制</b><span>实现依赖特定硬件/核；投机解码收益随草稿命中率波动，长序列需专门处理</span></li>
+        <li><b>调用</b><span>vLLM、SGLang、TensorRT-LLM 内置；FlashAttention-3、PagedAttention、speculative decoding</span></li>
+        <li><b>许可</b><span>方法公开 / 实现多为 Apache-2.0、BSD</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2407.08608" target="_blank" rel="noopener">FlashAttention-3 ↗</a><a href="https://blog.vllm.ai/2023/06/20/vllm.html" target="_blank" rel="noopener">vLLM (PagedAttention) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="algorithm" data-deploy="hybrid" data-keywords="lora qlora peft 微调 fine-tuning dora adalora 低秩 low-rank 参数高效 adapter 适配器">
+      <div class="card-top"><h3>LoRA / PEFT 微调</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">训练方法</span></span></div>
+      <div class="role">参数高效微调 · 低成本定制大模型</div>
+      <p class="desc">参数高效微调（PEFT）只训练极小一部分新增参数而冻结原模型，让大模型能在单张消费级 GPU 上定制。代表 LoRA：在权重旁注入低秩矩阵 A·B，只训练这对小矩阵，推理时可合并回原权重零额外开销。QLoRA 进一步把基座以 4-bit 加载再训 LoRA，效果接近全量 16-bit 微调而显存骤降；DoRA、AdaLoRA、VeRA 等改进在更少参数下追平甚至超过 LoRA。是行业定制、领域适配、风格对齐的默认手段。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>单卡可微调、训练/存储成本降 10–20 倍、可热插拔多套适配器、质量保留 90–95%</span></li>
+        <li><b>限制</b><span>能力受限于低秩假设，难注入大量新知识；多适配器管理与秩选择需调参</span></li>
+        <li><b>调用</b><span>HuggingFace PEFT、Unsloth、Axolotl；LoRA/QLoRA/DoRA，产出可合并或挂载的适配器</span></li>
+        <li><b>许可</b><span>方法公开 / 工具 Apache-2.0、MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管，单卡可行</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/huggingface/peft" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA 论文 ↗</a><a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener">QLoRA 论文 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="algorithm" data-deploy="cloud" data-keywords="rlhf dpo grpo 对齐 alignment 偏好优化 ppo rlvr dapo 强化学习 deepseek-r1 后训练 post-training">
+      <div class="card-top"><h3>RLHF / DPO / GRPO 对齐</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-open">训练方法</span></span></div>
+      <div class="role">对齐人类偏好与可验证奖励 · 后训练</div>
+      <p class="desc">让预训练模型「听话、有用、安全、会推理」的后训练对齐方法。RLHF（基于人类反馈的强化学习）是奠基范式：训练奖励模型再用 PPO 优化策略。DPO 把它简化为直接在偏好数据对上做监督式优化，省掉独立奖励模型与在线 RL，更稳更省。2025–2026 年重心转向可验证奖励 RL（RLVR）——以 GRPO（组内采样多答案、相对比较算优势、无需 critic）、DAPO 等用数学/代码等可自动判分的信号替代人工反馈，是 DeepSeek-R1 等推理模型能力跃升的关键。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>对齐人类偏好、提升有用性与安全性；GRPO/RLVR 大幅强化数学与推理能力</span></li>
+        <li><b>限制</b><span>数据/算力昂贵，奖励易被钻空(reward hacking)；RLVR 仅适用于答案可自动验证的任务</span></li>
+        <li><b>调用</b><span>TRL、OpenRLHF、verl 等；SFT→(RLHF/DPO)→(GRPO/RLVR) 的后训练管线</span></li>
+        <li><b>许可</b><span>方法公开 / 工具 Apache-2.0、MIT</span></li>
+        <li><b>成本</b><span>训练昂贵，云/集群</span></li>
+        <li><b>平台</b><span>Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/huggingface/trl" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">InstructGPT (RLHF) ↗</a><a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">DPO 论文 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="hardware" id="hardware">
+  <div class="section-head">
+    <span class="section-num">17</span>
+    <h2>Hardware &amp; Compute</h2>
+    <span class="zh">AI 芯片 / 算力 / 传感器 / 边缘设备</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="hardware" data-deploy="on-device" data-keywords="ane apple neural engine npu 神经网络引擎 core ml coreml a19 m5 端侧 on-device tops">
+      <div class="card-top"><h3>Apple Neural Engine (ANE)</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 专有</span></span></div>
+      <div class="role">端侧 NPU · 低功耗推理</div>
+      <p class="desc">Apple SoC 内置的神经网络加速单元，自 A11 起随每代芯片演进。当前 A19 Pro 与 M5 均为 16 核 ANE，M5 一代峰值达约 60 TOPS(为 M4 两倍);M5 还把 Neural Accelerator 嵌入每个 GPU 核心。App 不直接编程 ANE，由 Core ML 在运行时把模型调度到 ANE / GPU / CPU。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>16 核 NPU,M5 约 60 TOPS;低功耗常驻推理,Core ML 自动算子调度</span></li>
+        <li><b>限制</b><span>Apple 专有,仅 Apple 设备;不可直接编程,受 Core ML 算子覆盖与内存约束;TOPS 随机型差异大</span></li>
+        <li><b>调用</b><span>Core ML(模型转 .mlpackage 后由系统调度上 ANE);经 BNNS / MPS 间接受益</span></li>
+        <li><b>许可</b><span>商用闭源(随设备)</span></li>
+        <li><b>成本</b><span>消费级(随设备,无单独售价)</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/machine-learning/core-ml/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/machine-learning/core-ml/" target="_blank" rel="noopener">Core ML ↗</a><a href="https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/" target="_blank" rel="noopener">Apple M5 发布 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="hardware" data-deploy="on-device" data-keywords="hexagon qualcomm npu snapdragon 骁龙 ai engine qnn snpe nnapi 端侧 on-device tops ai pc">
+      <div class="card-top"><h3>Qualcomm Hexagon NPU</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Qualcomm</span></span></div>
+      <div class="role">Android / AI PC 端侧 NPU</div>
+      <p class="desc">高通 Snapdragon 平台的 AI 加速核心,融合标量、向量、张量加速器与大共享内存。最新 Snapdragon 8 Elite Gen 5(移动)与 X2 Elite(AI PC,Hexagon NPU 6 达约 80 TOPS)是 Android 手机与 Windows on Arm 端侧 AI 的主力,支持 INT4/INT8/INT16/FP16 混合精度。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>标量+向量+张量融合;X2 Elite 约 80 TOPS;微瓦片推理、层融合减少中间内存读写;INT4–FP16 混合精度</span></li>
+        <li><b>限制</b><span>Qualcomm 专有,绑定骁龙平台;不同代/档 TOPS 差异大;调优依赖 QNN / SNPE 工具链</span></li>
+        <li><b>调用</b><span>Android 经 NNAPI 或 Qualcomm AI Engine(QNN/SNPE);AI PC 经 ONNX Runtime / LiteRT / Windows ML</span></li>
+        <li><b>许可</b><span>商用闭源(随 SoC)</span></li>
+        <li><b>成本</b><span>消费级(随设备)</span></li>
+        <li><b>平台</b><span>Android / Windows</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://www.qualcomm.com/processors/hexagon" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://www.qualcomm.com/processors/hexagon" target="_blank" rel="noopener">Hexagon NPU ↗</a><a href="https://www.qualcomm.com/processors/ai-engine" target="_blank" rel="noopener">Qualcomm AI Engine ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="hardware" data-deploy="cloud" data-keywords="nvidia blackwell b200 gb200 h100 gpu 数据中心 datacenter cuda fp4 hbm3e nvlink 算力 训练">
+      <div class="card-top"><h3>NVIDIA Blackwell 数据中心 GPU</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-platform">NVIDIA</span></span></div>
+      <div class="role">训练 / 推理算力底座 · 数据中心</div>
+      <p class="desc">NVIDIA Blackwell 架构数据中心 GPU(B200 / GB200),H100·H200 的继任者。B200 双 die、2080 亿晶体管、180GB HBM3e、8TB/s 带宽,第五代 Tensor Core 原生 FP4。相对 H100,Transformer 训练吞吐约 3–4×、FP4 推理约 3×。GB200 Grace-Blackwell 超级芯片把 1 颗 Grace CPU + 2 颗 B200 经 NVLink-C2C 相连,NVL72 整机柜级互联。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>B200 180GB HBM3e、8TB/s;FP4/FP8 第五代 Tensor Core;NVLink 5.0 1.8TB/s;较 H100 训练约 3–4×</span></li>
+        <li><b>限制</b><span>企业/数据中心级,价格与功耗极高(GB200 超级芯片约 $6–7 万);供货紧张;基本只经云租用</span></li>
+        <li><b>调用</b><span>CUDA / cuDNN / TensorRT-LLM,经 PyTorch、JAX 等框架;多由云厂商以 GPU 实例提供</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>企业级(超级芯片约 $6–7 万 / 多按云时计费)</span></li>
+        <li><b>平台</b><span>Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/" target="_blank" rel="noopener">Blackwell 架构 ↗</a><a href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/" target="_blank" rel="noopener">GB200 NVL72 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="hardware" data-deploy="cloud" data-keywords="google tpu ironwood tpu7x asic 云算力 hbm3e jax xla 推理 训练 superpod">
+      <div class="card-top"><h3>Google TPU(Ironwood)</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云算力</span></span></div>
+      <div class="role">训练 / 推理 ASIC · Google Cloud</div>
+      <p class="desc">Google 自研张量处理单元,第七代 Ironwood(TPU7x)为首款面向推理时代设计的 TPU。单芯片 192GB HBM3e、约 7.4TB/s 带宽、约 4.6 PFLOPS 稠密 FP8(略超 B200);可扩展至 9216 芯片的 superpod,经 ICI 互联(9.6Tb/s)共享约 1.77PB HBM。仅经 Google Cloud 租用,非散售硬件。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>单芯片 192GB HBM3e、约 7.4TB/s;约 4.6 PFLOPS FP8;superpod 至 9216 芯片、约 1.77PB 共享 HBM</span></li>
+        <li><b>限制</b><span>仅 Google Cloud 提供,不可自购;生态以 JAX/TF 为主,PyTorch 经 PyTorch/XLA;迁移有锁定成本</span></li>
+        <li><b>调用</b><span>Google Cloud TPU VM;JAX 或 TensorFlow 原生,PyTorch 经 PyTorch/XLA</span></li>
+        <li><b>许可</b><span>商用闭源(云服务)</span></li>
+        <li><b>成本</b><span>企业级(按 Google Cloud 用量计费)</span></li>
+        <li><b>平台</b><span>Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://cloud.google.com/tpu" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://blog.google/products/google-cloud/ironwood-tpu-age-of-inference/" target="_blank" rel="noopener">Ironwood 介绍 ↗</a><a href="https://docs.cloud.google.com/tpu/docs/tpu7x" target="_blank" rel="noopener">TPU7x 文档 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="hardware" data-deploy="cloud" data-keywords="groq lpu cerebras wse-3 推理 inference 低延迟 token 数据流 晶圆级 云算力 asic">
+      <div class="card-top"><h3>推理专用芯片(Groq LPU / Cerebras)</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云算力</span></span></div>
+      <div class="role">超低延迟 LLM 推理 · 非 GPU 架构</div>
+      <p class="desc">面向 LLM 推理、绕开 GPU 的专用架构,主打每秒 token 数与首字延迟。Groq LPU 用确定性数据流架构,单模型可达上千 token/s、首字 &lt;100ms;Cerebras 用晶圆级 WSE-3(4 万亿晶体管、90 万核、44GB 片上 SRAM、约 21PB/s 带宽),Llama 3.1-405B 突破 1000 token/s。两者主要以云推理 API 形式提供。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>极高 token/s 与极低首字延迟;Groq 确定性数据流;Cerebras 晶圆级、44GB 片上 SRAM、约 21PB/s 带宽</span></li>
+        <li><b>限制</b><span>偏推理(非训练);硬件不散售,基本只经各自云;支持模型集合受限于厂商部署</span></li>
+        <li><b>调用</b><span>Groq / Cerebras 云推理 API(多兼容 OpenAI 风格接口)</span></li>
+        <li><b>许可</b><span>商用闭源(云服务)</span></li>
+        <li><b>成本</b><span>企业级 / 按 token 计费</span></li>
+        <li><b>平台</b><span>Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://groq.com/lpu-architecture" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://groq.com/lpu-architecture" target="_blank" rel="noopener">Groq LPU ↗</a><a href="https://www.cerebras.ai/blog/cerebras-cs-3-vs-groq-lpu" target="_blank" rel="noopener">Cerebras CS-3 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="hardware" data-deploy="on-device" data-keywords="nvidia jetson orin thor agx 边缘 edge som 机器人 robotics jetpack cuda tensorrt tops 端侧">
+      <div class="card-top"><h3>NVIDIA Jetson 边缘模组</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">NVIDIA</span></span></div>
+      <div class="role">边缘 AI / 机器人模组 · 端侧</div>
+      <p class="desc">NVIDIA 面向机器人、边缘视觉、传感器融合的 SoM(系统级模组)系列。当前旗舰 Jetson AGX Thor(2025-08)融合 Blackwell GPU 与 14 核 Arm Neoverse,128GB LPDDR5X,达约 2070 FP4 TFLOPS、40–130W 可配,较上代 AGX Orin(约 275 TOPS)AI 算力提升超 7.5×。可在本地跑生成式 AI 与实时多传感融合。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>Thor 约 2070 FP4 TFLOPS、128GB、40–130W;Orin 约 275 TOPS;CUDA 全栈、实时多传感融合</span></li>
+        <li><b>限制</b><span>功耗/散热/成本高于轻量 NPU 板;价格偏开发者/企业级;吃 CUDA 生态绑定</span></li>
+        <li><b>调用</b><span>JetPack SDK(CUDA / TensorRT / cuDNN)、Isaac ROS;模型经 TensorRT 优化部署</span></li>
+        <li><b>许可</b><span>商用闭源(硬件)</span></li>
+        <li><b>成本</b><span>开发者 / 企业级(开发套件数千元起)</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.nvidia.com/embedded/jetson-modules" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.nvidia.com/embedded/jetson-modules" target="_blank" rel="noopener">Jetson 模组 ↗</a><a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-thor/" target="_blank" rel="noopener">Jetson Thor ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="hardware" data-deploy="hybrid" data-keywords="rk3588 rockchip coral edge tpu npu 边缘 edge 开发板 sbc rknn tflite 树莓派 开源硬件 hybrid">
+      <div class="card-top"><h3>开放边缘板(RK3588 / Coral Edge TPU)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开放生态</span></span></div>
+      <div class="role">低成本边缘 AI 开发板 · 端/边两用</div>
+      <p class="desc">面向 DIY、原型与轻量边缘部署的低成本算力。Rockchip RK3588 是 8nm 八核 SoC(4×A76 + 4×A55)+ Mali-G610 GPU + 6 TOPS NPU,支持 INT4–FP16 与 8K 编解码,生态以开放开发板与开源驱动为主;Google Coral Edge TPU(USB/M.2/SoM)4 TOPS、约 2W,跑 TensorFlow Lite,可给树莓派等任意主机外挂推理。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>RK3588 六 TOPS NPU、八核 CPU、8K 编解码;Coral 4 TOPS、约 2W、MobileNet 近 400fps</span></li>
+        <li><b>限制</b><span>算力远低于 Jetson;模型需量化/转换;RK3588 NPU 调优依赖 RKNN 工具链,Coral 仅吃 TFLite int8</span></li>
+        <li><b>调用</b><span>RK3588 经 RKNN-Toolkit;Coral 经 PyCoral / TensorFlow Lite + Edge TPU Compiler</span></li>
+        <li><b>许可</b><span>开放硬件生态 / 部分开源驱动</span></li>
+        <li><b>成本</b><span>消费级(开发板数百元;Coral USB 约 $60)</span></li>
+        <li><b>平台</b><span>Linux / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://coral.ai/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://www.coral.ai/docs/edgetpu/faq/" target="_blank" rel="noopener">Coral 文档 ↗</a><a href="https://www.rock-chips.com/" target="_blank" rel="noopener">RK3588 (Rockchip) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="hardware" data-deploy="on-device" data-keywords="imu 惯性 加速度计 陀螺仪 mems uwb 超宽带 802.15.4z u2 dtof 飞行时间 lidar 测距 传感器 端侧 core motion nearby interaction">
+      <div class="card-top"><h3>运动与测距传感(IMU / UWB / dToF)</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">端侧传感</span></span></div>
+      <div class="role">惯性 / 超宽带 / 飞行时间 · 物理感知底座</div>
+      <p class="desc">端侧的物理感知三件套。IMU(MEMS 加速度计+陀螺仪,常含磁力计)给出运动与姿态,是计步、AR 姿态、防抖的基础;UWB 超宽带(Apple U2、Qorvo DW3xxx 等,IEEE 802.15.4z)用 ToF 做厘米级安全测距与空间定位;dToF(直接飞行时间,即 LiDAR 一类)按光往返时间测距,用于深度与近距 3D。它们多内置于手机/可穿戴/头显。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>IMU 9 轴运动姿态、高采样率;UWB 厘米级安全测距与 AoA 定向;dToF 直接测距、深度图</span></li>
+        <li><b>限制</b><span>IMU 有漂移需融合校准;UWB 需对端设备且生态分散;dToF 量程/精度随距离材质下降、强光受扰</span></li>
+        <li><b>调用</b><span>iOS Core Motion / Nearby Interaction;Android Sensor / NNAPI 无关的 UWB API;ARKit/ARCore 融合 dToF</span></li>
+        <li><b>许可</b><span>随器件 / 标准开放(IEEE 802.15.4z)</span></li>
+        <li><b>成本</b><span>消费级(内置于设备)</span></li>
+        <li><b>平台</b><span>iOS / Android / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/coremotion" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/coremotion" target="_blank" rel="noopener">Core Motion ↗</a><a href="https://developer.apple.com/documentation/nearbyinteraction" target="_blank" rel="noopener">Nearby Interaction (UWB) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
     </article>
   </div>
 </section>

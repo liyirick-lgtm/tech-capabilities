@@ -8,7 +8,7 @@
 
 ## 现状 · Status
 
-已落地：`content/` 下 **14 类共 87 条**，由 `npm run build` 生成 [`index.html`](index.html)（可直接用浏览器打开）。原型 `tech-knowledge-base.html` 已归档到 `archive/`。约定与贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+已落地：`content/` 下 **17 类共 111 条**，由 `npm run build` 生成 [`index.html`](index.html)（可直接用浏览器打开）。原型 `tech-knowledge-base.html` 已归档到 `archive/`。约定与贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 它是什么
 
@@ -16,7 +16,7 @@
 - 入口 `index.html` 提供**搜索 + 分类筛选 + 端侧/云端筛选**，以卡片速览每项技术（定位 / 能力 / 限制 / 调用方式 / 来源 / 部署 / 源仓库链接）。
 - 每项技术的「真身」是一个 **Markdown 文件**，按分类放进对应文件夹 —— 既是 `index.html` 的数据来源，也方便直接在 GitHub 上逐项浏览。
 
-## 分类 · Categories（14 类 / 7 组）
+## 分类 · Categories（17 类 / 8 组）
 
 | 组 | 分类 |
 |---|---|
@@ -27,6 +27,7 @@
 | E 语言与智能 | 大模型 LLM（端侧+云端） · 检索与编排（Embedding/向量/RAG/MCP/Agent） |
 | F 空间计算 | 3D 与空间计算 |
 | G 平台底座 | 系统集成与意图 · 隐私安全与端云协同 · 连接与通信 |
+| H 底层 | 运行时框架 · 算法方法 · 硬件算力 |
 
 ## 目录结构 · Structure (target)
 
@@ -45,6 +46,7 @@
 │   ├── llm/  retrieval/
 │   ├── spatial/
 │   ├── system/  security/  connectivity/
+│   ├── runtime/  algorithm/  hardware/
 │   │   ├── _category.md    # 分类元信息：组 / 标题 / 副标题 / 筛选标签 / 排序
 │   │   └── <slug>.md       # 一项技术一个文件
 ├── README.md
