@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<!-- 此文件是模板。最终 index.html 由 `npm run build` 从 content/ 生成，请勿手改生成物。 -->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术知识图谱 · Tech Atlas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --ink:#13110e;
+  --paper:#f4efe6;
+  --paper-2:#eae3d4;
+  --line:#cabfa8;
+  --accent:#c2410c;
+  --accent-2:#1d4d4f;
+  --muted:#6b6354;
+  --card:#fbf8f1;
+  --shadow:rgba(40,33,20,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Noto Sans SC','Space Mono',sans-serif;
+  line-height:1.6;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(194,65,12,.05), transparent 45%),
+    radial-gradient(circle at 82% 78%, rgba(29,77,79,.06), transparent 50%);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* ---------- Header ---------- */
+header{
+  border-bottom:2px solid var(--ink);
+  padding:54px 0 26px;
+  position:relative;
+  overflow:hidden;
+}
+.kicker{
+  font-family:'Space Mono',monospace;
+  font-size:12px;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:clamp(40px,7vw,86px);
+  line-height:.96;
+  letter-spacing:-.02em;
+}
+h1 em{font-style:italic;color:var(--accent-2)}
+.sub{
+  margin-top:22px;max-width:680px;
+  font-size:16px;color:var(--muted);font-weight:300;
+}
+.meta-row{
+  margin-top:30px;display:flex;flex-wrap:wrap;gap:26px;
+  font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);
+  letter-spacing:.06em;
+}
+.meta-row b{color:var(--ink);font-weight:700}
+
+/* ---------- Controls ---------- */
+.controls{
+  position:sticky;top:0;z-index:40;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  padding:14px 0;
+  backdrop-filter:blur(6px);
+}
+.controls-inner{display:flex;flex-direction:column;gap:10px}
+.controls-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+#search{
+  flex:1;min-width:220px;
+  background:var(--card);
+  border:1.5px solid var(--ink);
+  padding:11px 16px;
+  font-family:'Space Mono',monospace;font-size:13px;
+  color:var(--ink);
+  border-radius:2px;
+}
+#search:focus{outline:none;border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters-label{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.chip{
+  font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.04em;
+  padding:8px 13px;border:1.4px solid var(--line);
+  background:transparent;color:var(--muted);
+  cursor:pointer;border-radius:30px;transition:all .18s;user-select:none;
+}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.filters.deploy .chip{border-radius:5px}
+.filters.deploy .chip.active{background:var(--accent-2);border-color:var(--accent-2)}
+.count-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:auto}
+
+/* ---------- Sections ---------- */
+main{padding:50px 0 80px}
+.section{margin-bottom:64px;scroll-margin-top:140px}
+.section-head{
+  display:flex;align-items:baseline;gap:18px;
+  border-bottom:1px solid var(--ink);
+  padding-bottom:12px;margin-bottom:30px;
+}
+.section-num{
+  font-family:'Space Mono',monospace;font-size:13px;
+  color:var(--accent);font-weight:700;
+}
+.section-head h2{
+  font-family:'Fraunces',serif;font-weight:500;font-size:clamp(24px,3.4vw,38px);
+  letter-spacing:-.01em;flex:1;
+}
+.section-head .zh{font-size:14px;color:var(--muted);font-weight:300;font-family:'Noto Sans SC'}
+
+/* ---------- Cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+.card{
+  background:var(--card);
+  border:1.5px solid var(--ink);
+  border-radius:3px;
+  padding:22px 22px 20px;
+  display:flex;flex-direction:column;
+  box-shadow:4px 4px 0 var(--shadow);
+  transition:transform .2s,box-shadow .2s;
+  position:relative;
+}
+.card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--shadow)}
+.card.hidden{display:none}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.card-top h3{flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word}
+.card h3{
+  font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.15;
+  letter-spacing:-.01em;
+}
+.tag-group{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
+.tag{
+  font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;white-space:nowrap;
+  padding:4px 8px;border-radius:20px;font-weight:700;flex-shrink:0;
+}
+.t-platform{background:rgba(29,77,79,.13);color:var(--accent-2)}
+.t-open{background:rgba(194,65,12,.13);color:var(--accent)}
+.t-cloud{background:rgba(80,70,50,.12);color:var(--muted)}
+.tag.deploy{background:transparent;border:1.3px solid currentColor}
+.tag.deploy.d-on-device{color:var(--accent-2)}
+.tag.deploy.d-cloud{color:var(--muted)}
+.tag.deploy.d-hybrid{color:var(--accent)}
+.card .role{
+  font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);
+  letter-spacing:.04em;margin-bottom:12px;
+}
+.card .desc{font-size:13.5px;color:var(--ink);margin-bottom:14px;font-weight:300}
+.specs{list-style:none;margin-top:auto;border-top:1px dashed var(--line);padding-top:12px}
+.specs li{display:flex;gap:8px;font-size:12px;margin-bottom:6px;color:var(--muted)}
+.specs li b{
+  font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink);flex-shrink:0;width:74px;
+}
+.specs li span{flex:1}
+.card-foot{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.card-foot a{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);text-decoration:none}
+.card-foot a:hover{text-decoration:underline}
+
+footer{border-top:2px solid var(--ink);padding:30px 0 60px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+footer a{color:var(--accent)}
+.no-results{display:none;text-align:center;padding:60px 0;font-family:'Space Mono',monospace;color:var(--muted)}
+.no-results.show{display:block}
+
+@media(max-width:600px){
+  .specs li b{width:62px}
+  header{padding:38px 0 22px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Personal Tech Atlas · 技术能力图谱</div>
+    <h1>主流技术与<br>功能<em>知识库</em></h1>
+    <p class="sub">收集端侧与云端的主流技术能力——影像、传感、视觉与多模态、语音与音频、生成式媒体、大模型与检索、空间计算、平台底座——作为可检索的知识点，方便探索如何组合不同技术，做出不一样的软件效果。</p>
+    <div class="meta-row">
+      <span>整理日期 <b>2026.06</b></span>
+      <span>条目 <b id="total-count">—</b></span>
+      <span>领域 <b>14 大类</b></span>
+      <span>更新方式 <b>持续补充</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap controls-inner">
+    <div class="controls-row">
+      <input id="search" type="text" placeholder="搜索技术、能力、关键词…  e.g. OCR / 双摄 / whisper / 语音克隆 / RAG">
+      <span class="count-note" id="visible-count"></span>
+    </div>
+    <div class="controls-row">
+      <div class="filters" id="filters">
+        <span class="filters-label">分类</span>
+        <span class="chip active" data-f="all">全部</span>
+        <span class="chip" data-f="imaging">影像 / 相机</span>
+        <span class="chip" data-f="sensing">传感与运动</span>
+        <span class="chip" data-f="vision">视觉识别</span>
+        <span class="chip" data-f="multimodal">多模态理解</span>
+        <span class="chip" data-f="asr">语音识别 ASR</span>
+        <span class="chip" data-f="tts">语音合成 TTS</span>
+        <span class="chip" data-f="audio">音频与音乐</span>
+        <span class="chip" data-f="genvisual">生成式视觉</span>
+        <span class="chip" data-f="llm">大模型 LLM</span>
+        <span class="chip" data-f="retrieval">检索与编排</span>
+        <span class="chip" data-f="spatial">3D / 空间</span>
+        <span class="chip" data-f="system">系统集成</span>
+        <span class="chip" data-f="security">隐私安全</span>
+        <span class="chip" data-f="connectivity">连接通信</span>
+      </div>
+    </div>
+    <div class="controls-row">
+      <div class="filters deploy" id="deployFilters">
+        <span class="filters-label">部署</span>
+        <span class="chip active" data-d="all">全部</span>
+        <span class="chip" data-d="on-device">端侧</span>
+        <span class="chip" data-d="cloud">云端</span>
+        <span class="chip" data-d="hybrid">端云</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="section" data-cat="imaging" id="imaging">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2>Imaging &amp; Camera</h2>
+    <span class="zh">影像采集 / 计算摄影 / 专业格式</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="imaging" data-deploy="on-device" data-keywords="多摄 双摄 同时录制 multicam 前后摄像头 avfoundation pip 画中画">
+      <div class="card-top"><h3>AVCaptureMultiCamSession</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">多摄像头同时采集 · AVFoundation</div>
+      <p class="desc">在一个采集会话里同时调用前后/广角/长焦多颗摄像头，可同时输出多路预览、视频、照片或元数据，做画中画、双路录制、分屏等效果。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>前后同录、多路 VideoDataOutput / PhotoOutput / 元数据并行（条码、人脸）</span></li>
+        <li><b>限制</b><span>需 A12 及以上芯片；设备支持的组合由 supportedMultiCamDeviceSets 决定；功耗/发热较高</span></li>
+        <li><b>调用</b><span>AVFoundation，Swift/ObjC；通过 AVCaptureConnection 定义数据流向</span></li>
+        <li><b>平台</b><span>iOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="imaging" data-deploy="on-device" data-keywords="双摄 双照片 景深 dualcamera 同时拍照 广角 长焦">
+      <div class="card-top"><h3>Dual Photo Delivery</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">双镜头同时出片 · AVCapturePhotoOutput</div>
+      <p class="desc">在双摄设备上同时拍下广角与长焦两张照片，可用于景深合成、视角对照或后期选择，无需用户来回切换镜头。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>一次快门同时返回两颗镜头的原片</span></li>
+        <li><b>限制</b><span>仅双摄设备；需在采集管线提前启用配置</span></li>
+        <li><b>调用</b><span>isDualCameraDualPhotoDeliveryEnabled</span></li>
+        <li><b>平台</b><span>iOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="imaging" data-deploy="on-device" data-keywords="语义分割 头发 皮肤 牙齿 人像 抠图 segmentation 美颜 photo effects">
+      <div class="card-top"><h3>Semantic Segmentation Mattes</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">人像语义分割遮罩 · 计算摄影</div>
+      <p class="desc">拍照时自动生成头发、皮肤、牙齿等语义分割遮罩，可在后期对各区域分别处理，实现精细抠像、美颜、影棚级人像效果。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>分通道输出头发/皮肤/牙齿等遮罩（matte）</span></li>
+        <li><b>限制</b><span>主要针对人像；依赖支持的设备与拍摄模式</span></li>
+        <li><b>调用</b><span>AVFoundation 照片管线（WWDC19 起）</span></li>
+        <li><b>平台</b><span>iOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="imaging" data-deploy="on-device" data-keywords="proraw raw dng 专业格式 后期 宽容度 log apple log 专业影像 prores">
+      <div class="card-top"><h3>ProRAW / Apple Log / ProRes</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">专业影像格式 · 高宽容度采集</div>
+      <p class="desc">面向专业拍摄的高保真采集格式：ProRAW（计算摄影 + RAW 后期宽容度）、Apple Log（调色宽容度）、ProRes（高码率视频），适合需要重度后期的影像类 App。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>更大后期空间、保留计算摄影信息、专业调色流程</span></li>
+        <li><b>限制</b><span>文件体积大；机型/存储要求高；需对应 Pro 机型</span></li>
+        <li><b>调用</b><span>AVFoundation / 系统相机配置</span></li>
+        <li><b>平台</b><span>iOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="imaging" data-deploy="on-device" data-keywords="镜头脏污 smudge 检测 模糊 photo quality 镜头检测">
+      <div class="card-top"><h3>Lens Smudge Detection</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">镜头脏污 / 模糊检测 · Vision (iOS 26)</div>
+      <p class="desc">iOS 26 在 Vision 中新增镜头脏污检测，可在相册或自有采集管线中识别可能被指纹/脏污影响的模糊图片，提升扫描和拍摄质量。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>识别潜在脏污/模糊图像</span></li>
+        <li><b>限制</b><span>iOS 26+；属于辅助质量判断</span></li>
+        <li><b>调用</b><span>Vision framework（WWDC25）</span></li>
+        <li><b>平台</b><span>iOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="sensing" id="sensing">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2>Sensing &amp; Motion</h2>
+    <span class="zh">传感 / 运动 / 定位 / 健康</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="sensing" data-deploy="on-device" data-keywords="core motion 计步 运动 设备姿态 陀螺仪 加速度计 pedometer cmmotionmanager motion">
+      <div class="card-top"><h3>Core Motion</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">运动与设备姿态 · 计步/陀螺仪</div>
+      <p class="desc">Apple 的运动数据框架，读取加速度计、陀螺仪、磁力计与气压计，并提供融合后的设备姿态(CMDeviceMotion)、计步与活动类型(走/跑/骑车/驾车)识别，是健身、AR 稳定、手势交互的底层数据源。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>计步/距离/楼层、设备姿态(attitude/旋转)、活动识别、原始加速度与陀螺仪</span></li>
+        <li><b>限制</b><span>CMMotionManager 实时流上限约 100Hz；高频批采(CMBatchedSensorManager 200/800Hz)仅 Apple Watch 较新机型；部分数据需协处理器支持</span></li>
+        <li><b>调用</b><span>Core Motion(CMMotionManager / CMPedometer / CMMotionActivityManager)</span></li>
+        <li><b>许可</b><span>系统框架</span></li>
+        <li><b>成本</b><span>免费(系统框架)</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/coremotion/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/coremotion/" target="_blank" rel="noopener">Core Motion 文档 ↗</a><a href="https://developer.apple.com/videos/play/wwdc2023/10179/" target="_blank" rel="noopener">What's new in Core Motion (WWDC23) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="sensing" data-deploy="hybrid" data-keywords="core location 定位 gps 地理围栏 geofencing ibeacon beacon cllocationmanager clmonitor 位置">
+      <div class="card-top"><h3>Core Location</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">定位与地理围栏 · GPS/Wi-Fi/Beacon</div>
+      <p class="desc">Apple 的系统定位框架，融合 GPS、Wi-Fi、蜂窝与气压计给出经纬度/海拔/航向，并支持地理围栏(region monitoring)、显著位置变化省电定位与 iBeacon 邻近检测。iOS 17 起新增 CLMonitor，事件式监测更现代。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>实时定位、地理围栏进出事件、显著位置变化、iBeacon 测距、航向/海拔</span></li>
+        <li><b>限制</b><span>同一 App 地理围栏上限 20 个；后台精确定位受授权与系统调度限制；CLMonitor 后台投递需 CLServiceSession</span></li>
+        <li><b>调用</b><span>Core Location(CLLocationManager / CLMonitor / CLBeaconIdentityConstraint)</span></li>
+        <li><b>许可</b><span>系统框架</span></li>
+        <li><b>成本</b><span>免费(系统框架)</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/corelocation" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/corelocation" target="_blank" rel="noopener">Core Location 文档 ↗</a><a href="https://developer.apple.com/documentation/corelocation/clmonitor" target="_blank" rel="noopener">CLMonitor ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="sensing" data-deploy="on-device" data-keywords="healthkit 健康 心率 睡眠 血氧 ecg 体征 hkhealthstore 步数 health">
+      <div class="card-top"><h3>HealthKit</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">健康与体征数据中枢 · 授权读写</div>
+      <p class="desc">Apple 的健康数据中枢框架。App 不自存数据，而是经 HKHealthStore 申请权限读写系统统一健康库：心率、步数、睡眠、血氧、ECG、体温、营养、体能训练等，并作为 FDA 认证设备临床数据的汇入通道。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>读写量化/分类/训练等数据类型、后台投递更新、跨 App 共享统一健康库</span></li>
+        <li><b>限制</b><span>需用户逐类授权(隐私敏感)；自身非医疗器械;部分体征依赖支持的 Apple Watch 传感器</span></li>
+        <li><b>调用</b><span>HealthKit(HKHealthStore + HKQuery)</span></li>
+        <li><b>许可</b><span>系统框架</span></li>
+        <li><b>成本</b><span>免费(系统框架)</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / watchOS / visionOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/healthkit" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/healthkit" target="_blank" rel="noopener">HealthKit 文档 ↗</a><a href="https://developer.apple.com/documentation/healthkit/data-types" target="_blank" rel="noopener">Data types ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="sensing" data-deploy="on-device" data-keywords="avdepthdata lidar 深度 depth map 点云 测距 人像虚化 arkit scenedepth 3d">
+      <div class="card-top"><h3>AVDepthData 与 LiDAR 深度</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">深度图采集 · LiDAR/双摄视差</div>
+      <p class="desc">Apple 的深度数据接口：AVFoundation 经 AVCaptureDepthDataOutput 流式或随照片输出 AVDepthData(双摄视差或 LiDAR);ARKit 经 sceneDepth 给出 LiDAR 逐帧场景深度。用于人像虚化、测距、3D 重建与 AR 遮挡。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>逐像素深度图、随拍照片附带深度、LiDAR 场景深度与置信度、点云重建</span></li>
+        <li><b>限制</b><span>LiDAR 仅 Pro 机型;默认深度经平滑滤波(CV 任务建议关闭 isFilteringEnabled);精度随距离/材质下降</span></li>
+        <li><b>调用</b><span>AVFoundation(AVCaptureDepthDataOutput / AVDepthData)、ARKit(sceneDepth)</span></li>
+        <li><b>许可</b><span>系统框架</span></li>
+        <li><b>成本</b><span>免费(系统框架)</span></li>
+        <li><b>平台</b><span>iOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/avfoundation/avdepthdata" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/avfoundation/avdepthdata" target="_blank" rel="noopener">AVDepthData 文档 ↗</a><a href="https://developer.apple.com/documentation/arkit/arframe/scenedepth" target="_blank" rel="noopener">ARKit sceneDepth ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="sensing" data-deploy="on-device" data-keywords="跌倒检测 车祸检测 fall detection crash detection 传感器融合 活动检测 cmfalldetectionmanager 安全 sensor fusion">
+      <div class="card-top"><h3>跌倒与车祸检测</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">传感器融合安全检测 · Watch/iPhone</div>
+      <p class="desc">Apple 基于传感器融合的安全能力：用高量程加速度计、陀螺仪、气压计(车祸还含麦克风与 GPS)识别硬摔倒与严重车祸的运动特征，触发后端侧判定并可自动呼救。CMFallDetectionManager 向 App 暴露跌倒事件。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>硬摔倒检测、严重车祸检测、事件后静止判定、自动紧急呼叫/通知联系人</span></li>
+        <li><b>限制</b><span>需较新 Apple Watch / iPhone;CMFallDetectionManager 需向 Apple 申请专用 entitlement;对轻微跌倒可能漏检</span></li>
+        <li><b>调用</b><span>Core Motion(CMFallDetectionManager);车祸/跌倒呼救为系统级</span></li>
+        <li><b>许可</b><span>系统框架(需 entitlement)</span></li>
+        <li><b>成本</b><span>免费(系统框架)</span></li>
+        <li><b>平台</b><span>iOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/coremotion/cmfalldetectionmanager" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/coremotion/cmfalldetectionmanager" target="_blank" rel="noopener">CMFallDetectionManager ↗</a><a href="https://support.apple.com/zh-cn/108896" target="_blank" rel="noopener">在 Apple Watch 上使用跌倒检测 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="sensing" data-deploy="on-device" data-keywords="cmaltimeter 气压计 barometer 海拔 楼层 altitude 相对高度 磁力计 登山 爬楼">
+      <div class="card-top"><h3>CMAltimeter 气压高度计</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">气压/相对海拔 · 楼层与高度变化</div>
+      <p class="desc">Core Motion 中读取气压计的接口。CMAltimeter 提供大气压强与相对海拔变化(自启动后的相对高度);较新机型还支持绝对海拔。常用于爬楼/登山记录、室内楼层估计、运动强度与 AR 高度校正。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>实时气压(kPa)、相对海拔变化、绝对海拔(较新机型)、低功耗后台采集</span></li>
+        <li><b>限制</b><span>需带气压计的设备;相对海拔受天气气压漂移影响,长时间需校准;绝对海拔机型受限</span></li>
+        <li><b>调用</b><span>Core Motion(CMAltimeter.startRelativeAltitudeUpdates)</span></li>
+        <li><b>许可</b><span>系统框架</span></li>
+        <li><b>成本</b><span>免费(系统框架)</span></li>
+        <li><b>平台</b><span>iOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/coremotion/cmaltimeter" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/coremotion/cmaltimeter" target="_blank" rel="noopener">CMAltimeter 文档 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="vision" id="vision">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2>On-Device Vision AI</h2>
+    <span class="zh">本地视觉智能 / OCR / 文档结构识别</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="vision" data-deploy="on-device" data-keywords="ocr 文字识别 vnrecognizetext 手写 印刷 识别文字 vision">
+      <div class="card-top"><h3>RecognizeTextRequest (OCR)</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">图像文字识别 · Vision</div>
+      <p class="desc">从图片中识别印刷与手写文字，返回文本及位置框，全程本地运行。是扫描类、证件/票据识别、文档数字化的基础能力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>多语言印刷+手写 OCR，带位置与置信度</span></li>
+        <li><b>限制</b><span>复杂排版需配合区域检测；语言覆盖有限</span></li>
+        <li><b>调用</b><span>Vision（iOS/macOS/iPadOS/visionOS），完全离线</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS / visionOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="vision" data-deploy="on-device" data-keywords="文档结构 表格 段落 列表 条码 recognizedocuments 扫描 结构化">
+      <div class="card-top"><h3>RecognizeDocumentsRequest</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">文档结构化识别 · Vision (iOS 26)</div>
+      <p class="desc">iOS 26 新增：不仅识别文字行，还能把文字组织成段落、读取表格的行列结构、识别列表与条码，保留文档的结构信息——非常适合智能扫描 App。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>段落分组、表格行列、列表、条码，支持约 26 种语言</span></li>
+        <li><b>限制</b><span>iOS 26+；结构识别受版面复杂度影响</span></li>
+        <li><b>调用</b><span>Vision framework（WWDC25）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="vision" data-deploy="on-device" data-keywords="人脸 检测 face detection 人脸识别 关键点 landmark">
+      <div class="card-top"><h3>Face / Landmark Detection</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">人脸与关键点检测 · Vision</div>
+      <p class="desc">检测画面中的人脸、面部关键点与朝向，可用于自动对焦、贴纸/美颜、活体辅助、相册整理等。本地实时运行。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>人脸框、面部 landmark、姿态朝向</span></li>
+        <li><b>限制</b><span>非身份识别（不做「这是谁」的判定）；遮挡/低光下精度下降</span></li>
+        <li><b>调用</b><span>Vision；可与采集管线实时联动</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="vision" data-deploy="on-device" data-keywords="物体检测 物体追踪 轨迹 手势 身体姿态 hand pose body pose 物体识别">
+      <div class="card-top"><h3>Object / Pose / Trajectory</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">物体·人体·轨迹分析 · Vision</div>
+      <p class="desc">检测与追踪物体、人体与手部姿态、运动轨迹等。配合 Core ML 自定义模型可做运动分析、AR 交互、动作教学（如挥拍分析）。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>物体追踪、body/hand pose、trajectory 分析</span></li>
+        <li><b>限制</b><span>自定义识别需搭配训练好的 Core ML 模型</span></li>
+        <li><b>调用</b><span>Vision + Core ML，离线</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="vision" data-deploy="on-device" data-keywords="core ml 自定义模型 端侧推理 神经引擎 ane 模型部署">
+      <div class="card-top"><h3>Core ML</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">端侧模型推理引擎 · 底座</div>
+      <p class="desc">Apple 的端侧模型运行框架，把训练好的视觉/音频/NLP 模型部署到 CPU/GPU/神经引擎(ANE)上推理。Vision 等高层框架底层都依赖它，也可直接跑自定义模型。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>自定义模型本地推理，自动调度 ANE/GPU/CPU</span></li>
+        <li><b>限制</b><span>需将模型转换为 .mlmodel/.mlpackage</span></li>
+        <li><b>调用</b><span>Core ML；常配合 Create ML 训练</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS / visionOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="vision" data-deploy="hybrid" data-keywords="visual intelligence 视觉智能 截图 圈选搜索 chatgpt 识图">
+      <div class="card-top"><h3>Visual Intelligence</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">系统级视觉理解 · Apple Intelligence</div>
+      <p class="desc">iOS 26 起可用于截图：圈选屏幕内容进行搜索、提问（接入 ChatGPT），并允许第三方 App 接入。属于系统级「识屏 + 问答」能力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>圈选识别、屏幕内容搜索/提问</span></li>
+        <li><b>限制</b><span>需 Apple Intelligence 机型；部分能力联网</span></li>
+        <li><b>调用</b><span>系统集成 + App Intents 接入</span></li>
+        <li><b>平台</b><span>iOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="multimodal" id="multimodal">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2>Multimodal Understanding</h2>
+    <span class="zh">多模态理解 / VLM / 文档·视频理解</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="multimodal" data-deploy="cloud" data-keywords="云端 vlm 多模态 gpt claude gemini 看图理解 视觉推理 mmmu 跨模态">
+      <div class="card-top"><h3>云端前沿多模态模型 (GPT / Claude / Gemini)</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">看图读文 + 跨模态推理 · 服务器规模</div>
+      <p class="desc">GPT-5.1、Claude、Gemini 3 等旗舰模型已原生支持图像/文档/视频输入,把视觉信息和世界知识连起来做复杂推理。截至 2026 年三家在 MMMU 上均超过 84%,Gemini 系列原生多模态训练在图表、地图等空间推理上尤强。适合「看懂任意图、跨模态问答」的重任务,代价是联网、按量计费、数据出设备。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>图文混合推理、长上下文、文档/视频理解、世界知识</span></li>
+        <li><b>限制</b><span>联网、按量付费、细粒度识别偶有出错、隐私需评估</span></li>
+        <li><b>调用</b><span>各家多模态 REST API(图像/PDF/视频直接传入)</span></li>
+        <li><b>成本</b><span>按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://mmmu-benchmark.github.io/" target="_blank" rel="noopener">MMMU 多学科多模态评测 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="multimodal" data-deploy="hybrid" data-keywords="开源 vlm qwen3-vl internvl qwen 多模态 看图理解 自托管 视觉定位 视觉编程">
+      <div class="card-top"><h3>开源 VLM (Qwen3-VL / InternVL)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">近闭源水准的可自托管多模态模型</div>
+      <p class="desc">Qwen3-VL(阿里,2025)与 InternVL3.5(上海 AI Lab)是当前最强的开源视觉语言模型代表,均 Apache-2.0。Qwen3-VL 提供 2B 到 235B-A22B 多尺寸、原生 256K 上下文,支持图文混合推理、2D/3D 定位、视觉编程(截图转 HTML/CSS)与 GUI agent;InternVL3.5-241B-A28B 在开源 MLLM 中刷新综合 SOTA,逼近 GPT-5。适合想离线、可微调、做特定领域多模态的团队。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>图文/多图/视频推理、视觉定位、长上下文、可微调</span></li>
+        <li><b>限制</b><span>大尺寸需多卡;端侧只能跑小尺寸;工程成本高</span></li>
+        <li><b>调用</b><span>Hugging Face 权重,vLLM / Transformers / Ollama / 自托管</span></li>
+        <li><b>许可</b><span>Apache-2.0</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/QwenLM/Qwen3-VL" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/QwenLM/Qwen3-VL" target="_blank" rel="noopener">Qwen3-VL GitHub ↗</a><a href="https://github.com/OpenGVLab/InternVL" target="_blank" rel="noopener">InternVL GitHub ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="multimodal" data-deploy="hybrid" data-keywords="开源 llava llava-onevision llama-vision llama3.2 多模态 vlm 视觉问答 微调 可复现">
+      <div class="card-top"><h3>LLaVA / Llama Vision (开放多模态基座)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">完全开放的研究/微调多模态基座</div>
+      <p class="desc">LLaVA 系列是把视觉编码器接到 LLM 的开创性开源方案,演进到 LLaVA-OneVision-2(2026,8B,统一图像/长视频/空间理解,数据·训练·权重全链路开源);Meta 的 Llama 3.2 Vision(11B/90B)则提供大厂背书的图像推理基座。二者强调「完全可复现、可定制」,适合做研究、领域微调或需要透明训练栈的产品。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>图像理解、视觉问答、可微调、训练栈透明</span></li>
+        <li><b>限制</b><span>通用 benchmark 略逊一线 VLM;Llama 用社区许可非纯开源</span></li>
+        <li><b>调用</b><span>Hugging Face 权重,Transformers / 自托管;Llama Vision 经 NIM / Ollama</span></li>
+        <li><b>许可</b><span>LLaVA: Apache-2.0 / Llama: Llama 社区许可</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/LLaVA-VL/LLaVA-NeXT" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/EvolvingLMMs-Lab/LLaVA-OneVision-2" target="_blank" rel="noopener">LLaVA-OneVision-2 ↗</a><a href="https://huggingface.co/meta-llama/Llama-3.2-11B-Vision" target="_blank" rel="noopener">Llama 3.2 Vision (HF) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="multimodal" data-deploy="on-device" data-keywords="端侧 on-device vlm fastvlm mlx-vlm apple mlx 实时 离线 隐私 边缘">
+      <div class="card-top"><h3>端侧 VLM (Apple FastVLM / MLX-VLM)</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">手机/Mac 本地实时看图 · 低延迟离线</div>
+      <p class="desc">在设备上直接跑视觉语言模型,图像不出端、低延迟、可离线。Apple FastVLM(CVPR 2025,开源)用 FastViTHD 混合视觉编码器,高分辨率下首 token 延迟比同级快约 85 倍,是首个在移动端突破 200ms 的生产级 VLM;MLX-VLM 基于 Apple MLX 框架,可在 MacBook / Mac mini 上推理与微调 Qwen3-VL、Gemma、LLaVA 等主流 VLM。适合实时相机理解、隐私敏感、边缘部署场景。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>本地实时看图、低延迟、离线、隐私不出端</span></li>
+        <li><b>限制</b><span>模型尺寸受内存限制;复杂推理弱于云端大模型</span></li>
+        <li><b>调用</b><span>FastVLM iOS/macOS demo(MLX);MLX-VLM 命令行 / Python</span></li>
+        <li><b>许可</b><span>Apple 模型许可 / MLX-VLM: MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>iOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/apple/ml-fastvlm" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://machinelearning.apple.com/research/fast-vision-language-models" target="_blank" rel="noopener">FastVLM (Apple ML Research) ↗</a><a href="https://github.com/apple/ml-fastvlm" target="_blank" rel="noopener">FastVLM GitHub ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="multimodal" data-deploy="hybrid" data-keywords="文档理解 document-understanding ocr ocr-free dots.ocr olmocr 版面解析 表格识别 pdf 多语种">
+      <div class="card-top"><h3>文档理解 (OCR-Free VLM / dots.ocr)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">PDF·扫描件→结构化文本/版面 · 端到端</div>
+      <p class="desc">用视觉语言模型直接「读」文档,把 PDF、扫描件、票据、表格转成带版面结构的文本,替代传统 OCR 多段流水线。dots.ocr(rednote-hilab,基于 1.7B LLM)在单一 VLM 内联合做版面检测、内容识别与关系理解,OmniDocBench/OLMoOCR 上达 SOTA,多栏与老旧扫描件尤强;olmOCR 2(AllenAI)用 GRPO 强化学习+单元测试奖励训练。适合文档抽取、知识库构建、合同/报表解析。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>版面解析、表格/公式还原、多语种、多栏与扫描件</span></li>
+        <li><b>限制</b><span>超长文档需切页;手写/极端版面仍有误差</span></li>
+        <li><b>调用</b><span>开源权重,vLLM / Transformers 自托管;亦可调云端 VLM</span></li>
+        <li><b>许可</b><span>dots.ocr: MIT / olmOCR: Apache-2.0</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/rednote-hilab/dots.ocr" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/rednote-hilab/dots.ocr" target="_blank" rel="noopener">dots.ocr GitHub ↗</a><a href="https://github.com/Yuliang-Liu/AWESOME-OCR-LLM" target="_blank" rel="noopener">OCR in the Era of LLMs (清单) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="multimodal" data-deploy="hybrid" data-keywords="视频理解 video-understanding 长视频 时序定位 qwen3-vl gemini 跨帧问答 视频摘要 temporal 动作识别">
+      <div class="card-top"><h3>视频理解 (长视频 VLM / 时序定位)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源 / API</span></span></div>
+      <div class="role">看懂长视频:事件定位·动作·跨帧问答</div>
+      <p class="desc">让模型「看懂」一段视频:理解事件、动作边界、跨帧因果并能定位到具体时刻。Qwen3-VL 用交错 MRoPE + 文本时间戳对齐,把帧级时间和画面精确对齐,原生 256K(可扩 1M)上下文可处理长达约两小时视频,事件定位/动作边界/时序问答能力显著增强,主要感知 benchmark 上比肩 Gemini 2.5 Pro。适合视频检索、内容审核、监控分析、教学/会议摘要。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>长视频理解、时序定位、动作识别、跨帧问答与摘要</span></li>
+        <li><b>限制</b><span>超长视频需抽帧/采样取舍;高帧率细粒度动作仍难</span></li>
+        <li><b>调用</b><span>开源:Qwen3-VL 自托管;云端:Gemini / 各家视频 API</span></li>
+        <li><b>许可</b><span>Qwen3-VL: Apache-2.0 / 云端 API 各家协议</span></li>
+        <li><b>成本</b><span>免费(自托管) / 按量(API)</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/QwenLM/Qwen3-VL" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/abs/2511.21631" target="_blank" rel="noopener">Qwen3-VL 技术报告 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="asr" id="asr">
+  <div class="section-head">
+    <span class="section-num">05</span>
+    <h2>Speech Recognition (ASR)</h2>
+    <span class="zh">语音识别 / 语音转文字</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="asr" data-deploy="hybrid" data-keywords="whisper openai 转录 多语言 开源 large-v3 turbo 字幕">
+      <div class="card-top"><h3>OpenAI Whisper</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">通用多语言转录基座 · 模型权重</div>
+      <p class="desc">OpenAI 开源的 ASR 模型家族（tiny→large-v3 / turbo），680k 小时训练，支持 99+ 语言。本身是模型权重而非成品 App，需配合封装使用。生态成熟，是大多数转录产品的底座。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>99+ 语言、自动语种识别、时间戳、标点</span></li>
+        <li><b>限制</b><span>原版依赖 Python/GPU 较重；非实时流式</span></li>
+        <li><b>调用</b><span>pip / MIT 许可；生态：faster-whisper、whisper.cpp、WhisperKit</span></li>
+        <li><b>许可</b><span>MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>跨平台 / Server</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="asr" data-deploy="on-device" data-keywords="whisper.cpp 端侧 离线 apple silicon coreml cpu 边缘 c++ 轻量 whisperkit">
+      <div class="card-top"><h3>whisper.cpp / WhisperKit</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">端侧 Whisper 部署 · C++/CoreML</div>
+      <p class="desc">把 Whisper 移植到 C/C++，可在 CPU、Apple Silicon（CoreML）、甚至 WebAssembly 上高效运行。WhisperKit 进一步把它包成 Apple 平台原生的端侧转录方案，数据不出设备。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>离线转录，Apple Silicon 上性能好，隐私友好</span></li>
+        <li><b>限制</b><span>大模型对内存有要求；实时性取决于模型尺寸</span></li>
+        <li><b>调用</b><span>whisper.cpp（C/C++）、WhisperKit（CoreML/Swift）</span></li>
+        <li><b>许可</b><span>MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>iOS / macOS / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="asr" data-deploy="on-device" data-keywords="apple speech 系统语音识别 sfspeechrecognizer 隐私 端侧 实时 听写">
+      <div class="card-top"><h3>Apple Speech Framework</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">系统语音识别 · 端侧优先</div>
+      <p class="desc">Apple 自带的语音识别框架，可端侧运行（隐私好、可离线、实时），适合做听写、语音输入、语音命令。相比云端 Whisper，优势在隐私与实时响应。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>实时听写、端侧处理、与系统深度集成</span></li>
+        <li><b>限制</b><span>语种/词汇覆盖不如 Whisper 灵活</span></li>
+        <li><b>调用</b><span>Speech framework（SFSpeechRecognizer）</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="asr" data-deploy="hybrid" data-keywords="parakeet nvidia 实时 流式 streaming 低延迟 transducer 快">
+      <div class="card-top"><h3>NVIDIA Parakeet</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">超快流式英语 ASR · 实时</div>
+      <p class="desc">NVIDIA 的 RNN-Transducer 系列，主打推理速度与流式实时识别，RTFx 极高（处理速度远超 Whisper），适合需要低延迟实时转写的场景，准确率排名略低但够用。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>流式实时、极高吞吐、低延迟</span></li>
+        <li><b>限制</b><span>以英语为主；准确率非顶尖</span></li>
+        <li><b>调用</b><span>开源模型，Open ASR Leaderboard 可比</span></li>
+        <li><b>许可</b><span>开源（CC-BY 等）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="asr" data-deploy="hybrid" data-keywords="voxtral mistral 流式 实时 多语言 因果编码器 准确率 wer">
+      <div class="card-top"><h3>Mistral Voxtral Transcribe 2</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源 / API</span></span></div>
+      <div class="role">高准确率 + 原生流式 · 新锐</div>
+      <p class="desc">Mistral 2026 年的二代 ASR，FLEURS 多语言基准上 WER 约 5.9%（优于 Whisper 的 ~7.4%），含离线批处理 Mini 版与因果编码器的实时流式版。语言覆盖较少（约 13 种），是值得关注的新选手。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>更低 WER、原生实时流式</span></li>
+        <li><b>限制</b><span>语言约 13 种，远少于 Whisper 的 99+</span></li>
+        <li><b>调用</b><span>Voxtral Mini（批处理）/ Voxtral Realtime（流式）</span></li>
+        <li><b>成本</b><span>免费 / 自托管 / API 按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="asr" data-deploy="cloud" data-keywords="云端 api deepgram google chirp assemblyai gpt-4o-transcribe 转录服务">
+      <div class="card-top"><h3>云端 ASR API</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">托管转录服务 · 免运维</div>
+      <p class="desc">Deepgram Nova-3、Google Chirp、AssemblyAI、OpenAI GPT-4o-transcribe 等托管服务，主打开箱即用、规模化、实时流式与高级功能（说话人分离等），代价是数据上云与按量计费。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>免运维、可扩展、说话人分离、实时</span></li>
+        <li><b>限制</b><span>数据出设备、按量付费、需联网</span></li>
+        <li><b>调用</b><span>各家 REST/WebSocket API</span></li>
+        <li><b>成本</b><span>按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="tts" id="tts">
+  <div class="section-head">
+    <span class="section-num">06</span>
+    <h2>Text-to-Speech (TTS)</h2>
+    <span class="zh">语音合成 / 配音 / 语音克隆</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="tts" data-deploy="on-device" data-keywords="kokoro 开源 轻量 82m 端侧 cpu styletts 免费 快">
+      <div class="card-top"><h3>Kokoro-82M</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">超轻量端侧 TTS · 效率王</div>
+      <p class="desc">仅 8200 万参数、约 300MB，可在 CPU 上运行，质量却接近大很多倍的模型，2026 年初登顶 TTS Arena。适合本地、低算力、零成本、需要嵌入式部署的场景，但主打英语、不支持语音克隆。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>极快（GPU 上数十倍实时）、可 CPU 运行、免费、Apache 2.0</span></li>
+        <li><b>限制</b><span>英语为主、无克隆、情感表现弱于商用</span></li>
+        <li><b>调用</b><span>开源权重；可在 M 系 Mac via MPS 运行</span></li>
+        <li><b>许可</b><span>Apache-2.0</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>跨平台 / macOS / Server</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="tts" data-deploy="hybrid" data-keywords="chatterbox resemble 语音克隆 voice clone 开源 盲测 击败 elevenlabs">
+      <div class="card-top"><h3>Chatterbox / Chatterbox-Turbo</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">高质量语音克隆 · ElevenLabs 级</div>
+      <p class="desc">Resemble AI 的开源模型（MIT），单 GPU 即可做语音克隆。厂商盲测中偏好率显著超过 ElevenLabs，是想自托管、追求高质量与克隆能力时的首选之一。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>单 GPU 语音克隆、质量对标/超过商用</span></li>
+        <li><b>限制</b><span>需 GPU；自托管要自己做工程</span></li>
+        <li><b>调用</b><span>开源权重，MIT 许可</span></li>
+        <li><b>许可</b><span>MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="tts" data-deploy="cloud" data-keywords="elevenlabs 商用 配音 旁白 多语言 语音库 voice library 高质量">
+      <div class="card-top"><h3>ElevenLabs</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">商用配音标杆 · 生态完善</div>
+      <p class="desc">商用 TTS 标杆，主打稳定、生态、海量语音库（4000+ 音色、70+ 语言）、即时克隆与 Studio 编辑器。卖的不只是音质，更是便利与可靠性。Flash 档延迟约 75–150ms。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>海量音色/语言、即时克隆、Studio、低延迟档</span></li>
+        <li><b>限制</b><span>按量付费、数据上云、需联网</span></li>
+        <li><b>调用</b><span>REST API；订阅制（约 $5/月起）</span></li>
+        <li><b>成本</b><span>订阅 / 按量（约 $5/月起）</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="tts" data-deploy="hybrid" data-keywords="fish audio s2 pro 开源 多语言 克隆 流式 低延迟 性价比">
+      <div class="card-top"><h3>Fish Audio S2 Pro</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源 / API</span></span></div>
+      <div class="role">多语言高质量 · 性价比</div>
+      <p class="desc">开源权重，双自回归（Dual-AR）+ RVQ 音频编解码设计，10M+ 小时多语言训练。托管 API 首字音约 100ms，价格约 $15/百万字符（远低于 ElevenLabs），多语言整体质量优秀。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>多语言、流式低延迟、克隆、价格友好</span></li>
+        <li><b>限制</b><span>自托管需工程投入</span></li>
+        <li><b>调用</b><span>开源 + 托管 API</span></li>
+        <li><b>成本</b><span>免费自托管 / API 约 $15/百万字符</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="tts" data-deploy="hybrid" data-keywords="vibevoice 长音频 播客 多说话人 dialogue 长篇 对话 dia2">
+      <div class="card-top"><h3>VibeVoice / Dia2</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">长篇 / 多人对话合成 · 播客级</div>
+      <p class="desc">面向长音频与多说话人对话的开源模型：VibeVoice 擅长长篇富表现力叙述（整集播客），Dia2 擅长多说话人对话。适合做有声书、播客、剧情配音。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>长篇连贯、多说话人、富表现力</span></li>
+        <li><b>限制</b><span>资源消耗较高；需 GPU</span></li>
+        <li><b>调用</b><span>开源权重</span></li>
+        <li><b>许可</b><span>开源权重</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="tts" data-deploy="hybrid" data-keywords="cartesia sonic 超低延迟 实时 语音代理 voice agent 40ms 流式 qwen3-tts">
+      <div class="card-top"><h3>Cartesia Sonic / Qwen3-TTS</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-cloud">云端 / 开源</span></span></div>
+      <div class="role">超低延迟实时 · 语音代理</div>
+      <p class="desc">主打极低延迟（Cartesia Sonic Turbo 约 40ms、Qwen3-TTS 约 97ms 流式），为实时语音对话/语音代理设计。在需要「边想边说」的交互场景里是关键技术。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>40–100ms 级延迟、原生流式</span></li>
+        <li><b>限制</b><span>顶级实时档多为云端/付费</span></li>
+        <li><b>调用</b><span>API / 部分开源</span></li>
+        <li><b>成本</b><span>按量 / 部分开源自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="tts" data-deploy="on-device" data-keywords="avspeechsynthesizer 系统 tts 苹果 离线 personal voice 个人语音">
+      <div class="card-top"><h3>AVSpeechSynthesizer</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">系统内置语音合成 · 零成本</div>
+      <p class="desc">Apple 系统自带 TTS，离线可用、零成本、与系统集成（含无障碍 Personal Voice 个人语音克隆）。音质和表现力不及顶级商用，但作为基础朗读/无障碍功能足够。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>离线、多语言系统音色、Personal Voice</span></li>
+        <li><b>限制</b><span>表现力/自然度有限</span></li>
+        <li><b>调用</b><span>AVFoundation（AVSpeechSynthesizer）</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="audio" id="audio">
+  <div class="section-head">
+    <span class="section-num">07</span>
+    <h2>Audio &amp; Music Generation</h2>
+    <span class="zh">音乐生成 / 音效 / 音频处理</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="audio" data-deploy="cloud" data-keywords="suno 音乐生成 作曲 歌曲 ai music 文生音乐 song v5 studio 商用">
+      <div class="card-top"><h3>Suno</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">一句话出整曲 · 消费级音乐生成标杆</div>
+      <p class="desc">最流行的文本到歌曲生成平台,输入歌词或风格描述即可产出带人声与配器的完整曲目。2026 年 v5/v5.5 主打「拟真」音质、Voices 自有嗓音克隆、Custom Models 个性化训练与 Studio 多轨编辑(最多 12 条 stem)。卖点是低门槛与生态,而非可控性。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>整曲生成(人声+配器)、多语言风格、Studio 分轨编辑、嗓音克隆</span></li>
+        <li><b>限制</b><span>按订阅/积分付费、数据上云、版权与商用边界仍在演进、不可自托管</span></li>
+        <li><b>调用</b><span>Web 应用 + 官方 API;订阅制(Pro 约 $10/月,Premier 约 $30/月)</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>订阅 / 按积分(免费档每日 50 积分,Pro 约 $10/月起)</span></li>
+        <li><b>平台</b><span>Web / iOS / Android / Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://suno.com/" target="_blank" rel="noopener">官网 ↗</a><a href="https://suno.com/pricing" target="_blank" rel="noopener">定价 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="audio" data-deploy="cloud" data-keywords="udio 音乐生成 作曲 歌曲 ai music 文生音乐 song stem umg 商用">
+      <div class="card-top"><h3>Udio</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">高保真整曲生成 · 版权友好的 Suno 对手</div>
+      <p class="desc">与 Suno 齐名的文本到歌曲平台,以人声质感、风格混合(blending)与分段(segment)精修工作流见长,可下载 bass/drums/vocals 等 stem。2025 年 10 月与环球音乐(UMG)达成和解,2026 年推出联合授权平台,版权叙事相对清晰。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>整曲生成、Style Library 风格库、风格混合、分段重制、stem 下载</span></li>
+        <li><b>限制</b><span>积分制付费、数据上云、免费档非商用、不可自托管</span></li>
+        <li><b>调用</b><span>Web 应用;订阅制(Standard 约 $10/月,Pro 约 $30/月含商用授权)</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>订阅 / 按积分(免费档约 10 积分/日,Standard 约 $10/月起)</span></li>
+        <li><b>平台</b><span>Web / Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://www.udio.com/" target="_blank" rel="noopener">官网 ↗</a><a href="https://www.udio.com/pricing" target="_blank" rel="noopener">定价 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="audio" data-deploy="hybrid" data-keywords="musicgen audiocraft meta 开源 音乐生成 encodec melody cc-by-nc 自托管">
+      <div class="card-top"><h3>MusicGen (AudioCraft)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">可自托管的文本/旋律到音乐 · 研究基线</div>
+      <p class="desc">Meta FAIR 在 AudioCraft 库中开源的文本到音乐模型,支持文本描述与可选旋律条件(melody conditioning),基于 EnCodec 音频编解码器。是开源音乐生成的常用基线,可端侧或云端 GPU 自托管,但音质与时长不及顶级商用平台。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>文本/旋律条件生成、多档参数(small/medium/large)、可本地推理、可微调</span></li>
+        <li><b>限制</b><span>权重仅限非商用(CC-BY-NC)、生成偏器乐短片、无歌词人声、需 GPU 较佳</span></li>
+        <li><b>调用</b><span>开源权重(Hugging Face / Replicate);代码 MIT,权重 CC-BY-NC 4.0</span></li>
+        <li><b>许可</b><span>代码 MIT / 权重 CC-BY-NC-4.0</span></li>
+        <li><b>成本</b><span>免费 / 自托管(权重仅限非商用)</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/facebookresearch/audiocraft" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://ai.meta.com/resources/models-and-libraries/audiocraft/" target="_blank" rel="noopener">AudioCraft (Meta AI) ↗</a><a href="https://replicate.com/meta/musicgen" target="_blank" rel="noopener">Replicate 在线推理 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="audio" data-deploy="hybrid" data-keywords="stable audio stability 开源 音效 sound effects foley sample arm 端侧 采样">
+      <div class="card-top"><h3>Stable Audio Open</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">开源文本到音效/采样 · 可端侧</div>
+      <p class="desc">Stability AI 开源的文本到音频模型,擅长生成鼓点、乐器 riff、环境声、foley 等短采样与音效(约 47 秒)。训练数据全部来自 CC0/CC-BY 等授权素材。与 Arm 合作的 Stable Audio Open Small(341M,约 20MB)可在手机 Arm CPU 上 8 秒内出 11 秒立体声,实现端侧实时音频生成。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>文本到音效/采样、foley/环境声/loop、Small 档端侧实时、训练数据可溯源</span></li>
+        <li><b>限制</b><span>时长短(非整曲)、人声/歌曲非强项、社区许可对高营收主体有限制</span></li>
+        <li><b>调用</b><span>开源权重(Hugging Face);Stability AI Community License</span></li>
+        <li><b>许可</b><span>Stability AI Community License(年营收 &lt; $1M 免费)</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / Android / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://huggingface.co/stabilityai/stable-audio-open-1.0" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://stability.ai/news-updates/introducing-stable-audio-open" target="_blank" rel="noopener">Stable Audio Open 介绍 ↗</a><a href="https://stability.ai/news/stability-ai-and-arm-release-stable-audio-open-small-enabling-real-world-deployment-for-on-device-audio-control" target="_blank" rel="noopener">Open Small × Arm ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="audio" data-deploy="on-device" data-keywords="demucs htdemucs 音轨分离 人声分离 source separation stem meta 开源 mit karaoke">
+      <div class="card-top"><h3>Demucs</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">人声/音轨分离标杆 · 本地可跑</div>
+      <p class="desc">Meta 研究院开源的音乐源分离模型,把混音拆成人声、鼓、贝斯、其他等 stem。默认 htdemucs 为 Hybrid Transformer 架构,另有 6 源版(加吉他/钢琴)与 fine-tuned 档。MIT 许可、可商用,本地即可运行,Apple Silicon 上经 MLX 移植可数秒分离一首歌。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>高质量 4/6 源分离、纯本地离线、MIT 可商用、有 MLX/Rust 等加速移植</span></li>
+        <li><b>限制</b><span>纯分离不生成、最高质量档较慢、对极端混音偶有残留串音</span></li>
+        <li><b>调用</b><span>开源命令行/Python(pip install demucs);MIT</span></li>
+        <li><b>许可</b><span>MIT</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>跨平台 / macOS / Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/facebookresearch/demucs" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/facebookresearch/demucs" target="_blank" rel="noopener">GitHub ↗</a><a href="https://github.com/ssmall256/demucs-mlx/" target="_blank" rel="noopener">demucs-mlx(Apple Silicon) ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="audio" data-deploy="on-device" data-keywords="krisp 降噪 噪声抑制 人声隔离 voice isolation noise cancellation sdk viva 回声消除 商用">
+      <div class="card-top"><h3>Krisp</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-cloud">云端 / SDK</span></span></div>
+      <div class="role">实时降噪与人声隔离 · 商用 SDK</div>
+      <p class="desc">商用实时音频处理标杆,在本地设备上做 AI 降噪、回声消除与人声隔离(去除背景噪声与旁人串音,只留主讲人)。面向开发者的 AI Voice SDK 覆盖 Win/Mac/Linux/Web/iOS/Android,2026 年的 VIVA 把处理延迟压到 20ms 以下,专为语音 Agent 管线设计。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>实时降噪、人声隔离(去串音)、回声消除、本地处理保隐私、跨端 SDK</span></li>
+        <li><b>限制</b><span>核心模型闭源、SDK 商用授权、消费端高级功能需订阅</span></li>
+        <li><b>调用</b><span>桌面/移动 App + AI Voice SDK;Pro 约 $8/月起,SDK 商用授权</span></li>
+        <li><b>许可</b><span>商用闭源 / SDK 授权</span></li>
+        <li><b>成本</b><span>订阅(Pro 约 $8/月起) / SDK 商用授权</span></li>
+        <li><b>平台</b><span>Windows / macOS / iOS / Android / Web / Server</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://krisp.ai/" target="_blank" rel="noopener">官网 ↗</a><a href="https://krisp.ai/developers/" target="_blank" rel="noopener">开发者 SDK ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="genvisual" id="genvisual">
+  <div class="section-head">
+    <span class="section-num">08</span>
+    <h2>Generative Visual</h2>
+    <span class="zh">文生图 / 文生视频 / 图像编辑超分</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="genvisual" data-deploy="hybrid" data-keywords="flux flux.2 flux-2 black-forest-labs bfl 文生图 text-to-image 开源 写实 排版 comfyui dev klein">
+      <div class="card-top"><h3>FLUX.2</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源权重</span></span></div>
+      <div class="role">开源文生图标杆 · 32B 流匹配</div>
+      <p class="desc">Black Forest Labs 2025 年 11 月发布的 FLUX.2 系列，32B 流匹配 Transformer，主打照片级写实、文字排版与多图参考编辑。开源 [dev] 权重在文生图与单图/多图编辑上刷新开源 SOTA；另有体量更小、Apache-2.0 的 [klein] 适合端侧。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>写实/排版强、多图参考编辑、可自托管、生态成熟（ComfyUI/Diffusers）</span></li>
+        <li><b>限制</b><span>[dev] 非商用许可，商用需单独授权；32B 显存吃紧</span></li>
+        <li><b>调用</b><span>Hugging Face 下载权重自托管；或 BFL 云 API（Pro/Flex）</span></li>
+        <li><b>许可</b><span>FLUX.2-dev 非商用许可（VAE 为 Apache-2.0；klein 4B 为 Apache-2.0）</span></li>
+        <li><b>成本</b><span>免费 / 自托管（商用需授权）；云 API 按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/black-forest-labs/flux2" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://bfl.ai/blog/flux-2" target="_blank" rel="noopener">官方博客 FLUX.2 ↗</a><a href="https://huggingface.co/black-forest-labs/FLUX.2-dev" target="_blank" rel="noopener">FLUX.2-dev 权重 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="cloud" data-keywords="nano-banana nano-banana-pro gemini gemini-3 google deepmind 文生图 图像编辑 inpainting 信息图 文字渲染 海报">
+      <div class="card-top"><h3>Nano Banana Pro</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">Gemini 3 Pro 图像 · 生成+编辑一体</div>
+      <p class="desc">Google DeepMind 基于 Gemini 3 Pro 的图像生成与编辑模型（代号 Nano Banana Pro），借助 Gemini 的推理与世界知识做图。最大亮点是图内文字渲染准确、可多语言，擅长海报/信息图/图表，并支持自然语言局部编辑（inpainting）。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>文字渲染准、推理生图、信息图/图表、自然语言编辑、多语言</span></li>
+        <li><b>限制</b><span>闭源云服务、数据上云、按额度/订阅计费</span></li>
+        <li><b>调用</b><span>Gemini App / AI Studio / Gemini API（gemini-3-pro-image）</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费额度 + 订阅（AI Plus/Pro/Ultra）/ API 按量</span></li>
+        <li><b>平台</b><span>Web / Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://blog.google/innovation-and-ai/products/nano-banana-pro/" target="_blank" rel="noopener">Nano Banana Pro 公告 ↗</a><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Gemini API 图像文档 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="cloud" data-keywords="midjourney mj 文生图 text-to-image 美学 风格 v7 v8 角色一致性 omni-reference 短视频">
+      <div class="card-top"><h3>Midjourney</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">美学风格标杆 · 文生图/短视频</div>
+      <p class="desc">以独特审美和稳定出片著称的商用文生图服务，长期是「好看」这一维度的事实标杆。v7 起引入 Omni Reference 角色一致性，v8.1（2026-04 起默认）原生 2K、出图更快、文字渲染改善，并新增 10 秒 / 60fps 视频模式。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>审美强、风格化稳定、角色一致性、社区生态、内置短视频</span></li>
+        <li><b>限制</b><span>闭源云服务、订阅制、可控性弱于工作流式工具</span></li>
+        <li><b>调用</b><span>网页 / Discord；订阅制（约 $10/月起）</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>订阅（约 $10/月起）</span></li>
+        <li><b>平台</b><span>Web / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://www.midjourney.com/" target="_blank" rel="noopener">Midjourney 官网 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="cloud" data-keywords="veo veo-3 google deepmind 文生视频 text-to-video 图生视频 音画同步 视频生成 gemini">
+      <div class="card-top"><h3>Google Veo</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">文生视频 · 原生同步音轨</div>
+      <p class="desc">Google DeepMind 的文生/图生视频模型，主打 1080p 画面 + 原生音频（对白、音效、口型同步）与更可信的物理运动。Veo 3.1 支持首尾帧过渡、续接长视频与跨镜头角色一致性，已开放 Gemini API。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>原生音画同步、1080p、首尾帧/续接、角色一致、电影感运镜</span></li>
+        <li><b>限制</b><span>闭源云服务、按秒计费偏贵、需联网</span></li>
+        <li><b>调用</b><span>Gemini API / Vertex AI / Flow；按秒计费（约 $0.40/s，Fast $0.15/s）</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>按量（约 $0.15–0.40/s）/ 订阅（AI Ultra $249.99/月）</span></li>
+        <li><b>平台</b><span>Web / Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developers.googleblog.com/veo-3-now-available-gemini-api/" target="_blank" rel="noopener">Veo 3 进 Gemini API ↗</a><a href="https://developers.googleblog.com/introducing-veo-3-1-and-new-creative-capabilities-in-the-gemini-api/" target="_blank" rel="noopener">Veo 3.1 公告 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="cloud" data-keywords="kling 可灵 快手 kuaishou 文生视频 text-to-video 图生视频 视频生成 kling-3 音画同步 国产">
+      <div class="card-top"><h3>快手可灵 Kling</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">文生/图生视频 · 国产头部</div>
+      <p class="desc">快手自研的视频生成大模型，国产文生/图生视频头部产品。2.5 Turbo 主打更大幅度运动与更稳的物理；2.6 支持音画同步一次生成（语音/对白/旁白/音效）；3.0「Omni One」统一架构整合文生视频、图生视频与视频编辑。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>强运动/物理、音画同步、图生视频、视频编辑、性价比高</span></li>
+        <li><b>限制</b><span>闭源云服务、按额度计费、需联网</span></li>
+        <li><b>调用</b><span>可灵网页/App；积分制（5 秒 1080p 约 25 积分）+ API</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>订阅 / 积分按量</span></li>
+        <li><b>平台</b><span>Web / Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://kling.ai/" target="_blank" rel="noopener">Kling 官网 ↗</a><a href="https://www.prnewswire.com/news-releases/kling-ai-launches-video-2-6-model-with-simultaneous-audio-visual-generation-capability-redefining-ai-video-creation-workflow-302634067.html" target="_blank" rel="noopener">Kling 2.6 发布 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="hybrid" data-keywords="wan 万相 通义万相 通义 alibaba 阿里 wan-2.2 文生视频 text-to-video 图生视频 开源 moe apache">
+      <div class="card-top"><h3>通义万相 Wan</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">开源文生视频 · MoE 可自托管</div>
+      <p class="desc">阿里通义实验室的开源视频生成模型，Wan 2.2 是首个开源 MoE 视频生成模型，支持文生视频与图生视频，主打电影级镜头控制（光影/构图/色彩/运动）与 720P 输出。Apache-2.0 许可，可商用、可自托管，是开源视频生态的主力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>开源可商用、文生/图生视频、MoE 高效、电影感控制、可本地跑</span></li>
+        <li><b>限制</b><span>默认分辨率/时长有限；高质量出片需较强 GPU</span></li>
+        <li><b>调用</b><span>GitHub 下载权重自托管；ComfyUI / Diffusers 集成</span></li>
+        <li><b>许可</b><span>Apache-2.0</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/Wan-Video/Wan2.1" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://wan.video/" target="_blank" rel="noopener">Wan 官网 ↗</a><a href="https://github.com/Wan-Video/Wan2.1" target="_blank" rel="noopener">Wan GitHub ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="hybrid" data-keywords="real-esrgan esrgan gfpgan 超分 放大 upscale super-resolution 图像修复 开源 腾讯 ncnn">
+      <div class="card-top"><h3>Real-ESRGAN</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">开源超分放大 · 图像/视频修复</div>
+      <p class="desc">腾讯 ARC 实验室开源的实用图像/视频超分放大模型，用 GAN + 纯合成退化数据训练，对压缩、噪点、模糊的真实低质图鲁棒。常配合 GFPGAN 做人脸修复，另有 Anime 变体专攻线稿/插画，是几乎所有「AI 放大」功能的底层之一。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>通用 4x 超分、真实退化鲁棒、人脸修复（GFPGAN）、动漫专用变体、可离线</span></li>
+        <li><b>限制</b><span>细节生成不及扩散式超分；模型偏老（2021）</span></li>
+        <li><b>调用</b><span>Python / ncnn-vulkan 自托管；ComfyUI 节点；各类云 API</span></li>
+        <li><b>许可</b><span>BSD-3-Clause</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/xinntao/Real-ESRGAN" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/xinntao/Real-ESRGAN" target="_blank" rel="noopener">Real-ESRGAN GitHub ↗</a><a href="https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan" target="_blank" rel="noopener">ncnn-vulkan 实现 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="hybrid" data-keywords="topaz gigapixel photo-ai 超分 放大 upscale super-resolution 商用 本地 保真">
+      <div class="card-top"><h3>Topaz Gigapixel</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-cloud">商用 / 本地</span></span></div>
+      <div class="role">商用超分放大 · 本地 GPU</div>
+      <p class="desc">Topaz Labs 的专业图像放大软件，单次最高 6x、可达 16x 像素，内置 Wonder、High Fidelity、Text &amp; Shapes、Face Recovery 等多个专用 AI 模型，本地 GPU 运行，细节保真度长期是商用放大的标杆。另有按需试用的网页版。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>高保真放大（最高 16x）、多专用模型、本地离线运行、人脸/文字专用</span></li>
+        <li><b>限制</b><span>闭源付费、订阅为主、依赖本地算力</span></li>
+        <li><b>调用</b><span>桌面 App（本地 GPU）/ 网页试用；订阅或买断</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>订阅（Personal $149/年起）/ 旧版买断</span></li>
+        <li><b>平台</b><span>macOS / Web / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://www.topazlabs.com/topaz-gigapixel" target="_blank" rel="noopener">Topaz Gigapixel ↗</a><a href="https://www.topazlabs.com/pricing" target="_blank" rel="noopener">定价 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="on-device" data-keywords="image-playground genmoji apple apple-intelligence 端侧 on-device 系统原生 表情 ios 隐私">
+      <div class="card-top"><h3>Image Playground / Genmoji</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">系统原生</span></span></div>
+      <div class="role">Apple 端侧生成 · 隐私优先</div>
+      <p class="desc">Apple Intelligence 的端侧图像生成能力：Image Playground 按 Animation/Illustration 等风格出图，Genmoji 用文字描述生成自定义表情。由设备本地模型驱动，强调隐私，深度嵌入 Messages、Freeform、Keynote 等系统应用，并提供独立 App。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>完全端侧、隐私优先、系统级集成、Genmoji 表情、零额外成本</span></li>
+        <li><b>限制</b><span>画质/写实有限、风格受限、仅限较新 Apple 设备</span></li>
+        <li><b>调用</b><span>iOS/iPadOS/macOS 系统内置；ImagePlayground 开发者框架可调用</span></li>
+        <li><b>许可</b><span>系统内置（专有）</span></li>
+        <li><b>成本</b><span>免费（随系统）</span></li>
+        <li><b>平台</b><span>iOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://www.apple.com/newsroom/2024/12/apple-intelligence-now-features-image-playground-genmoji-and-more/" target="_blank" rel="noopener">Apple Intelligence 图像功能 ↗</a><a href="https://developer.apple.com/apple-intelligence/" target="_blank" rel="noopener">开发者文档 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="genvisual" data-deploy="on-device" data-keywords="draw-things 端侧 on-device 离线 stable-diffusion flux coreml lora 微调 ios mac 开源">
+      <div class="card-top"><h3>Draw Things</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源 / 端侧</span></span></div>
+      <div class="role">端侧出图 App · 离线可控</div>
+      <p class="desc">面向 iPhone/iPad/Mac 的本地 AI 出图与视频 App，完全离线运行，支持 Stable Diffusion、SDXL、FLUX（含 FLUX.2/klein）等模型，以及 Wan 2.2、SkyReels 等图生视频。借 CoreML / Metal FlashAttention / 神经引擎优化推理，还支持端侧 LoRA 微调。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>完全离线、模型/LoRA 自由、端侧微调、图生视频、Apple 芯片优化</span></li>
+        <li><b>限制</b><span>受设备显存/算力限制；大模型（如 FLUX）内存吃紧</span></li>
+        <li><b>调用</b><span>App Store 免费下载；本地运行开源模型权重</span></li>
+        <li><b>许可</b><span>免费 App（运行开源模型权重）</span></li>
+        <li><b>成本</b><span>免费 / 端侧</span></li>
+        <li><b>平台</b><span>iOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://apps.apple.com/us/app/draw-things-offline-ai-art/id6444050820" target="_blank" rel="noopener">App Store ↗</a><a href="https://engineering.drawthings.ai/" target="_blank" rel="noopener">工程博客 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="llm" id="llm">
+  <div class="section-head">
+    <span class="section-num">09</span>
+    <h2>Large Language Models</h2>
+    <span class="zh">大模型 / 端侧 + 云端 / 文本智能</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="llm" data-deploy="on-device" data-keywords="foundation models apple 端侧 llm 3b 摘要 提取 guided generation 免费">
+      <div class="card-top"><h3>Apple Foundation Models</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">系统端侧 LLM 框架 · iOS 26</div>
+      <p class="desc">iOS 26 起开放给第三方：直接调用 Apple Intelligence 核心的端侧 ~3B 模型（2-bit 量化），离线、免费、隐私好。擅长摘要、抽取、分类、改写、短对话——不是通用世界知识聊天机器人。最少三行 Swift 即可接入。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>摘要/抽取/分类/改写、Guided Generation 结构化输出、工具调用</span></li>
+        <li><b>限制</b><span>需 Apple Intelligence 机型；不擅长世界知识/复杂推理</span></li>
+        <li><b>调用</b><span>FoundationModels（LanguageModelSession），@Generable 宏</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="llm" data-deploy="cloud" data-keywords="云端 llm api claude gpt 复杂推理 世界知识 服务器 强模型">
+      <div class="card-top"><h3>云端前沿 LLM API</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">强推理 / 世界知识 · 服务器规模</div>
+      <p class="desc">当任务需要复杂推理、长上下文、世界知识或多模态理解时，端侧小模型力不从心，需调用 Claude、GPT 等服务器规模模型。代价是联网、按量计费、数据出设备。常与端侧模型分工：端侧做轻任务、云端做重任务。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>复杂推理、长上下文、多模态、世界知识</span></li>
+        <li><b>限制</b><span>联网、按量付费、隐私需评估</span></li>
+        <li><b>调用</b><span>各家 REST API（可在 App 内编排端云协同）</span></li>
+        <li><b>成本</b><span>按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="llm" data-deploy="hybrid" data-keywords="本地开源 llm llama qwen mlx gguf 量化 自托管 端侧推理">
+      <div class="card-top"><h3>开源本地 LLM (Llama / Qwen / MLX)</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">自托管端侧模型 · 可控</div>
+      <p class="desc">在设备/自有服务器上跑开源模型（Llama、Qwen 等），通过量化（GGUF）或 Apple 的 MLX 框架在 Apple Silicon 上推理。比系统模型更可控、可选更大尺寸，适合需要自定义、特定领域或更强能力又想离线的场景。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>尺寸/模型自选、可微调、离线可控</span></li>
+        <li><b>限制</b><span>工程与内存成本高；大模型端侧吃力</span></li>
+        <li><b>调用</b><span>MLX（Apple Silicon）、llama.cpp / GGUF 量化</span></li>
+        <li><b>许可</b><span>各模型协议不一（Apache-2.0 / Llama 社区版等）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>macOS / Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="retrieval" id="retrieval">
+  <div class="section-head">
+    <span class="section-num">10</span>
+    <h2>Retrieval &amp; Orchestration</h2>
+    <span class="zh">Embedding / 向量检索 / RAG / Agent / MCP</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="retrieval" data-deploy="cloud" data-keywords="embedding 向量 text-embedding-3 openai gemini-embedding voyage cohere 语义检索 多语言 matryoshka mteb">
+      <div class="card-top"><h3>云端 Embedding API</h3><span class="tag-group"><span class="tag deploy d-cloud">云端</span><span class="tag t-cloud">云端</span></span></div>
+      <div class="role">文本/多模态向量化 · 托管服务</div>
+      <p class="desc">把文本（及图像）映射成稠密向量，是语义检索与 RAG 的第一步。代表：OpenAI text-embedding-3-large/small、Google gemini-embedding-001、Voyage voyage-3、Cohere Embed v4。托管 API 省去自建 GPU，质量稳定且常带 Matryoshka 可截断维度（3072→1536→768），适合快速上线。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>高质量多语言、可变维度、部分支持多模态、零运维</span></li>
+        <li><b>限制</b><span>按量计费、数据出设备、换模型需全量重算向量</span></li>
+        <li><b>调用</b><span>REST/SDK，输入文本批量返回向量；维度可截断以省存储</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://platform.openai.com/docs/guides/embeddings" target="_blank" rel="noopener">OpenAI Embeddings ↗</a><a href="https://developers.googleblog.com/gemini-embedding-available-gemini-api/" target="_blank" rel="noopener">Gemini Embedding ↗</a><a href="https://docs.voyageai.com/" target="_blank" rel="noopener">Voyage AI ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="retrieval" data-deploy="hybrid" data-keywords="embedding 向量 bge bge-m3 e5 nomic qwen3-embedding 开源 自托管 sentence-transformers mteb 多语言">
+      <div class="card-top"><h3>开源 Embedding 模型</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">可自托管的向量化模型 · 模型权重</div>
+      <p class="desc">开源权重的文本向量模型，可端侧或自建服务器运行，数据不出域、零调用费。代表：BAAI BGE-M3（多语言、稠密+稀疏+ColBERT 三合一）、Qwen3-Embedding（多语言 MTEB 榜首梯队）、intfloat E5、Nomic Embed（长上下文、开源数据）。质量已逼近闭源 API，是隐私敏感与高并发场景的主力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>多语言、可微调、数据不出域、长上下文、免调用费</span></li>
+        <li><b>限制</b><span>需自备 GPU/算力与运维；小模型质量略逊顶级 API</span></li>
+        <li><b>调用</b><span>Sentence-Transformers / Hugging Face / Ollama 本地加载，或自建推理服务</span></li>
+        <li><b>许可</b><span>Apache-2.0 / MIT（按模型）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/FlagOpen/FlagEmbedding" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/FlagOpen/FlagEmbedding" target="_blank" rel="noopener">BGE / FlagEmbedding ↗</a><a href="https://www.nomic.ai/blog/posts/nomic-embed-text-v1" target="_blank" rel="noopener">Nomic Embed ↗</a><a href="https://huggingface.co/spaces/mteb/leaderboard" target="_blank" rel="noopener">MTEB Leaderboard ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="retrieval" data-deploy="hybrid" data-keywords="向量数据库 vector database qdrant milvus weaviate chroma pinecone ann hnsw 近邻检索 混合检索 rag">
+      <div class="card-top"><h3>向量数据库</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源 / 云</span></span></div>
+      <div class="role">向量存储与近邻检索 · 自托管或托管</div>
+      <p class="desc">存储 Embedding 并做毫秒级近似最近邻（ANN）检索，是 RAG 与语义搜索的检索引擎。代表：Qdrant（Rust、过滤检索强）、Milvus（十亿级分布式）、Weaviate（混合检索）、Chroma（开发友好）皆开源可自托管；Pinecone 为全托管零运维。多支持 HNSW 索引、量化压缩与向量+元数据混合过滤。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>毫秒级 ANN、混合过滤、量化省内存、可扩到十亿级</span></li>
+        <li><b>限制</b><span>自托管需运维与调参；托管按量计费；召回-速度需权衡</span></li>
+        <li><b>调用</b><span>客户端 SDK：建集合 → 写入向量+payload → 带过滤的 top-k 查询</span></li>
+        <li><b>许可</b><span>Apache-2.0（开源系）/ 商用云（Pinecone）</span></li>
+        <li><b>成本</b><span>免费自托管 / 托管按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/qdrant/qdrant" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://qdrant.tech/" target="_blank" rel="noopener">Qdrant ↗</a><a href="https://milvus.io/" target="_blank" rel="noopener">Milvus ↗</a><a href="https://weaviate.io/" target="_blank" rel="noopener">Weaviate ↗</a><a href="https://www.pinecone.io/" target="_blank" rel="noopener">Pinecone ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="retrieval" data-deploy="hybrid" data-keywords="pgvector postgres postgresql 向量检索 sql hnsw ivfflat supabase rag 关系数据库">
+      <div class="card-top"><h3>pgvector</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">Postgres 向量检索扩展 · 复用现有数据库</div>
+      <p class="desc">为 PostgreSQL 增加 vector 类型与相似度检索（HNSW / IVFFlat 索引）的开源扩展。让团队不必新增一套向量基础设施，在熟悉的 SQL 里把向量与业务表、事务、JOIN、行级权限统一管理。配合 Supabase、RDS、Neon 等托管 Postgres 即可上线，是中小规模 RAG 的高性价比选择。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>SQL 内向量检索、与业务表 JOIN、事务一致、复用现有运维</span></li>
+        <li><b>限制</b><span>超大规模/超高 QPS 不及专用向量库；索引调参影响召回</span></li>
+        <li><b>调用</b><span>CREATE EXTENSION vector；建 HNSW 索引，用 &lt;=&gt; 等距离算子排序</span></li>
+        <li><b>许可</b><span>PostgreSQL License</span></li>
+        <li><b>成本</b><span>免费 / 自托管（托管 Postgres 按量）</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/pgvector/pgvector" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/pgvector/pgvector" target="_blank" rel="noopener">pgvector GitHub ↗</a><a href="https://supabase.com/docs/guides/ai" target="_blank" rel="noopener">Supabase Vector ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="retrieval" data-deploy="on-device" data-keywords="端侧 on-device sqlite-vec sqlite-vector objectbox zvec 离线检索 edge 隐私 移动端 embedded rag">
+      <div class="card-top"><h3>端侧向量检索</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">嵌入式向量库 · 离线本地 RAG</div>
+      <p class="desc">在手机、IoT 与桌面应用内进程化运行的向量检索，无需联网或外部服务，数据全程留在设备。代表：sqlite-vec / SQLite-Vector（SQLite 扩展，跨平台、内存占用极小）、ObjectBox（移动端原生 HNSW + 数据同步）、阿里 Zvec（号称「向量库界的 SQLite」）。是端侧 RAG、离线语义搜索与隐私优先应用的检索底座。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>完全离线、隐私不出设备、内存/体积小、移动端 SDK</span></li>
+        <li><b>限制</b><span>规模上限低于服务器向量库；功能较精简</span></li>
+        <li><b>调用</b><span>嵌入式库随 App 打包：SQLite 扩展或原生 SDK（Swift/Kotlin/Flutter/C++）</span></li>
+        <li><b>许可</b><span>Apache-2.0 / MIT（按项目）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>iOS / Android / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/asg017/sqlite-vec" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/asg017/sqlite-vec" target="_blank" rel="noopener">sqlite-vec ↗</a><a href="https://objectbox.io/vector-database-for-ondevice-ai/" target="_blank" rel="noopener">ObjectBox 向量库 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="retrieval" data-deploy="hybrid" data-keywords="rag 检索增强 llamaindex langchain langgraph dspy haystack 编排 文档问答 切块 langsmith">
+      <div class="card-top"><h3>RAG 框架（LlamaIndex / LangChain）</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">检索增强生成编排 · 把数据接进 LLM</div>
+      <p class="desc">把「文档解析→切块→向量化→检索→重排→喂给 LLM」串成可维护管线的开源框架。LlamaIndex 偏检索优先，强在文档摄取、分层切块、自动合并检索与查询引擎；LangChain 偏编排优先，强在链式调用、工具、记忆与多步 Agent。生产常见组合：LlamaIndex 做检索 + LangChain/LangGraph 做编排 + RAGAS/LangSmith 做评测。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>数据摄取、混合检索、查询改写、Agent 编排、评测集成</span></li>
+        <li><b>限制</b><span>抽象层多、版本演进快；薄封装会带来额外延迟</span></li>
+        <li><b>调用</b><span>Python/TS 库：装载器→索引/向量库→检索器→查询引擎/链</span></li>
+        <li><b>许可</b><span>MIT（LlamaIndex）/ MIT（LangChain）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/run-llama/llama_index" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/run-llama/llama_index" target="_blank" rel="noopener">LlamaIndex ↗</a><a href="https://github.com/langchain-ai/langchain" target="_blank" rel="noopener">LangChain ↗</a><a href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noopener">LangGraph ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="retrieval" data-deploy="hybrid" data-keywords="mcp model context protocol 工具调用 function calling tool use agent 智能体 anthropic langgraph 协议 编排">
+      <div class="card-top"><h3>MCP 与工具调用</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源 / 协议</span></span></div>
+      <div class="role">模型连接外部工具与数据的标准 · Agent 接口</div>
+      <p class="desc">Model Context Protocol（MCP）是 Anthropic 2024 年开源、2025 年被各家广泛采纳的开放协议，统一了 AI 应用调用外部工具、数据源与服务的方式。它位于各厂商「function calling / tool use」之上：function calling 是模型 API 层，MCP 是其上的集成层——一个 MCP server 可被任意 MCP client 复用，不绑定具体模型。是 Agent 接入检索、文件、数据库与企业系统的事实标准。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>工具/资源标准化、跨模型复用、可组合 server、Agent 生态</span></li>
+        <li><b>限制</b><span>需部署/信任 server，权限与安全需治理；协议仍在演进</span></li>
+        <li><b>调用</b><span>MCP server 暴露 tools/resources；客户端经 stdio/HTTP 连接调用</span></li>
+        <li><b>许可</b><span>MIT（规范与官方 SDK）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">MCP 官方 ↗</a><a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">MCP GitHub ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="retrieval" data-deploy="hybrid" data-keywords="reranker 重排 rerank cross-encoder cohere bge-reranker bge-reranker-v2-m3 voyage mixedbread rag 精排 相关性">
+      <div class="card-top"><h3>Reranker 重排模型</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源 / API</span></span></div>
+      <div class="role">检索结果精排 · 提升 RAG 准确率</div>
+      <p class="desc">对向量检索召回的候选做二次精排的 cross-encoder：把「查询-文档」成对输入打分，比双塔 Embedding 更准但更慢，因此只对 top-k 候选重排。典型管线：查询→双塔召回 top 50→重排 top 10→喂给 LLM。代表：Cohere Rerank（托管 API）、BAAI bge-reranker-v2-m3（开源、100+ 语言）、Mixedbread / Voyage 等。是低成本提升 RAG 命中率的关键一环。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>显著提升相关性、支持多语言、即插即用增强现有检索</span></li>
+        <li><b>限制</b><span>增加一次推理延迟与成本；只适合对少量候选精排</span></li>
+        <li><b>调用</b><span>API（Cohere Rerank）或本地加载（bge-reranker）：输入 query+候选，返回相关性分</span></li>
+        <li><b>许可</b><span>Apache-2.0（bge）/ 商用 API（Cohere）</span></li>
+        <li><b>成本</b><span>免费自托管 / API 按量</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/FlagOpen/FlagEmbedding" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://huggingface.co/BAAI/bge-reranker-v2-m3" target="_blank" rel="noopener">bge-reranker-v2-m3 ↗</a><a href="https://cohere.com/rerank" target="_blank" rel="noopener">Cohere Rerank ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="spatial" id="spatial">
+  <div class="section-head">
+    <span class="section-num">11</span>
+    <h2>3D &amp; Spatial Computing</h2>
+    <span class="zh">3D 重建 / AR / 空间计算 / 深度</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="spatial" data-deploy="on-device" data-keywords="arkit realitykit ar 增强现实 空间计算 world tracking 世界追踪 scene-reconstruction lidar pbr swiftui">
+      <div class="card-top"><h3>ARKit / RealityKit</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">AR 追踪与 3D 渲染 · Apple 空间计算底座</div>
+      <p class="desc">Apple 的增强现实与 3D 实时渲染框架：ARKit 负责世界追踪、平面/场景几何、深度与人体遮挡，RealityKit 负责实体组件、物理、动画与基于物理的渲染（PBR），是 iOS / iPadOS / visionOS 上构建 AR 与空间应用的基础。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>世界追踪、场景几何与遮挡、共享世界锚点、PBR 渲染、SwiftUI 内嵌 3D</span></li>
+        <li><b>限制</b><span>仅限 Apple 生态；高级遮挡/几何依赖 LiDAR 机型；不跨 Android</span></li>
+        <li><b>调用</b><span>ARKit + RealityKit（Swift），端侧实时</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（含于系统 SDK）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / visionOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/augmented-reality/arkit/" target="_blank" rel="noopener">ARKit 文档 ↗</a><a href="https://developer.apple.com/documentation/realitykit/" target="_blank" rel="noopener">RealityKit 文档 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="spatial" data-deploy="on-device" data-keywords="object capture 摄影测量 photogrammetry 3d扫描 3d重建 usdz 建模 apple 实物建模">
+      <div class="card-top"><h3>Object Capture</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">照片转 3D 模型 · 摄影测量</div>
+      <p class="desc">Apple 的摄影测量（photogrammetry）框架：用一组多角度照片自动重建出带纹理的 3D 网格模型，输出 USDZ，可直接用于 AR 展示。自 iOS 17 起拍摄与重建可在同一台 iPhone/iPad 上端侧完成。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>多视角照片重建带 PBR 纹理网格、端侧重建、输出 USDZ/USD</span></li>
+        <li><b>限制</b><span>需绕物多角度拍摄；反光/透明/无纹理物体效果差；非实时</span></li>
+        <li><b>调用</b><span>RealityKit Object Capture API（Swift），端侧</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（含于系统 SDK）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/realitykit/realitykit-object-capture/" target="_blank" rel="noopener">Object Capture 文档 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="spatial" data-deploy="on-device" data-keywords="roomplan 房间扫描 户型 室内重建 lidar 家装 室内设计 usdz scan-to-bim">
+      <div class="card-top"><h3>RoomPlan</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">房间扫描与参数化重建 · LiDAR</div>
+      <p class="desc">Apple 的房间重建框架：借助 iPhone/iPad 的摄像头与 LiDAR，实时扫描生成带尺寸、墙体、门窗与家具类型的参数化 3D 户型，输出 USD/USDZ，适合家装、室内设计与不动产类 App。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>实时房间扫描、墙/门/窗/家具识别、参数化户型、输出 USD/USDZ</span></li>
+        <li><b>限制</b><span>需 LiDAR 机型；以室内规整空间为主；家具识别为类别级非精确建模</span></li>
+        <li><b>调用</b><span>RoomPlan API（Swift），端侧实时</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（含于系统 SDK）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/roomplan/" target="_blank" rel="noopener">RoomPlan 文档 ↗</a><a href="https://developer.apple.com/augmented-reality/roomplan/" target="_blank" rel="noopener">RoomPlan 概览 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="spatial" data-deploy="hybrid" data-keywords="gaussian splatting 高斯泼溅 3dgs radiance field 辐射场 新视图合成 novel view synthesis gsplat 3d重建">
+      <div class="card-top"><h3>3D Gaussian Splatting</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">实时辐射场重建与新视图合成</div>
+      <p class="desc">用一组带位姿的照片/视频重建场景，以大量 3D 高斯点（位置、协方差、颜色、不透明度）表示辐射场，可在 1080p 下实时（≥30fps）渲染新视角。训练快、渲染快，已成为体积重建与新视图合成的事实标准，质量比肩或超过 Mip-NeRF 360。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>实时新视图合成、训练分钟级、高画质重建、可编辑性强</span></li>
+        <li><b>限制</b><span>需多视角输入与相机位姿（COLMAP 等）；动态场景/反光仍具挑战；模型体积较大</span></li>
+        <li><b>调用</b><span>开源训练 + 实时查看器；亦可云 GPU 训练后端侧/Web 渲染</span></li>
+        <li><b>许可</b><span>研究/非商用（INRIA 原始实现）</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台 / Web</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/graphdeco-inria/gaussian-splatting" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/" target="_blank" rel="noopener">项目主页（INRIA） ↗</a><a href="https://arxiv.org/abs/2308.04079" target="_blank" rel="noopener">论文 arXiv:2308.04079 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="spatial" data-deploy="hybrid" data-keywords="nerfstudio nerf 神经辐射场 neural radiance field gsplat 新视图合成 3d重建 novel view synthesis 开源框架">
+      <div class="card-top"><h3>Nerfstudio / NeRF</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源</span></span></div>
+      <div class="role">NeRF 与高斯泼溅统一开发框架</div>
+      <p class="desc">Nerfstudio 是 UC Berkeley 发起、NVIDIA 支持的开源框架，把神经辐射场（NeRF）与 3D 高斯泼溅统一在一套模块化流程里，覆盖训练、评估、实时查看与导出，并内置 CUDA 加速的 gsplat 光栅化器，是社区最广泛采用的神经 3D 重建平台。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>统一 NeRF/3DGS 流程、模块化方法切换、实时查看器、CUDA 加速</span></li>
+        <li><b>限制</b><span>重建质量依赖输入位姿与覆盖度；训练吃 GPU；NeRF 类方法渲染较慢</span></li>
+        <li><b>调用</b><span>开源 CLI/查看器；本地 GPU 或云 GPU 训练</span></li>
+        <li><b>许可</b><span>Apache-2.0</span></li>
+        <li><b>成本</b><span>免费 / 自托管</span></li>
+        <li><b>平台</b><span>Server / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/nerfstudio-project/nerfstudio" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://arxiv.org/pdf/2302.04264" target="_blank" rel="noopener">论文 arXiv:2302.04264 ↗</a><a href="https://radiancefields.com/platforms/nerfstudio" target="_blank" rel="noopener">Radiance Fields 介绍 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="spatial" data-deploy="hybrid" data-keywords="文生3d 图生3d text-to-3d image-to-3d trellis hunyuan3d meshy tripo rodin 3d生成 ai建模">
+      <div class="card-top"><h3>文生 3D / 图生 3D</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源 / API</span></span></div>
+      <div class="role">文本或图片生成 3D 资产</div>
+      <p class="desc">用文本或单张图片直接生成带网格与 PBR 材质的 3D 资产，几十秒级出模。代表开源项目有 Microsoft TRELLIS（结构化潜变量 SLAT，可解码为辐射场/高斯/网格）与 Tencent Hunyuan3D（几何 + 纹理两段式扩散）；云端商用 API 有 Meshy、Tripo、Rodin 等，适合游戏/电商/概念设计快速产模。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>文/图生网格、PBR 纹理、秒级到分钟级出模、多格式导出</span></li>
+        <li><b>限制</b><span>拓扑/细节不及人工精修；复杂结构与小物件易失真；部分许可限地区/商用</span></li>
+        <li><b>调用</b><span>开源权重本地/云 GPU 推理，或商用云 API</span></li>
+        <li><b>许可</b><span>MIT（TRELLIS）/ Apache-2.0（Hunyuan3D，部分地区受限）/ 商用 API</span></li>
+        <li><b>成本</b><span>免费自托管（开源）/ 按量（云 API）</span></li>
+        <li><b>平台</b><span>Server / 跨平台 / Web</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/microsoft/TRELLIS" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://github.com/microsoft/TRELLIS" target="_blank" rel="noopener">Microsoft TRELLIS ↗</a><a href="https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1" target="_blank" rel="noopener">Tencent Hunyuan3D-2.1 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="system" id="system">
+  <div class="section-head">
+    <span class="section-num">12</span>
+    <h2>System &amp; Intents</h2>
+    <span class="zh">App Intents / 小组件 / Siri / 系统集成</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="system" data-deploy="on-device" data-keywords="app intents appintents 意图 siri shortcuts spotlight 系统集成 app intent domains apple">
+      <div class="card-top"><h3>App Intents</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">把 App 能力暴露给系统 · iOS 16+</div>
+      <p class="desc">用 Swift 把 App 的动作与数据声明为「意图」，系统即可在 Siri、Spotlight、小组件、快捷指令、操作按钮等处统一调度。iOS 26 进一步引入 App Intent Domains 与屏上实体，让 Apple Intelligence 能直接调用意图、跨 App 组合动作，而无需模拟 UI 操作。是本分类的中枢框架。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>声明动作/实体/枚举，被 Siri、Spotlight、小组件、快捷指令复用</span></li>
+        <li><b>限制</b><span>agentic 调度与 Domains 仍在演进；高级 Siri 能力需 Apple Intelligence 机型</span></li>
+        <li><b>调用</b><span>AppIntents 框架，AppIntent / AppEntity / AppShortcut</span></li>
+        <li><b>许可</b><span>随 SDK 提供</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / watchOS / visionOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/appintents" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/appintents/integrating-actions-with-siri-and-apple-intelligence" target="_blank" rel="noopener">Integrating actions with Siri and Apple Intelligence ↗</a><a href="https://developer.apple.com/videos/play/wwdc2025/275/" target="_blank" rel="noopener">WWDC25 · Explore new advances in App Intents ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="system" data-deploy="hybrid" data-keywords="shortcuts 快捷指令 自动化 automation app shortcuts use model siri apple intelligence">
+      <div class="card-top"><h3>Shortcuts 快捷指令</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">可视化自动化 + App Shortcuts · 系统级编排</div>
+      <p class="desc">面向用户的可视化自动化工具，把多 App 动作串成流程。开发者用 App Shortcuts 可零配置地把 App Intent 暴露到快捷指令库与 Siri 触发短语。iOS 26 起 Shortcuts 内置 Apple Intelligence——「Use Model」动作可在端侧、Private Cloud Compute 或 ChatGPT 间选择执行，并新增 25+ 智能动作。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>拖拽编排多 App 流程、定时/事件自动化、调用端侧或云端模型</span></li>
+        <li><b>限制</b><span>智能动作需 Apple Intelligence 机型；复杂逻辑仍偏脚本化</span></li>
+        <li><b>调用</b><span>Shortcuts App；开发侧用 AppShortcut / AppShortcutsProvider</span></li>
+        <li><b>许可</b><span>随系统提供</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / watchOS / visionOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/appintents/app-shortcuts" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://support.apple.com/en-us/125148" target="_blank" rel="noopener">What's new in Shortcuts · iOS 26 ↗</a><a href="https://support.apple.com/guide/iphone/use-apple-intelligence-in-shortcuts-iph78c41eaf8/ios" target="_blank" rel="noopener">Use Apple Intelligence in Shortcuts ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="system" data-deploy="on-device" data-keywords="widgetkit live activities dynamic island 灵动岛 小组件 锁屏 activitykit supplementalActivityFamilies">
+      <div class="card-top"><h3>WidgetKit · Live Activities · 灵动岛</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">小组件与实时活动 · 系统触达</div>
+      <p class="desc">用 WidgetKit + SwiftUI 构建主屏/锁屏/待机小组件，用 ActivityKit 构建 Live Activities，在锁屏与灵动岛（Dynamic Island）以紧凑/最小/展开三态呈现实时内容（计时、配送、比分、媒体）。iOS 26 引入液态玻璃外观，Live Activities 可同步呈现到 macOS 菜单栏与 CarPlay。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>主屏/锁屏小组件、Live Activities、灵动岛三态、交互式按钮</span></li>
+        <li><b>限制</b><span>Live Activities 需 iOS 16.4+；灵动岛硬件限 iPhone 14 Pro 起机型</span></li>
+        <li><b>调用</b><span>WidgetKit + SwiftUI；ActivityKit（Activity）；DynamicIsland</span></li>
+        <li><b>许可</b><span>随 SDK 提供</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/widgetkit/dynamicisland" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/news/?id=bkm73839" target="_blank" rel="noopener">Explore Live Activities and the Dynamic Island ↗</a><a href="https://dev.to/arshtechpro/wwdc-2025-widgetkit-in-ios-26-a-complete-guide-to-modern-widget-development-1cjp" target="_blank" rel="noopener">WWDC25 · WidgetKit in iOS 26 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="system" data-deploy="hybrid" data-keywords="sirikit siri 语音助手 intents 意图领域 apple intelligence voice">
+      <div class="card-top"><h3>SiriKit 与 Siri</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">Siri 接入 · 领域意图（多被 App Intents 取代）</div>
+      <p class="desc">Apple 早期的 Siri 接入框架，以预定义领域（消息、出行、支付、媒体等）让 App 响应语音请求。多数通用场景已被更现代的 App Intents 取代，仅少数仍有专属 SiriKit 领域的功能建议继续用它。Apple Intelligence 时代 Siri 正重构为基于大模型、可经 App Intents 直接调用 App 能力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>在既有 SiriKit 领域内响应语音、提供 Siri 建议</span></li>
+        <li><b>限制</b><span>部分领域自 iOS 15 起已废弃；新功能优先用 App Intents</span></li>
+        <li><b>调用</b><span>Intents / IntentsUI 框架，INIntent；新项目优先 AppIntents</span></li>
+        <li><b>许可</b><span>随 SDK 提供</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/sirikit" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/support/deprecated-sirikit-intent-domains" target="_blank" rel="noopener">Deprecated SiriKit Intent Domains ↗</a><a href="https://developer.apple.com/documentation/appintents" target="_blank" rel="noopener">App Intents ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="system" data-deploy="on-device" data-keywords="core spotlight corespotlight spotlight 索引 语义搜索 semantic search 应用内搜索 embedding">
+      <div class="card-top"><h3>Core Spotlight</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">应用内内容索引 + 语义搜索 · 端侧</div>
+      <p class="desc">把 App 内容写入端侧 Spotlight 索引，让用户在系统搜索中找到 App 的具体条目并直达。iOS 18/iOS 26 起支持语义搜索（SemanticSearch）：基于本地向量嵌入按「意思相近」而非精确字面匹配，可用自然语言搜索完全私有的端侧索引，适合文本与图片/视频等媒体。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>贡献可搜索条目、深链直达、自然语言语义搜索</span></li>
+        <li><b>限制</b><span>索引与嵌入在端侧生成有时延；语义搜索对机型/系统版本有要求</span></li>
+        <li><b>调用</b><span>CoreSpotlight 框架，CSSearchableItem / CSSearchableIndex</span></li>
+        <li><b>许可</b><span>随 SDK 提供</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/corespotlight/cssearchableitem" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/videos/play/wwdc2024/10131/" target="_blank" rel="noopener">WWDC24 · Support semantic search with Core Spotlight ↗</a><a href="https://developer.apple.com/documentation/corespotlight/cssearchableindex" target="_blank" rel="noopener">CSSearchableIndex ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="system" data-deploy="on-device" data-keywords="background tasks backgroundtasks bgtaskscheduler 后台任务 BGContinuedProcessingTask 后台刷新 调度">
+      <div class="card-top"><h3>Background Tasks</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">后台调度与持续处理 · 系统托管</div>
+      <p class="desc">用 BGTaskScheduler 申请系统在合适时机（充电、空闲、联网）唤醒 App 做刷新或维护。iOS 26 新增 BGContinuedProcessingTask：由用户显式操作（如点按导出/上传）发起的长任务可在切到后台后继续完成，并通过系统 UI 展示进度、允许取消。Apple「日记」App 的后台导出即用此 API。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>后台刷新、夜间维护、前台发起的长任务后台续跑 + 进度展示</span></li>
+        <li><b>限制</b><span>执行时机由系统决定；标识符须在 Info.plist 声明，否则提交报错</span></li>
+        <li><b>调用</b><span>BackgroundTasks 框架，BGTaskScheduler / BGContinuedProcessingTask</span></li>
+        <li><b>许可</b><span>随 SDK 提供</span></li>
+        <li><b>成本</b><span>免费</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/backgroundtasks/bgtaskscheduler" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/videos/play/wwdc2025/227/" target="_blank" rel="noopener">WWDC25 · Finish tasks in the background ↗</a><a href="https://developer.apple.com/documentation/BackgroundTasks/refreshing-and-maintaining-your-app-using-background-tasks" target="_blank" rel="noopener">Refreshing and maintaining your app using background tasks ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="security" id="security">
+  <div class="section-head">
+    <span class="section-num">13</span>
+    <h2>Privacy &amp; Security</h2>
+    <span class="zh">隐私 / 安全 / 生物识别 / 端云协同</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="security" data-deploy="on-device" data-keywords="secure enclave sep apple 安全隔区 硬件安全 密钥 keychain p-256 信任根 fips">
+      <div class="card-top"><h3>Secure Enclave</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">硬件安全子系统 · 密钥底座</div>
+      <p class="desc">集成在 Apple SoC 内、与主处理器隔离的专用安全子系统，独立管理密钥与加解密。私钥在其中生成且永不以明文离开芯片——你只能让它「用」密钥而拿不到密钥本身，主系统内核即便被攻破也保护用户数据。生物识别、Passkeys、App Attest、设备加密等都以它为信任根。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>片上生成/保管 NIST P-256 密钥，签名/密钥交换/对称加密，独立内存加密(AES-XEX)</span></li>
+        <li><b>限制</b><span>仅 P-256 曲线；通过上层框架间接调用，非通用加速器</span></li>
+        <li><b>调用</b><span>经 CryptoKit SecureEnclave / Keychain (kSecAttrTokenIDSecureEnclave) 访问</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（系统内置）</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://support.apple.com/guide/security/secure-enclave-sec59b0b31ff/web" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://support.apple.com/guide/security/welcome/web" target="_blank" rel="noopener">Apple Platform Security ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="security" data-deploy="on-device" data-keywords="localauthentication face id touch id 生物识别 biometric lacontext 人脸 指纹 解锁">
+      <div class="card-top"><h3>LocalAuthentication</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">生物识别框架 · Face ID / Touch ID</div>
+      <p class="desc">iOS/macOS 调用 Face ID、Touch ID 或设备密码做本地身份验证的系统框架。用 LAContext 一次调用即可弹出系统验证 UI；App 永远拿不到指纹或人脸数据——比对全程在 Secure Enclave 内完成，只返回成功或失败。常用于解锁敏感页面、为本地存储授权、配合 Keychain 做带生物识别保护的密钥。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>Face ID/Touch ID/密码验证，biometryType 探测能力，可绑定 Keychain 访问控制</span></li>
+        <li><b>限制</b><span>仅本地验证身份「这台设备的主人在场」，不替代服务端鉴权</span></li>
+        <li><b>调用</b><span>LocalAuthentication（LAContext.evaluatePolicy）</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（系统内置）</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/localauthentication" target="_blank" rel="noopener">源仓库 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="security" data-deploy="hybrid" data-keywords="passkeys 通行密钥 webauthn fido2 无密码 passwordless 抗钓鱼 authenticationservices asauthorization">
+      <div class="card-top"><h3>Passkeys</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">无密码登录 · WebAuthn</div>
+      <p class="desc">基于 WebAuthn/FIDO2 公钥密码学的无密码登录方案。注册时设备生成一对密钥，私钥留在 Secure Enclave、经 iCloud 钥匙串端到端同步到用户其他 Apple 设备，公钥交给服务端；登录用生物识别授权签名，天生抗钓鱼、无密码可泄露。原生 App 用 AuthenticationServices，网页用浏览器 WebAuthn API，跨平台可经混合传输登录电视等设备。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>抗钓鱼无密码登录，iCloud 钥匙串跨设备同步，生物识别授权</span></li>
+        <li><b>限制</b><span>需服务端支持 WebAuthn；跨生态迁移仍在完善</span></li>
+        <li><b>调用</b><span>AuthenticationServices（ASAuthorizationController / ASAuthorizationPlatformPublicKeyCredentialProvider）</span></li>
+        <li><b>许可</b><span>商用闭源（标准开放）</span></li>
+        <li><b>成本</b><span>免费（系统内置）</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS / tvOS / Web</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/authenticationservices/supporting-passkeys" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noopener">WebAuthn 标准 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="security" data-deploy="hybrid" data-keywords="private cloud compute pcc apple intelligence 端云协同 隐私推理 机密计算 secure enclave 可验证透明">
+      <div class="card-top"><h3>Private Cloud Compute</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">隐私云端推理 · 端云协同</div>
+      <p class="desc">Apple Intelligence 在端侧算力不够时，把请求安全卸载到运行 Apple Silicon 的专用服务器处理的隐私推理系统。服务器复用 iPhone 同款 Secure Enclave 架构，数据传输加密、仅在内存中临时处理，不落盘、不画像、不留日志，连 Apple 自己也无法访问；并提供可验证透明性——独立研究者可审计实际运行的镜像。把端侧的隐私保证延伸到云端。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>更大模型的云端推理，无状态计算、内存内临时处理、可验证透明性</span></li>
+        <li><b>限制</b><span>仅服务 Apple Intelligence；非通用云推理 API</span></li>
+        <li><b>调用</b><span>由 Apple Intelligence/Foundation Models 自动路由，开发者不直接调用</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（随 Apple Intelligence）</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://security.apple.com/blog/private-cloud-compute/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://security.apple.com/blog/pcc-security-research/" target="_blank" rel="noopener">PCC 安全研究 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="security" data-deploy="on-device" data-keywords="cryptokit apple 加密 端侧加密 aes-gcm ecdh 后量子 ml-kem ml-dsa pqc swift">
+      <div class="card-top"><h3>Apple CryptoKit</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">端侧加密框架 · 含后量子</div>
+      <p class="desc">Apple 的现代 Swift 加密框架，提供哈希、HMAC、对称加密(AES-GCM/ChaChaPoly)、密钥协商(ECDH)与签名等原语，API 类型安全、难误用。可直接驱动 Secure Enclave 生成与使用片上私钥。iOS 26 起新增后量子密码：ML-KEM(768/1024) 密钥封装与 ML-DSA(65/87) 签名，让开发者在自家 App 里就能用上抗量子加密。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>AES-GCM/ChaChaPoly、ECDH、Ed25519/P-256 签名、ML-KEM/ML-DSA 后量子、Secure Enclave 密钥</span></li>
+        <li><b>限制</b><span>Swift-first；底层算法库非全部开源</span></li>
+        <li><b>调用</b><span>CryptoKit（SymmetricKey / SecureEnclave.P256 / KEM / MLDSA）</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（系统内置）</span></li>
+        <li><b>平台</b><span>iOS / macOS / iPadOS / tvOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/cryptokit/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://support.apple.com/guide/security/secc7c82e533/web" target="_blank" rel="noopener">后量子加密说明 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="security" data-deploy="hybrid" data-keywords="app attest devicecheck 设备完整性 attestation 防欺诈 反作弊 secure enclave dcdevice">
+      <div class="card-top"><h3>App Attest / DeviceCheck</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">设备与 App 完整性证明</div>
+      <p class="desc">DeviceCheck 框架帮你判断「请求确实来自正版 App、运行在未越狱的真机上」，对抗欺诈与刷量。App Attest 用 Secure Enclave 里的私钥对服务端下发的挑战值签名，由 Apple 与你的服务端共同校验；DeviceCheck 还能给设备打两位持久标记位（如「是否已领过新人福利」)，跨重装保留。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>App 完整性证明、请求合法性断言(attest/assert)、每设备两位持久状态</span></li>
+        <li><b>限制</b><span>仅未越狱 iOS 真机；需自建服务端校验，覆盖面有限</span></li>
+        <li><b>调用</b><span>DeviceCheck（DCAppAttestService / DCDevice），配合自有服务端</span></li>
+        <li><b>许可</b><span>商用闭源</span></li>
+        <li><b>成本</b><span>免费（系统内置）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / tvOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/devicecheck" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/devicecheck/establishing-your-app-s-integrity" target="_blank" rel="noopener">建立 App 完整性 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-cat="connectivity" id="connectivity">
+  <div class="section-head">
+    <span class="section-num">14</span>
+    <h2>Connectivity</h2>
+    <span class="zh">NFC / 蓝牙 / UWB / Matter / 网络</span>
+  </div>
+  <div class="grid">
+    <article class="card" data-cat="connectivity" data-deploy="on-device" data-keywords="nfc 近场通信 标签 ndef core-nfc felica 门禁 配网 后台读取">
+      <div class="card-top"><h3>Core NFC</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">近场标签读写 · NFC</div>
+      <p class="desc">读取与写入 NFC 标签（NDEF、ISO 7816、ISO 15693、FeliCa 等），支持后台标签读取：锁屏亮屏时自动识别含 Universal Link 的标签并唤起对应 App，用于门禁、海报、设备配网、票务等场景。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>前台扫描会话、后台标签读取（亮屏即扫）、NDEF 读写、原生标签协议、支持 Host Card Emulation（需授权）</span></li>
+        <li><b>限制</b><span>需 iPhone 7 及以上；后台读取要求标签含有效 Universal Link；写卡/HCE 部分能力需 Apple 单独授权</span></li>
+        <li><b>调用</b><span>Core NFC，Swift/ObjC；NFCNDEFReaderSession / NFCTagReaderSession，后台经 NSUserActivity 路由</span></li>
+        <li><b>许可</b><span>商用闭源（系统框架）</span></li>
+        <li><b>成本</b><span>免费（系统能力）</span></li>
+        <li><b>平台</b><span>iOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/corenfc" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/corenfc" target="_blank" rel="noopener">Core NFC 文档 ↗</a><a href="https://developer.apple.com/documentation/corenfc/adding-support-for-background-tag-reading" target="_blank" rel="noopener">后台标签读取 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="connectivity" data-deploy="on-device" data-keywords="蓝牙 ble low-energy core-bluetooth gatt 外设 中心 可穿戴 iot 配件">
+      <div class="card-top"><h3>Core Bluetooth</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">低功耗蓝牙通信 · BLE</div>
+      <p class="desc">与蓝牙低功耗（BLE）设备通信的系统框架，支持 Central（中心）与 Peripheral（外设）双角色，基于 GATT 的服务/特征模型进行扫描、连接、读写与订阅，是可穿戴、健康设备、IoT、配件互联的基础。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>BLE 扫描/连接、GATT 服务与特征读写/通知、广播与外设角色、后台连接保活、配合 AccessorySetupKit 简化配对</span></li>
+        <li><b>限制</b><span>iOS 11 起 MultipeerConnectivity 的蓝牙 P2P 已被禁用；后台扫描受限；经典蓝牙（A2DP 等）不在此框架内</span></li>
+        <li><b>调用</b><span>Core Bluetooth，Swift/ObjC；CBCentralManager / CBPeripheralManager</span></li>
+        <li><b>许可</b><span>商用闭源（系统框架）</span></li>
+        <li><b>成本</b><span>免费（系统能力）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / watchOS / tvOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/corebluetooth" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/corebluetooth" target="_blank" rel="noopener">Core Bluetooth 文档 ↗</a><a href="https://developer.apple.com/bluetooth/" target="_blank" rel="noopener">Apple Bluetooth 总览 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="connectivity" data-deploy="on-device" data-keywords="uwb 超宽带 精确测距 方向 nearby-interaction u1 空间感知 精准查找">
+      <div class="card-top"><h3>Nearby Interaction</h3><span class="tag-group"><span class="tag deploy d-on-device">端侧</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">UWB 精确测距与方向 · 空间感知</div>
+      <p class="desc">基于超宽带（UWB / U1·U2 芯片）的精确测距与方向感知框架，可在设备之间或与第三方 UWB 配件之间测出厘米级距离与相对方向，用于精准查找、空间化交互、近场解锁、AR 锚定等。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>厘米级距离测量、方向（角度）感知、设备间与第三方配件互测、可结合 ARKit 做相机辅助；支持经蓝牙 LE 配对后的后台会话</span></li>
+        <li><b>限制</b><span>需含 UWB 芯片的机型（iPhone 11 及以上等）；第三方配件需实现 NI Accessory Protocol；遮挡与多径会影响精度</span></li>
+        <li><b>调用</b><span>Nearby Interaction，Swift；NISession + NINearbyPeerConfiguration / NINearbyAccessoryConfiguration</span></li>
+        <li><b>许可</b><span>商用闭源（系统框架）</span></li>
+        <li><b>成本</b><span>免费（系统能力）</span></li>
+        <li><b>平台</b><span>iOS / watchOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/nearbyinteraction" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/nearbyinteraction" target="_blank" rel="noopener">Nearby Interaction 文档 ↗</a><a href="https://developer.apple.com/documentation/nearbyinteraction/implementing-spatial-interactions-with-third-party-accessories" target="_blank" rel="noopener">第三方配件空间交互 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="connectivity" data-deploy="hybrid" data-keywords="network 网络 quic http-3 tls udp tcp bonjour nwconnection 结构化并发">
+      <div class="card-top"><h3>Network framework</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">Apple 原生</span></span></div>
+      <div class="role">现代网络传输 · TCP/UDP/QUIC/TLS</div>
+      <p class="desc">Apple 的现代化底层网络框架，统一处理 TCP、UDP、QUIC、TLS 与本地 P2P 连接，内建「按名连接」「Happy Eyeballs」、网络切换与代理处理。iOS/macOS 26 起新增 NetworkConnection / NetworkListener / NetworkBrowser，与 Swift 结构化并发深度整合。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>TCP/UDP/QUIC/TLS 统一接口、HTTP/3 支持、Bonjour 服务发现、点对点本地网络、自动处理蜂窝/Wi-Fi 切换；新 API 适配 async/await</span></li>
+        <li><b>限制</b><span>比 URLSession 更底层，需自行管理连接状态；纯 HTTP 请求通常仍建议用 URLSession</span></li>
+        <li><b>调用</b><span>Network 框架，Swift；NWConnection / NWListener / NWBrowser 或 iOS 26 新增的 NetworkConnection 系列</span></li>
+        <li><b>许可</b><span>商用闭源（系统框架）</span></li>
+        <li><b>成本</b><span>免费（系统能力）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / watchOS / tvOS</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://developer.apple.com/documentation/network" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/network" target="_blank" rel="noopener">Network 框架文档 ↗</a><a href="https://developer.apple.com/videos/play/wwdc2025/250/" target="_blank" rel="noopener">WWDC25：结构化并发与 Network ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="connectivity" data-deploy="hybrid" data-keywords="matter homekit 智能家居 智能家庭 smart-home thread csa works-with-apple-home 物联网">
+      <div class="card-top"><h3>Matter / HomeKit</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-platform">开源标准 / Apple 原生</span></span></div>
+      <div class="role">智能家居互联 · 跨生态标准</div>
+      <p class="desc">Matter 是连接标准联盟（CSA）推出的跨平台智能家居开源标准，基于 IP，让设备一次接入即被 Apple Home、Google Home、Alexa、SmartThings 通用；HomeKit 是 Apple 在 iOS 侧的接入与控制框架，Apple Home 同时作为 Matter 控制器。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>跨生态互通、本地控制、Thread/Wi-Fi/以太网承载；Matter 1.5 起支持安防摄像头等更多设备类型</span></li>
+        <li><b>限制</b><span>各生态对规范支持进度不一（部分仍停留在 1.2/1.3）；旧版 HomeKit 架构支持将于 2026-02-10 结束，需迁移新架构</span></li>
+        <li><b>调用</b><span>HomeKit / HomeKit Matter Support，Swift；设备端实现 Matter SDK 并通过 Apple Home 配网</span></li>
+        <li><b>许可</b><span>Apache-2.0（Matter SDK）/ Apple 框架闭源</span></li>
+        <li><b>成本</b><span>免费（标准与系统能力）</span></li>
+        <li><b>平台</b><span>iOS / iPadOS / macOS / tvOS / watchOS / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://github.com/project-chip/connectedhomeip" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://developer.apple.com/documentation/homekit" target="_blank" rel="noopener">HomeKit 文档 ↗</a><a href="https://csa-iot.org/all-solutions/matter/" target="_blank" rel="noopener">Matter（CSA） ↗</a><a href="https://github.com/project-chip/connectedhomeip" target="_blank" rel="noopener">connectedhomeip 仓库 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+    <article class="card" data-cat="connectivity" data-deploy="hybrid" data-keywords="webrtc 实时通信 音视频 视频通话 real-time rtc datachannel sfu p2p 连麦">
+      <div class="card-top"><h3>WebRTC</h3><span class="tag-group"><span class="tag deploy d-hybrid">端云</span><span class="tag t-open">开源标准</span></span></div>
+      <div class="role">实时音视频与数据通信 · P2P</div>
+      <p class="desc">浏览器与原生客户端通用的实时通信开源标准，提供点对点的音视频与任意数据通道（DataChannel），内建回声消除、抖动缓冲、拥塞控制与加密（DTLS-SRTP），是视频通话、直播连麦、屏幕共享、云游戏与实时协作的事实标准。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>低延迟音视频/数据 P2P、NAT 穿透（ICE/STUN/TURN）、自适应码率、端到端加密、跨浏览器与原生 SDK</span></li>
+        <li><b>限制</b><span>需自建信令服务器；大规模/录制常需 SFU/MCU 媒体服务器；网络较差时仍需 TURN 中继</span></li>
+        <li><b>调用</b><span>W3C WebRTC API（JS）/ libwebrtc 原生库；iOS 上亦可经 WKWebView 或原生集成</span></li>
+        <li><b>许可</b><span>BSD-3-Clause（libwebrtc）/ W3C 开放标准</span></li>
+        <li><b>成本</b><span>免费 / 自托管（信令与 TURN 自理）</span></li>
+        <li><b>平台</b><span>Web / iOS / Android / macOS / 跨平台</span></li>
+      </ul>
+      <div class="card-foot"><a href="https://webrtc.googlesource.com/src/" target="_blank" rel="noopener">源仓库 ↗</a><a href="https://webrtc.org/" target="_blank" rel="noopener">WebRTC 官网 ↗</a><a href="https://www.w3.org/TR/webrtc/" target="_blank" rel="noopener">W3C WebRTC 规范 ↗</a><span style="color:var(--muted)">updated 2026-06</span></div>
+    </article>
+  </div>
+</section>
+
+<div class="no-results" id="noResults">没有匹配的条目 · 试试别的关键词</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    个人技术知识库 · 数据持续整理，技术与模型排名变化很快，使用前建议核对各官方文档 / 最新基准（条目内 <em>updated</em> 字段标注核对时间）。<br>
+    主要参考：Apple Developer（AVFoundation / Vision / Foundation Models）· 各开源模型与云服务官方资料 · TTS Arena / Open ASR Leaderboard 等公开基准。
+  </div>
+</footer>
+
+<script>
+const cards = Array.from(document.querySelectorAll('.card'));
+const sections = Array.from(document.querySelectorAll('.section'));
+const catChips = Array.from(document.querySelectorAll('#filters .chip'));
+const deployChips = Array.from(document.querySelectorAll('#deployFilters .chip'));
+const search = document.getElementById('search');
+const noResults = document.getElementById('noResults');
+const visibleCount = document.getElementById('visible-count');
+document.getElementById('total-count').textContent = cards.length;
+
+let activeFilter = 'all';
+let activeDeploy = 'all';
+
+function apply(){
+  const q = search.value.trim().toLowerCase();
+  let shown = 0;
+  cards.forEach(c=>{
+    const cat = c.dataset.cat;
+    const deploy = c.dataset.deploy;
+    const kw = ((c.dataset.keywords||'') + ' ' + c.textContent).toLowerCase();
+    const matchCat = activeFilter==='all' || cat===activeFilter;
+    const matchDeploy = activeDeploy==='all' || deploy===activeDeploy;
+    const matchQ = !q || kw.includes(q);
+    const ok = matchCat && matchDeploy && matchQ;
+    c.classList.toggle('hidden', !ok);
+    if(ok) shown++;
+  });
+  // hide empty sections
+  sections.forEach(s=>{
+    const any = s.querySelectorAll('.card:not(.hidden)').length>0;
+    s.style.display = any ? '' : 'none';
+  });
+  noResults.classList.toggle('show', shown===0);
+  visibleCount.textContent = shown + ' / ' + cards.length + ' 条';
+}
+
+catChips.forEach(ch=>ch.addEventListener('click',()=>{
+  catChips.forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active');
+  activeFilter = ch.dataset.f;
+  apply();
+}));
+deployChips.forEach(ch=>ch.addEventListener('click',()=>{
+  deployChips.forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active');
+  activeDeploy = ch.dataset.d;
+  apply();
+}));
+search.addEventListener('input', apply);
+apply();
+</script>
+
+</body>
+</html>

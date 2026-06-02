@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!-- 此文件是模板。最终 index.html 由 `npm run build` 从 content/ 生成，请勿手改生成物。 -->
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术知识图谱 · Tech Atlas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --ink:#13110e;
+  --paper:#f4efe6;
+  --paper-2:#eae3d4;
+  --line:#cabfa8;
+  --accent:#c2410c;
+  --accent-2:#1d4d4f;
+  --muted:#6b6354;
+  --card:#fbf8f1;
+  --shadow:rgba(40,33,20,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Noto Sans SC','Space Mono',sans-serif;
+  line-height:1.6;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(194,65,12,.05), transparent 45%),
+    radial-gradient(circle at 82% 78%, rgba(29,77,79,.06), transparent 50%);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* ---------- Header ---------- */
+header{
+  border-bottom:2px solid var(--ink);
+  padding:54px 0 26px;
+  position:relative;
+  overflow:hidden;
+}
+.kicker{
+  font-family:'Space Mono',monospace;
+  font-size:12px;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:clamp(40px,7vw,86px);
+  line-height:.96;
+  letter-spacing:-.02em;
+}
+h1 em{font-style:italic;color:var(--accent-2)}
+.sub{
+  margin-top:22px;max-width:680px;
+  font-size:16px;color:var(--muted);font-weight:300;
+}
+.meta-row{
+  margin-top:30px;display:flex;flex-wrap:wrap;gap:26px;
+  font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);
+  letter-spacing:.06em;
+}
+.meta-row b{color:var(--ink);font-weight:700}
+
+/* ---------- Controls ---------- */
+.controls{
+  position:sticky;top:0;z-index:40;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  padding:14px 0;
+  backdrop-filter:blur(6px);
+}
+.controls-inner{display:flex;flex-direction:column;gap:10px}
+.controls-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+#search{
+  flex:1;min-width:220px;
+  background:var(--card);
+  border:1.5px solid var(--ink);
+  padding:11px 16px;
+  font-family:'Space Mono',monospace;font-size:13px;
+  color:var(--ink);
+  border-radius:2px;
+}
+#search:focus{outline:none;border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters-label{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.chip{
+  font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.04em;
+  padding:8px 13px;border:1.4px solid var(--line);
+  background:transparent;color:var(--muted);
+  cursor:pointer;border-radius:30px;transition:all .18s;user-select:none;
+}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.filters.deploy .chip{border-radius:5px}
+.filters.deploy .chip.active{background:var(--accent-2);border-color:var(--accent-2)}
+.count-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:auto}
+
+/* ---------- Sections ---------- */
+main{padding:50px 0 80px}
+.section{margin-bottom:64px;scroll-margin-top:140px}
+.section-head{
+  display:flex;align-items:baseline;gap:18px;
+  border-bottom:1px solid var(--ink);
+  padding-bottom:12px;margin-bottom:30px;
+}
+.section-num{
+  font-family:'Space Mono',monospace;font-size:13px;
+  color:var(--accent);font-weight:700;
+}
+.section-head h2{
+  font-family:'Fraunces',serif;font-weight:500;font-size:clamp(24px,3.4vw,38px);
+  letter-spacing:-.01em;flex:1;
+}
+.section-head .zh{font-size:14px;color:var(--muted);font-weight:300;font-family:'Noto Sans SC'}
+
+/* ---------- Cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+.card{
+  background:var(--card);
+  border:1.5px solid var(--ink);
+  border-radius:3px;
+  padding:22px 22px 20px;
+  display:flex;flex-direction:column;
+  box-shadow:4px 4px 0 var(--shadow);
+  transition:transform .2s,box-shadow .2s;
+  position:relative;
+}
+.card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--shadow)}
+.card.hidden{display:none}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.card-top h3{flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word}
+.card h3{
+  font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.15;
+  letter-spacing:-.01em;
+}
+.tag-group{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
+.tag{
+  font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;white-space:nowrap;
+  padding:4px 8px;border-radius:20px;font-weight:700;flex-shrink:0;
+}
+.t-platform{background:rgba(29,77,79,.13);color:var(--accent-2)}
+.t-open{background:rgba(194,65,12,.13);color:var(--accent)}
+.t-cloud{background:rgba(80,70,50,.12);color:var(--muted)}
+.tag.deploy{background:transparent;border:1.3px solid currentColor}
+.tag.deploy.d-on-device{color:var(--accent-2)}
+.tag.deploy.d-cloud{color:var(--muted)}
+.tag.deploy.d-hybrid{color:var(--accent)}
+.card .role{
+  font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);
+  letter-spacing:.04em;margin-bottom:12px;
+}
+.card .desc{font-size:13.5px;color:var(--ink);margin-bottom:14px;font-weight:300}
+.specs{list-style:none;margin-top:auto;border-top:1px dashed var(--line);padding-top:12px}
+.specs li{display:flex;gap:8px;font-size:12px;margin-bottom:6px;color:var(--muted)}
+.specs li b{
+  font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink);flex-shrink:0;width:74px;
+}
+.specs li span{flex:1}
+.card-foot{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.card-foot a{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);text-decoration:none}
+.card-foot a:hover{text-decoration:underline}
+
+footer{border-top:2px solid var(--ink);padding:30px 0 60px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+footer a{color:var(--accent)}
+.no-results{display:none;text-align:center;padding:60px 0;font-family:'Space Mono',monospace;color:var(--muted)}
+.no-results.show{display:block}
+
+@media(max-width:600px){
+  .specs li b{width:62px}
+  header{padding:38px 0 22px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Personal Tech Atlas · 技术能力图谱</div>
+    <h1>主流技术与<br>功能<em>知识库</em></h1>
+    <p class="sub">收集端侧与云端的主流技术能力——影像、传感、视觉与多模态、语音与音频、生成式媒体、大模型与检索、空间计算、平台底座——作为可检索的知识点，方便探索如何组合不同技术，做出不一样的软件效果。</p>
+    <div class="meta-row">
+      <span>整理日期 <b>{{date}}</b></span>
+      <span>条目 <b id="total-count">—</b></span>
+      <span>领域 <b>{{catcount}} 大类</b></span>
+      <span>更新方式 <b>持续补充</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap controls-inner">
+    <div class="controls-row">
+      <input id="search" type="text" placeholder="搜索技术、能力、关键词…  e.g. OCR / 双摄 / whisper / 语音克隆 / RAG">
+      <span class="count-note" id="visible-count"></span>
+    </div>
+    <div class="controls-row">
+      <div class="filters" id="filters">
+        <span class="filters-label">分类</span>
+        <span class="chip active" data-f="all">全部</span>
+<!--@filters-->
+      </div>
+    </div>
+    <div class="controls-row">
+      <div class="filters deploy" id="deployFilters">
+        <span class="filters-label">部署</span>
+        <span class="chip active" data-d="all">全部</span>
+        <span class="chip" data-d="on-device">端侧</span>
+        <span class="chip" data-d="cloud">云端</span>
+        <span class="chip" data-d="hybrid">端云</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!--@sections-->
+
+<div class="no-results" id="noResults">没有匹配的条目 · 试试别的关键词</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    个人技术知识库 · 数据持续整理，技术与模型排名变化很快，使用前建议核对各官方文档 / 最新基准（条目内 <em>updated</em> 字段标注核对时间）。<br>
+    主要参考：Apple Developer（AVFoundation / Vision / Foundation Models）· 各开源模型与云服务官方资料 · TTS Arena / Open ASR Leaderboard 等公开基准。
+  </div>
+</footer>
+
+<script>
+const cards = Array.from(document.querySelectorAll('.card'));
+const sections = Array.from(document.querySelectorAll('.section'));
+const catChips = Array.from(document.querySelectorAll('#filters .chip'));
+const deployChips = Array.from(document.querySelectorAll('#deployFilters .chip'));
+const search = document.getElementById('search');
+const noResults = document.getElementById('noResults');
+const visibleCount = document.getElementById('visible-count');
+document.getElementById('total-count').textContent = cards.length;
+
+let activeFilter = 'all';
+let activeDeploy = 'all';
+
+function apply(){
+  const q = search.value.trim().toLowerCase();
+  let shown = 0;
+  cards.forEach(c=>{
+    const cat = c.dataset.cat;
+    const deploy = c.dataset.deploy;
+    const kw = ((c.dataset.keywords||'') + ' ' + c.textContent).toLowerCase();
+    const matchCat = activeFilter==='all' || cat===activeFilter;
+    const matchDeploy = activeDeploy==='all' || deploy===activeDeploy;
+    const matchQ = !q || kw.includes(q);
+    const ok = matchCat && matchDeploy && matchQ;
+    c.classList.toggle('hidden', !ok);
+    if(ok) shown++;
+  });
+  // hide empty sections
+  sections.forEach(s=>{
+    const any = s.querySelectorAll('.card:not(.hidden)').length>0;
+    s.style.display = any ? '' : 'none';
+  });
+  noResults.classList.toggle('show', shown===0);
+  visibleCount.textContent = shown + ' / ' + cards.length + ' 条';
+}
+
+catChips.forEach(ch=>ch.addEventListener('click',()=>{
+  catChips.forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active');
+  activeFilter = ch.dataset.f;
+  apply();
+}));
+deployChips.forEach(ch=>ch.addEventListener('click',()=>{
+  deployChips.forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active');
+  activeDeploy = ch.dataset.d;
+  apply();
+}));
+search.addEventListener('input', apply);
+apply();
+</script>
+
+</body>
+</html>

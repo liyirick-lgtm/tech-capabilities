@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术知识图谱 · Tech Atlas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root{
+  --ink:#13110e;
+  --paper:#f4efe6;
+  --paper-2:#eae3d4;
+  --line:#cabfa8;
+  --accent:#c2410c;
+  --accent-2:#1d4d4f;
+  --muted:#6b6354;
+  --card:#fbf8f1;
+  --shadow:rgba(40,33,20,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Noto Sans SC','Space Mono',sans-serif;
+  line-height:1.6;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(194,65,12,.05), transparent 45%),
+    radial-gradient(circle at 82% 78%, rgba(29,77,79,.06), transparent 50%);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* ---------- Header ---------- */
+header{
+  border-bottom:2px solid var(--ink);
+  padding:54px 0 26px;
+  position:relative;
+  overflow:hidden;
+}
+.kicker{
+  font-family:'Space Mono',monospace;
+  font-size:12px;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+}
+h1{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:clamp(40px,7vw,86px);
+  line-height:.96;
+  letter-spacing:-.02em;
+}
+h1 em{font-style:italic;color:var(--accent-2)}
+.sub{
+  margin-top:22px;max-width:680px;
+  font-size:16px;color:var(--muted);font-weight:300;
+}
+.meta-row{
+  margin-top:30px;display:flex;flex-wrap:wrap;gap:26px;
+  font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);
+  letter-spacing:.06em;
+}
+.meta-row b{color:var(--ink);font-weight:700}
+
+/* ---------- Controls ---------- */
+.controls{
+  position:sticky;top:0;z-index:40;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  padding:14px 0;
+  backdrop-filter:blur(6px);
+}
+.controls-inner{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+#search{
+  flex:1;min-width:220px;
+  background:var(--card);
+  border:1.5px solid var(--ink);
+  padding:11px 16px;
+  font-family:'Space Mono',monospace;font-size:13px;
+  color:var(--ink);
+  border-radius:2px;
+}
+#search:focus{outline:none;border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.04em;
+  padding:8px 13px;border:1.4px solid var(--line);
+  background:transparent;color:var(--muted);
+  cursor:pointer;border-radius:30px;transition:all .18s;user-select:none;
+}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.count-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:auto}
+
+/* ---------- Sections ---------- */
+main{padding:50px 0 80px}
+.section{margin-bottom:64px;scroll-margin-top:120px}
+.section-head{
+  display:flex;align-items:baseline;gap:18px;
+  border-bottom:1px solid var(--ink);
+  padding-bottom:12px;margin-bottom:30px;
+}
+.section-num{
+  font-family:'Space Mono',monospace;font-size:13px;
+  color:var(--accent);font-weight:700;
+}
+.section-head h2{
+  font-family:'Fraunces',serif;font-weight:500;font-size:clamp(24px,3.4vw,38px);
+  letter-spacing:-.01em;flex:1;
+}
+.section-head .zh{font-size:14px;color:var(--muted);font-weight:300;font-family:'Noto Sans SC'}
+
+/* ---------- Cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+.card{
+  background:var(--card);
+  border:1.5px solid var(--ink);
+  border-radius:3px;
+  padding:22px 22px 20px;
+  display:flex;flex-direction:column;
+  box-shadow:4px 4px 0 var(--shadow);
+  transition:transform .2s,box-shadow .2s;
+  position:relative;
+}
+.card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--shadow)}
+.card.hidden{display:none}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.card h3{
+  font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.15;
+  letter-spacing:-.01em;
+}
+.tag{
+  font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;white-space:nowrap;
+  padding:4px 8px;border-radius:20px;font-weight:700;flex-shrink:0;
+}
+.t-platform{background:rgba(29,77,79,.13);color:var(--accent-2)}
+.t-open{background:rgba(194,65,12,.13);color:var(--accent)}
+.t-cloud{background:rgba(80,70,50,.12);color:var(--muted)}
+.card .role{
+  font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);
+  letter-spacing:.04em;margin-bottom:12px;
+}
+.card .desc{font-size:13.5px;color:var(--ink);margin-bottom:14px;font-weight:300}
+.specs{list-style:none;margin-top:auto;border-top:1px dashed var(--line);padding-top:12px}
+.specs li{display:flex;gap:8px;font-size:12px;margin-bottom:6px;color:var(--muted)}
+.specs li b{
+  font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink);flex-shrink:0;width:74px;
+}
+.specs li span{flex:1}
+
+/* combos */
+.combo-zone{
+  margin-top:30px;background:var(--ink);color:var(--paper);
+  border-radius:4px;padding:38px 34px;
+}
+.combo-zone h2{font-family:'Fraunces',serif;font-weight:500;font-size:30px;margin-bottom:8px}
+.combo-zone .lead{color:#c9c0ac;font-size:14px;font-weight:300;max-width:640px;margin-bottom:28px}
+.combo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.combo{border:1px solid #3a352b;border-radius:3px;padding:20px;background:#1c1914}
+.combo .flow{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.04em;margin-bottom:10px}
+.combo h4{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin-bottom:8px}
+.combo p{font-size:12.5px;color:#b5ac98;font-weight:300}
+
+footer{border-top:2px solid var(--ink);padding:30px 0 60px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+footer a{color:var(--accent)}
+.no-results{display:none;text-align:center;padding:60px 0;font-family:'Space Mono',monospace;color:var(--muted)}
+.no-results.show{display:block}
+
+@media(max-width:600px){
+  .specs li b{width:62px}
+  header{padding:38px 0 22px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Personal Tech Atlas · 技术能力图谱</div>
+    <h1>主流技术与<br>功能<em>知识库</em></h1>
+    <p class="sub">收集市面上主流的端侧与云端技术能力——影像采集、本地 AI 识别、语音转写、语音合成、端侧大模型——作为知识点整理，方便探索如何组合不同技术，实现不一样的软件效果。</p>
+    <div class="meta-row">
+      <span>整理日期 <b>2026.06</b></span>
+      <span>条目 <b id="total-count">—</b></span>
+      <span>领域 <b>5 大类</b></span>
+      <span>更新方式 <b>持续补充</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap controls-inner">
+    <input id="search" type="text" placeholder="搜索技术、能力、关键词…  e.g. OCR / 双摄 / whisper / 语音克隆">
+    <div class="filters" id="filters">
+      <span class="chip active" data-f="all">全部</span>
+      <span class="chip" data-f="imaging">影像 / 相机</span>
+      <span class="chip" data-f="vision">本地视觉 AI</span>
+      <span class="chip" data-f="asr">语音识别 ASR</span>
+      <span class="chip" data-f="tts">语音合成 TTS</span>
+      <span class="chip" data-f="llm">端侧大模型</span>
+    </div>
+    <span class="count-note" id="visible-count"></span>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- ============ IMAGING ============ -->
+<section class="section" data-cat="imaging" id="imaging">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2>Imaging &amp; Camera</h2>
+    <span class="zh">影像采集 / 计算摄影 / 专业格式</span>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-cat="imaging" data-keywords="多摄 双摄 同时录制 multicam 前后摄像头 avfoundation pip 画中画">
+      <div class="card-top"><h3>AVCaptureMultiCamSession</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">多摄像头同时采集 · AVFoundation</div>
+      <p class="desc">在一个采集会话里同时调用前后/广角/长焦多颗摄像头，可同时输出多路预览、视频、照片或元数据，做画中画、双路录制、分屏等效果。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>前后同录、多路 VideoDataOutput / PhotoOutput / 元数据并行（条码、人脸）</span></li>
+        <li><b>限制</b><span>需 A12 及以上芯片；设备支持的组合由 supportedMultiCamDeviceSets 决定；功耗/发热较高</span></li>
+        <li><b>调用</b><span>AVFoundation，Swift/ObjC；通过 AVCaptureConnection 定义数据流向</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="imaging" data-keywords="双摄 双照片 景深 dualcamera 同时拍照 广角 长焦">
+      <div class="card-top"><h3>Dual Photo Delivery</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">双镜头同时出片 · AVCapturePhotoOutput</div>
+      <p class="desc">在双摄设备上同时拍下广角与长焦两张照片，可用于景深合成、视角对照或后期选择，无需用户来回切换镜头。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>一次快门同时返回两颗镜头的原片</span></li>
+        <li><b>限制</b><span>仅双摄设备；需在采集管线提前启用配置</span></li>
+        <li><b>调用</b><span>isDualCameraDualPhotoDeliveryEnabled</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="imaging" data-keywords="语义分割 头发 皮肤 牙齿 人像 抠图 segmentation 美颜 photo effects">
+      <div class="card-top"><h3>Semantic Segmentation Mattes</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">人像语义分割遮罩 · 计算摄影</div>
+      <p class="desc">拍照时自动生成头发、皮肤、牙齿等语义分割遮罩，可在后期对各区域分别处理，实现精细抠像、美颜、影棚级人像效果。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>分通道输出头发/皮肤/牙齿等遮罩（matte）</span></li>
+        <li><b>限制</b><span>主要针对人像；依赖支持的设备与拍摄模式</span></li>
+        <li><b>调用</b><span>AVFoundation 照片管线（WWDC19 起）</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="imaging" data-keywords="proraw raw dng 专业格式 后期 宽容度 log apple log 专业影像">
+      <div class="card-top"><h3>ProRAW / Apple Log / ProRes</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">专业影像格式 · 高宽容度采集</div>
+      <p class="desc">面向专业拍摄的高保真采集格式：ProRAW（计算摄影 + RAW 后期宽容度）、Apple Log（调色宽容度）、ProRes（高码率视频），适合需要重度后期的影像类 App。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>更大后期空间、保留计算摄影信息、专业调色流程</span></li>
+        <li><b>限制</b><span>文件体积大；机型/存储要求高；需对应 Pro 机型</span></li>
+        <li><b>调用</b><span>AVFoundation / 系统相机配置</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="imaging" data-keywords="镜头脏污 smudge 检测 模糊 photo quality 镜头检测">
+      <div class="card-top"><h3>Lens Smudge Detection</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">镜头脏污 / 模糊检测 · Vision (iOS 26)</div>
+      <p class="desc">iOS 26 在 Vision 中新增镜头脏污检测，可在相册或自有采集管线中识别可能被指纹/脏污影响的模糊图片，提升扫描和拍摄质量。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>识别潜在脏污/模糊图像</span></li>
+        <li><b>限制</b><span>iOS 26+；属于辅助质量判断</span></li>
+        <li><b>调用</b><span>Vision framework（WWDC25）</span></li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ VISION ============ -->
+<section class="section" data-cat="vision" id="vision">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2>On-Device Vision AI</h2>
+    <span class="zh">本地视觉智能 / OCR / 文档结构识别</span>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-cat="vision" data-keywords="ocr 文字识别 vnrecognizetext 手写 印刷 识别文字 vision">
+      <div class="card-top"><h3>RecognizeTextRequest (OCR)</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">图像文字识别 · Vision</div>
+      <p class="desc">从图片中识别印刷与手写文字，返回文本及位置框，全程本地运行。是扫描类、证件/票据识别、文档数字化的基础能力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>多语言印刷+手写 OCR，带位置与置信度</span></li>
+        <li><b>限制</b><span>复杂排版需配合区域检测；语言覆盖有限</span></li>
+        <li><b>调用</b><span>Vision（iOS/macOS/iPadOS/visionOS），完全离线</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="vision" data-keywords="文档结构 表格 段落 列表 条码 recognizedocuments 扫描 结构化">
+      <div class="card-top"><h3>RecognizeDocumentsRequest</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">文档结构化识别 · Vision (iOS 26)</div>
+      <p class="desc">iOS 26 新增：不仅识别文字行，还能把文字组织成段落、读取表格的行列结构、识别列表与条码，保留文档的结构信息——非常适合智能扫描 App。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>段落分组、表格行列、列表、条码，支持约 26 种语言</span></li>
+        <li><b>限制</b><span>iOS 26+；结构识别受版面复杂度影响</span></li>
+        <li><b>调用</b><span>Vision framework（WWDC25）</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="vision" data-keywords="人脸 检测 face detection 人脸识别 关键点 landmark">
+      <div class="card-top"><h3>Face / Landmark Detection</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">人脸与关键点检测 · Vision</div>
+      <p class="desc">检测画面中的人脸、面部关键点与朝向，可用于自动对焦、贴纸/美颜、活体辅助、相册整理等。本地实时运行。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>人脸框、面部 landmark、姿态朝向</span></li>
+        <li><b>限制</b><span>非身份识别（不做"这是谁"）；遮挡/低光下精度下降</span></li>
+        <li><b>调用</b><span>Vision；可与采集管线实时联动</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="vision" data-keywords="物体检测 物体追踪 轨迹 手势 身体姿态 hand pose body pose 物体识别">
+      <div class="card-top"><h3>Object / Pose / Trajectory</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">物体·人体·轨迹分析 · Vision</div>
+      <p class="desc">检测与追踪物体、人体与手部姿态、运动轨迹等。配合 Core ML 自定义模型可做运动分析、AR 交互、动作教学（如挥拍分析）。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>物体追踪、body/hand pose、trajectory 分析</span></li>
+        <li><b>限制</b><span>自定义识别需搭配训练好的 Core ML 模型</span></li>
+        <li><b>调用</b><span>Vision + Core ML，离线</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="vision" data-keywords="core ml 自定义模型 端侧推理 神经引擎 ane 模型部署">
+      <div class="card-top"><h3>Core ML</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">端侧模型推理引擎 · 底座</div>
+      <p class="desc">Apple 的端侧模型运行框架，把训练好的视觉/音频/NLP 模型部署到 CPU/GPU/神经引擎(ANE)上推理。Vision 等高层框架底层都依赖它，也可直接跑自定义模型。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>自定义模型本地推理，自动调度 ANE/GPU/CPU</span></li>
+        <li><b>限制</b><span>需将模型转换为 .mlmodel/.mlpackage</span></li>
+        <li><b>调用</b><span>Core ML；常配合 Create ML 训练</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="vision" data-keywords="visual intelligence 视觉智能 截图 圈选搜索 chatgpt 识图">
+      <div class="card-top"><h3>Visual Intelligence</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">系统级视觉理解 · Apple Intelligence</div>
+      <p class="desc">iOS 26 起可用于截图：圈选屏幕内容进行搜索、提问（接入 ChatGPT），并允许第三方 App 接入。属于系统级"识屏 + 问答"能力。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>圈选识别、屏幕内容搜索/提问</span></li>
+        <li><b>限制</b><span>需 Apple Intelligence 机型；部分能力联网</span></li>
+        <li><b>调用</b><span>系统集成 + App Intents 接入</span></li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ ASR ============ -->
+<section class="section" data-cat="asr" id="asr">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2>Speech Recognition (ASR)</h2>
+    <span class="zh">语音识别 / 语音转文字</span>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-cat="asr" data-keywords="whisper openai 转录 多语言 开源 large v3 turbo 字幕">
+      <div class="card-top"><h3>OpenAI Whisper</h3><span class="tag t-open">开源</span></div>
+      <div class="role">通用多语言转录基座 · 模型权重</div>
+      <p class="desc">OpenAI 开源的 ASR 模型家族（tiny→large-v3 / turbo），680k 小时训练，支持 99+ 语言。本身是模型权重而非成品 App，需配合封装使用。生态成熟，是大多数转录产品的底座。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>99+ 语言、自动语种识别、时间戳、标点</span></li>
+        <li><b>限制</b><span>原版依赖 Python/GPU 较重；非实时流式</span></li>
+        <li><b>调用</b><span>pip / MIT 许可；生态：faster-whisper、whisper.cpp、WhisperKit</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="asr" data-keywords="whisper.cpp 端侧 离线 apple silicon coreml cpu 边缘 c++ 轻量">
+      <div class="card-top"><h3>whisper.cpp / WhisperKit</h3><span class="tag t-open">开源</span></div>
+      <div class="role">端侧 Whisper 部署 · C++/CoreML</div>
+      <p class="desc">把 Whisper 移植到 C/C++，可在 CPU、Apple Silicon（CoreML）、甚至 WebAssembly 上高效运行。WhisperKit 进一步把它包成 Apple 平台原生的端侧转录方案，数据不出设备。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>离线转录，Apple Silicon 上性能好，隐私友好</span></li>
+        <li><b>限制</b><span>大模型对内存有要求；实时性取决于模型尺寸</span></li>
+        <li><b>调用</b><span>whisper.cpp（C/C++）、WhisperKit（CoreML/Swift）</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="asr" data-keywords="apple speech 系统语音识别 sfspeechrecognizer 隐私 端侧 实时 听写">
+      <div class="card-top"><h3>Apple Speech Framework</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">系统语音识别 · 端侧优先</div>
+      <p class="desc">Apple 自带的语音识别框架，可端侧运行（隐私好、可离线、实时），适合做听写、语音输入、语音命令。相比云端 Whisper，优势在隐私与实时响应。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>实时听写、端侧处理、与系统深度集成</span></li>
+        <li><b>限制</b><span>语种/词汇覆盖不如 Whisper 灵活</span></li>
+        <li><b>调用</b><span>Speech framework（SFSpeechRecognizer）</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="asr" data-keywords="parakeet nvidia 实时 流式 streaming 低延迟 transducer 快">
+      <div class="card-top"><h3>NVIDIA Parakeet</h3><span class="tag t-open">开源</span></div>
+      <div class="role">超快流式英语 ASR · 实时</div>
+      <p class="desc">NVIDIA 的 RNN-Transducer 系列，主打推理速度与流式实时识别，RTFx 极高（处理速度远超 Whisper），适合需要低延迟实时转写的场景，准确率排名略低但够用。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>流式实时、极高吞吐、低延迟</span></li>
+        <li><b>限制</b><span>以英语为主；准确率非顶尖</span></li>
+        <li><b>调用</b><span>开源模型，Open ASR Leaderboard 可比</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="asr" data-keywords="voxtral mistral 流式 实时 多语言 因果编码器 准确率 wer">
+      <div class="card-top"><h3>Mistral Voxtral Transcribe 2</h3><span class="tag t-open">开源 / API</span></div>
+      <div class="role">高准确率 + 原生流式 · 新锐</div>
+      <p class="desc">Mistral 2026 年的二代 ASR，FLEURS 多语言基准上 WER 约 5.9%（优于 Whisper 的 ~7.4%），含离线批处理 Mini 版与因果编码器的实时流式版。语言覆盖较少（约 13 种），是值得关注的新选手。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>更低 WER、原生实时流式</span></li>
+        <li><b>限制</b><span>语言约 13 种，远少于 Whisper 的 99+</span></li>
+        <li><b>调用</b><span>Voxtral Mini（批处理）/ Voxtral Realtime（流式）</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="asr" data-keywords="云端 api deepgram google chirp assemblyai gpt-4o-transcribe 转录服务">
+      <div class="card-top"><h3>云端 ASR API</h3><span class="tag t-cloud">云端</span></div>
+      <div class="role">托管转录服务 · 免运维</div>
+      <p class="desc">Deepgram Nova-3、Google Chirp、AssemblyAI、OpenAI GPT-4o-transcribe 等托管服务，主打开箱即用、规模化、实时流式与高级功能（说话人分离等），代价是数据上云与按量计费。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>免运维、可扩展、说话人分离、实时</span></li>
+        <li><b>限制</b><span>数据出设备、按量付费、需联网</span></li>
+        <li><b>调用</b><span>各家 REST/WebSocket API</span></li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ TTS ============ -->
+<section class="section" data-cat="tts" id="tts">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2>Text-to-Speech (TTS)</h2>
+    <span class="zh">语音合成 / 配音 / 语音克隆</span>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-cat="tts" data-keywords="kokoro 开源 轻量 82m 端侧 cpu styletts 免费 快">
+      <div class="card-top"><h3>Kokoro-82M</h3><span class="tag t-open">开源</span></div>
+      <div class="role">超轻量端侧 TTS · 效率王</div>
+      <p class="desc">仅 8200 万参数、约 300MB，可在 CPU 上运行，质量却接近大很多倍的模型，2026 年初登顶 TTS Arena。适合本地、低算力、零成本、需要嵌入式部署的场景，但主打英语、不支持语音克隆。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>极快（GPU 上数十倍实时）、可 CPU 运行、免费、Apache 2.0</span></li>
+        <li><b>限制</b><span>英语为主、无克隆、情感表现弱于商用</span></li>
+        <li><b>调用</b><span>开源权重；可在 M 系 Mac via MPS 运行</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="tts" data-keywords="chatterbox resemble 语音克隆 voice clone 开源 盲测 击败 elevenlabs">
+      <div class="card-top"><h3>Chatterbox / Chatterbox-Turbo</h3><span class="tag t-open">开源</span></div>
+      <div class="role">高质量语音克隆 · ElevenLabs 级</div>
+      <p class="desc">Resemble AI 的开源模型（MIT），单 GPU 即可做语音克隆。厂商盲测中偏好率显著超过 ElevenLabs，是想自托管、追求高质量与克隆能力时的首选之一。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>单 GPU 语音克隆、质量对标/超过商用</span></li>
+        <li><b>限制</b><span>需 GPU；自托管要自己做工程</span></li>
+        <li><b>调用</b><span>开源权重，MIT 许可</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="tts" data-keywords="elevenlabs 商用 配音 旁白 多语言 语音库 voice library 高质量">
+      <div class="card-top"><h3>ElevenLabs</h3><span class="tag t-cloud">云端</span></div>
+      <div class="role">商用配音标杆 · 生态完善</div>
+      <p class="desc">商用 TTS 标杆，主打稳定、生态、海量语音库（4000+ 音色、70+ 语言）、即时克隆与 Studio 编辑器。卖的不只是音质，更是便利与可靠性。Flash 档延迟约 75–150ms。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>海量音色/语言、即时克隆、Studio、低延迟档</span></li>
+        <li><b>限制</b><span>按量付费、数据上云、需联网</span></li>
+        <li><b>调用</b><span>REST API；订阅制（约 $5/月起）</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="tts" data-keywords="fish audio s2 pro 开源 多语言 克隆 流式 低延迟 性价比">
+      <div class="card-top"><h3>Fish Audio S2 Pro</h3><span class="tag t-open">开源 / API</span></div>
+      <div class="role">多语言高质量 · 性价比</div>
+      <p class="desc">开源权重，双自回归（Dual-AR）+ RVQ 音频编解码设计，10M+ 小时多语言训练。托管 API 首字音约 100ms，价格约 $15/百万字符（远低于 ElevenLabs），多语言整体质量优秀。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>多语言、流式低延迟、克隆、价格友好</span></li>
+        <li><b>限制</b><span>自托管需工程投入</span></li>
+        <li><b>调用</b><span>开源 + 托管 API</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="tts" data-keywords="vibevoice 长音频 播客 多说话人 dialogue 长篇 对话">
+      <div class="card-top"><h3>VibeVoice / Dia2</h3><span class="tag t-open">开源</span></div>
+      <div class="role">长篇 / 多人对话合成 · 播客级</div>
+      <p class="desc">面向长音频与多说话人对话的开源模型：VibeVoice 擅长长篇富表现力叙述（整集播客），Dia2 擅长多说话人对话。适合做有声书、播客、剧情配音。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>长篇连贯、多说话人、富表现力</span></li>
+        <li><b>限制</b><span>资源消耗较高；需 GPU</span></li>
+        <li><b>调用</b><span>开源权重</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="tts" data-keywords="cartesia sonic 超低延迟 实时 语音代理 voice agent 40ms 流式">
+      <div class="card-top"><h3>Cartesia Sonic / Qwen3-TTS</h3><span class="tag t-cloud">云端 / 开源</span></div>
+      <div class="role">超低延迟实时 · 语音代理</div>
+      <p class="desc">主打极低延迟（Cartesia Sonic Turbo 约 40ms、Qwen3-TTS 约 97ms 流式），为实时语音对话/语音代理设计。在需要"边想边说"的交互场景里是关键技术。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>40–100ms 级延迟、原生流式</span></li>
+        <li><b>限制</b><span>顶级实时档多为云端/付费</span></li>
+        <li><b>调用</b><span>API / 部分开源</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="tts" data-keywords="avspeechsynthesizer 系统 tts 苹果 离线 personal voice 个人语音">
+      <div class="card-top"><h3>AVSpeechSynthesizer</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">系统内置语音合成 · 零成本</div>
+      <p class="desc">Apple 系统自带 TTS，离线可用、零成本、与系统集成（含无障碍 Personal Voice 个人语音克隆）。音质和表现力不及顶级商用，但作为基础朗读/无障碍功能足够。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>离线、多语言系统音色、Personal Voice</span></li>
+        <li><b>限制</b><span>表现力/自然度有限</span></li>
+        <li><b>调用</b><span>AVFoundation（AVSpeechSynthesizer）</span></li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ LLM ============ -->
+<section class="section" data-cat="llm" id="llm">
+  <div class="section-head">
+    <span class="section-num">05</span>
+    <h2>On-Device LLM</h2>
+    <span class="zh">端侧大模型 / 文本智能</span>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-cat="llm" data-keywords="foundation models apple 端侧 llm 3b 摘要 提取 guided generation 免费">
+      <div class="card-top"><h3>Apple Foundation Models</h3><span class="tag t-platform">Apple 原生</span></div>
+      <div class="role">系统端侧 LLM 框架 · iOS 26</div>
+      <p class="desc">iOS 26 起开放给第三方：直接调用 Apple Intelligence 核心的端侧 ~3B 模型（2-bit 量化），离线、免费、隐私好。擅长摘要、抽取、分类、改写、短对话——不是通用世界知识聊天机器人。最少三行 Swift 即可接入。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>摘要/抽取/分类/改写、Guided Generation 结构化输出、工具调用</span></li>
+        <li><b>限制</b><span>需 Apple Intelligence 机型；不擅长世界知识/复杂推理</span></li>
+        <li><b>调用</b><span>FoundationModels（LanguageModelSession），@Generable 宏</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="llm" data-keywords="云端 llm api claude gpt 复杂推理 世界知识 服务器 强模型">
+      <div class="card-top"><h3>云端前沿 LLM API</h3><span class="tag t-cloud">云端</span></div>
+      <div class="role">强推理 / 世界知识 · 服务器规模</div>
+      <p class="desc">当任务需要复杂推理、长上下文、世界知识或多模态理解时，端侧小模型力不从心，需调用 Claude、GPT 等服务器规模模型。代价是联网、按量计费、数据出设备。常与端侧模型分工：端侧做轻任务、云端做重任务。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>复杂推理、长上下文、多模态、世界知识</span></li>
+        <li><b>限制</b><span>联网、按量付费、隐私需评估</span></li>
+        <li><b>调用</b><span>各家 REST API（可在 App 内编排端云协同）</span></li>
+      </ul>
+    </article>
+
+    <article class="card" data-cat="llm" data-keywords="本地开源 llm llama qwen mlx gguf 量化 自托管 端侧推理">
+      <div class="card-top"><h3>开源本地 LLM (Llama / Qwen / MLX)</h3><span class="tag t-open">开源</span></div>
+      <div class="role">自托管端侧模型 · 可控</div>
+      <p class="desc">在设备/自有服务器上跑开源模型（Llama、Qwen 等），通过量化（GGUF）或 Apple 的 MLX 框架在 Apple Silicon 上推理。比系统模型更可控、可选更大尺寸，适合需要自定义、特定领域或更强能力又想离线的场景。</p>
+      <ul class="specs">
+        <li><b>能力</b><span>尺寸/模型自选、可微调、离线可控</span></li>
+        <li><b>限制</b><span>工程与内存成本高；大模型端侧吃力</span></li>
+        <li><b>调用</b><span>MLX（Apple Silicon）、llama.cpp / GGUF 量化</span></li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ COMBINATIONS ============ -->
+<div class="combo-zone" id="combos">
+  <h2>技术组合灵感 · Stacks</h2>
+  <p class="lead">知识库的真正价值在组合。下面是几条把上述能力拼起来、做出"不一样软件效果"的思路，供后续探索。</p>
+  <div class="combo-grid">
+
+    <div class="combo">
+      <div class="flow">采集 → OCR → 结构化 → LLM</div>
+      <h4>智能扫描 / 文档助手</h4>
+      <p>镜头脏污检测保证图像质量 → RecognizeDocumentsRequest 读出表格/段落结构 → Foundation Models 本地摘要、提取字段、生成结构化数据。全程离线、隐私友好。</p>
+    </div>
+
+    <div class="combo">
+      <div class="flow">ASR → LLM → TTS</div>
+      <h4>实时语音助手 / 口译</h4>
+      <p>Parakeet/Voxtral 流式识别 → 云端或端侧 LLM 理解与生成 → Cartesia Sonic 超低延迟合成。延迟链路是体验关键，三段都要选低延迟方案。</p>
+    </div>
+
+    <div class="combo">
+      <div class="flow">多摄 → 分割 → 实时合成</div>
+      <h4>双视角创作相机</h4>
+      <p>MultiCamSession 前后同录 + 语义分割遮罩做实时人像抠像/背景替换，配 ProRes 专业格式输出，做 Vlog/采访类创作工具。</p>
+    </div>
+
+    <div class="combo">
+      <div class="flow">Whisper → 时间戳 → TTS 克隆</div>
+      <h4>视频配音 / 译制</h4>
+      <p>whisper.cpp 端侧转录带词级时间戳 → LLM 翻译 → Chatterbox 语音克隆按时间轴重新配音，做本地化译制工具。</p>
+    </div>
+
+    <div class="combo">
+      <div class="flow">Vision 姿态 → Core ML → LLM 反馈</div>
+      <h4>动作教学 / 运动分析</h4>
+      <p>Vision 提取身体/手部姿态与轨迹 → Core ML 自定义模型判定动作 → Foundation Models 生成针对性、口语化的改进建议（如挥拍/健身指导）。</p>
+    </div>
+
+    <div class="combo">
+      <div class="flow">端侧轻任务 ↔ 云端重任务</div>
+      <h4>端云协同编排</h4>
+      <p>用 Foundation Models 处理高频、隐私敏感、轻量的本地任务；遇到复杂推理/世界知识再路由到云端 LLM。在 App 内做智能编排，兼顾成本、隐私与能力。</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="no-results" id="noResults">没有匹配的条目 · 试试别的关键词</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    个人技术知识库 · 数据整理于 2026 年 6 月，技术与模型排名变化很快，使用前建议核对各官方文档 / 最新基准。<br>
+    主要参考：Apple Developer（AVFoundation / Vision / Foundation Models）· OpenAI Whisper 生态 · TTS Arena / Open ASR Leaderboard · 各模型官方资料。
+  </div>
+</footer>
+
+<script>
+const cards = Array.from(document.querySelectorAll('.card'));
+const sections = Array.from(document.querySelectorAll('.section'));
+const chips = Array.from(document.querySelectorAll('.chip'));
+const search = document.getElementById('search');
+const noResults = document.getElementById('noResults');
+const visibleCount = document.getElementById('visible-count');
+document.getElementById('total-count').textContent = cards.length;
+
+let activeFilter = 'all';
+
+function apply(){
+  const q = search.value.trim().toLowerCase();
+  let shown = 0;
+  cards.forEach(c=>{
+    const cat = c.dataset.cat;
+    const kw = (c.dataset.keywords||'') + ' ' + c.textContent.toLowerCase();
+    const matchCat = activeFilter==='all' || cat===activeFilter;
+    const matchQ = !q || kw.toLowerCase().includes(q);
+    const ok = matchCat && matchQ;
+    c.classList.toggle('hidden', !ok);
+    if(ok) shown++;
+  });
+  // hide empty sections
+  sections.forEach(s=>{
+    const any = s.querySelectorAll('.card:not(.hidden)').length>0;
+    s.style.display = any ? '' : 'none';
+  });
+  noResults.classList.toggle('show', shown===0);
+  visibleCount.textContent = shown + ' / ' + cards.length + ' 条';
+}
+
+chips.forEach(ch=>ch.addEventListener('click',()=>{
+  chips.forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active');
+  activeFilter = ch.dataset.f;
+  apply();
+}));
+search.addEventListener('input', apply);
+apply();
+</script>
+
+</body>
+</html>
