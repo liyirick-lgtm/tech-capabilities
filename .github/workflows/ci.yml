@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Build the site, run the data-quality gate, and verify the committed
+# index.html is up to date with content/.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build (runs validation gate)
+        run: npm run build
+      - name: Verify index.html is up to date
+        run: |
+          if ! git diff --exit-code -- index.html; then
+            echo "::error::index.html is stale. Run 'npm run build' locally and commit the regenerated index.html."
+            exit 1
+          fi

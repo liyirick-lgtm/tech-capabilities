@@ -129,16 +129,53 @@ async function loadCategories() {
   return cats;
 }
 
+const REQUIRED = ['title', 'category', 'source', 'deployment', 'role', 'desc', 'capability', 'limitation', 'invocation'];
+const SOURCES = new Set(['native', 'open', 'cloud']);
+const DEPLOYS = new Set(['on-device', 'cloud', 'hybrid']);
+
+// Data-quality gate: returns a list of fatal problems (empty = OK).
+function validate(cats, idIndex) {
+  const errors = [];
+  for (const c of cats) {
+    for (const it of c.items) {
+      const id = `${c.slug}/${it._slug}`;
+      for (const f of REQUIRED) {
+        if (it[f] === undefined || it[f] === null || String(it[f]).trim() === '') {
+          errors.push(`${id}: missing required field "${f}"`);
+        }
+      }
+      if (it.source !== undefined && !SOURCES.has(it.source)) errors.push(`${id}: invalid source "${it.source}" (native|open|cloud)`);
+      if (it.deployment !== undefined && !DEPLOYS.has(it.deployment)) errors.push(`${id}: invalid deployment "${it.deployment}" (on-device|cloud|hybrid)`);
+      if (it.category !== undefined && it.category !== c.slug) errors.push(`${id}: category "${it.category}" does not match folder "${c.slug}"`);
+      for (const r of [].concat(it.related || [])) {
+        const to = typeof r === 'string' ? r : (r && r.to);
+        if (!to) continue;
+        if (to === it._slug) errors.push(`${id}: related points to itself`);
+        else if (!idIndex[to]) errors.push(`${id}: related "${to}" not found`);
+      }
+    }
+  }
+  return errors;
+}
+
 async function build() {
   const cats = await loadCategories();
 
   // global slug index for relation resolution
   const idIndex = {};
+  const errors = [];
   for (const c of cats) {
     for (const it of c.items) {
-      if (idIndex[it._slug]) console.warn(`! duplicate slug "${it._slug}" (${c.slug})`);
+      if (idIndex[it._slug]) errors.push(`duplicate slug "${it._slug}" (in ${c.slug})`);
       idIndex[it._slug] = { title: it.title, cat: c.slug };
     }
+  }
+
+  errors.push(...validate(cats, idIndex));
+  if (errors.length) {
+    console.error(`✗ Validation failed — ${errors.length} problem(s):`);
+    for (const e of errors) console.error('  • ' + e);
+    process.exit(1);
   }
 
   let filtersHtml = '';
@@ -167,8 +204,9 @@ ${cards}  </div>
   }
 
   const tpl = await readFile(TEMPLATE, 'utf8');
-  const now = new Date();
-  const ym = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`;
+  // "整理日期" = latest `updated` across entries → deterministic build (CI diff stays stable).
+  const dates = cats.flatMap((c) => c.items.map((it) => it.updated)).filter(Boolean).sort();
+  const ym = (dates[dates.length - 1] || '').replace('-', '.');
 
   const out = tpl
     .replace('<!--@filters-->', filtersHtml.replace(/\n$/, ''))
