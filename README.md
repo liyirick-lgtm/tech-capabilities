@@ -1,5 +1,7 @@
 # 技术知识图谱 · Tech Atlas
 
+[![CI](https://github.com/liyirick-lgtm/tech-capabilities/actions/workflows/ci.yml/badge.svg)](https://github.com/liyirick-lgtm/tech-capabilities/actions/workflows/ci.yml)
+
 **🌐 在线浏览 / Live:** <http://rickli.qzz.io/tech-capabilities/>　
 
 > 一个可快速检索的「当下主流技术能力」图谱 —— 覆盖做一个 App 几乎用得到的所有技术：影像采集、传感、视觉与多模态、语音与音频、生成式媒体、大模型与检索编排、3D 空间、系统与平台能力。目标是帮你快速浏览「现在技术上能做什么」、发现能力之间的组合、激发新的产品灵感，而不被信息茧房束缚。
